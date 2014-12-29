@@ -1,0 +1,259 @@
+#!/usr/bin/env bash
+#
+#       ___                       _       _
+#      / / |_ ___ _ __ ___  _ __ | | __ _| |_ ___
+#     / /| __/ _ \ '_ ` _ \| '_ \| |/ _` | __/ _ \
+#  _ / / | ||  __/ | | | | | |_) | | (_| | ||  __/
+# (_)_/   \__\___|_| |_| |_| .__/|_|\__,_|\__\___|
+#                          |_|
+#
+# A template for creating a bash program with commands.
+
+###############################################################################
+# Debug
+###############################################################################
+
+# _debug()
+#
+# Shortcut for testing against the existence of a $debug variable. Primarily
+# intended to be used before a printf statement.
+#
+# Usage:
+#   _debug && printf "Debug info"
+_debug() { [[ -n "$debug" ]]; }
+
+###############################################################################
+# Options
+###############################################################################
+
+# Get raw options for any commands that expect them.
+raw_options=$*
+
+# Initialize command options and arguments arrays.
+#
+# These contain any options and arguments that will be used by the commands.
+# Commands handle their own argument and option checks using the created arrays.
+command_options=()
+command_arguments=()
+
+while [ $# -gt 0 ]; do
+  opt="$1"
+  shift
+  case "$opt" in
+    -h|--help)
+      command="help"
+      ;;
+    --debug)
+      debug=1
+      ;;
+    -*|--*)
+      command_options+=("$opt")
+      ;;
+    *)
+      # The first non-option argument is assumed to be the command name.
+      # All subsequent arguments are added to $command_arguments.
+      if [[ -n $command ]]; then
+        command_arguments+=("$opt")
+      else
+        command=$opt
+      fi
+      ;;
+  esac
+done
+
+_debug && printf "\$command: %s\n" "$command"
+_debug && printf "\$raw_options: %s\n" "$raw_options"
+_debug && printf "\$command_options: %s\n" "${command_options[*]}"
+_debug && printf "\$command_arguments: %s\n" "${command_arguments[*]}"
+
+###############################################################################
+# Environment
+###############################################################################
+
+# $_me
+#
+# Set to the program's basename.
+_me=$(basename "$0")
+
+_debug && printf "\$_me: %s\n" "$_me"
+
+###############################################################################
+# Utility Functions
+###############################################################################
+
+# desc()
+#
+# Usage:
+#   desc command "description"
+#
+# Create a description for a specified command name. The command description
+# text can be passed as the second argument or as standard input.
+#
+# To make the description text available to other functions, desc() assigns the
+# text to a variable with the format $_desc_function_name
+desc() {
+  [[ -z $1 ]] && printf "desc: No command name specified.\n" && exit 1
+  if [[ -n $2 ]]; then
+    read -d '' "_desc_$1" <<EOM
+$2
+EOM
+  else
+    read -d '' "_desc_$1"
+  fi
+}
+
+# _function_exists()
+#
+# Takes a potential function name as an argument and returns whether a function
+# exists with that name.
+_function_exists() {
+  [ "$(type -t "$1")" == 'function' ]
+}
+
+# _contains()
+#
+# Takes an item and a list and determines whether the list contains the item.
+#
+# Usage:
+#   _contains "$item" "${list[@]}"
+_contains() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
+
+###############################################################################
+# Commands
+# ========.....................................................................
+#
+# Example command group structure:
+#
+# desc example ""   - Optional. A short description for the command.
+# example() { : }   - The command called by the use.
+#
+#
+# desc example <<EOM
+#   Example help text. Options specified with http://docopt.org/
+# EOM
+# example() {
+#   echo "Hello, World!"
+# }
+#
+###############################################################################
+
+# Example Section #############################################################
+
+# --------------------------------------------------------------------- example
+
+desc example <<EOM
+Usage: $_me example [<name>] [--casual]
+
+Print "Hello, World!"
+EOM
+example() {
+  if ( _contains "--casual" "${command_options[@]}" ); then
+    greeting="Hi"
+  else
+    greeting="Hello"
+  fi
+  name="${command_arguments[0]}"
+
+  _debug && printf "example() \$greeting: %s\n" "$greeting"
+  _debug && printf "example() \$name: %s\n" "$name"
+
+  if [[ "$name" == "Bill" ]]; then
+    printf "%s, William!\n" "$greeting"
+  elif [[ -n "$name" ]]; then
+    printf "%s, %s!\n" "$greeting" "$name"
+  else
+    printf "%s, World!\n" "$greeting"
+  fi
+}
+
+# Help ########################################################################
+
+desc help <<EOM
+Usage: $_me help [<command>]
+
+Display help information for $_me or a specified command
+EOM
+help() {
+  if [[ $# = 0 ]]; then
+    cat <<EOM
+       ___                       _       _
+      / / |_ ___ _ __ ___  _ __ | | __ _| |_ ___
+     / /| __/ _ \\ '_ \` _ \| '_ \| |/ _\` | __/ _ \\
+  _ / / | ||  __/ | | | | | |_) | | (_| | ||  __/
+ (_)_/   \\__\\___|_| |_| |_| .__/|_|\\__,_|\\__\\___|
+                          |_|
+
+A template for creating a bash program with commands.
+
+Usage:
+  $_me command [<command-arguments>]
+
+Help:
+  $_me help [<command>]
+
+$(list)
+EOM
+  else
+    var="_desc_$1"
+    if [[ -n ${!var} ]]; then
+      printf "%s\n" "${!var}"
+    else
+      printf "No additional information for %s\n" "$1"
+    fi
+  fi
+}
+
+# Command List ################################################################
+
+desc list <<EOM
+Usage: $_me list [--raw]
+
+Display the list of available commands.
+EOM
+list() {
+  function_list=($(declare -F))
+  command_list=()
+  for t in "${function_list[@]}"
+  do
+    if ! ( [[ $t == "declare" ]] || \
+           [[ $t == "-f" ]] || \
+           [[ "$t" =~ ^_(.*) ]] || \
+           [[ "$t" == "desc" ]]
+    ); then
+      command_list+=("$t")
+    fi
+  done
+  if _contains "--raw" "${command_options[@]}"; then
+    printf "%s " "${command_list[@]}"
+  else
+    printf "Available commands:\n"
+    printf "  %s\n" "${command_list[@]}"
+  fi
+}
+
+###############################################################################
+# Main
+###############################################################################
+
+# If $command is blank, then set to help
+if [[ -z $command ]]; then
+  command="help"
+fi
+
+# Get the list of defined tasks.
+defined_commands=($(list --raw))
+
+# Run the command and pass the task arguments.
+if ( _contains "$command" "${defined_commands[@]}" ); then
+  $command "${command_arguments[@]}"
+else
+  printf "Unknown command: %s\n" "$command"
+  exit 1
+fi
+
+
