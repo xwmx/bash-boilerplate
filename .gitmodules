@@ -4,3 +4,6 @@
 [submodule "vendor/com/github/h5bp/mobile-boilerplate"]
 	path = vendor/com/github/h5bp/mobile-boilerplate
 	url = https://github.com/h5bp/mobile-boilerplate.git
+[submodule "vendor/com/github/dhg/Skeleton"]
+	path = vendor/com/github/dhg/Skeleton
+	url = https://github.com/dhg/Skeleton.git
