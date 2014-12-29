@@ -1,3 +1,6 @@
 [submodule "vendor/com/github/h5bp/html5-boilerplate"]
 	path = vendor/com/github/h5bp/html5-boilerplate
 	url = https://github.com/h5bp/html5-boilerplate.git
+[submodule "vendor/com/github/h5bp/mobile-boilerplate"]
+	path = vendor/com/github/h5bp/mobile-boilerplate
+	url = https://github.com/h5bp/mobile-boilerplate.git
