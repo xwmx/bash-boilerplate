@@ -41,7 +41,7 @@ while [ $# -gt 0 ]; do
   shift
   case "$opt" in
     -h|--help)
-      command="help"
+      cmd="help"
       ;;
     --debug)
       debug=1
@@ -52,16 +52,16 @@ while [ $# -gt 0 ]; do
     *)
       # The first non-option argument is assumed to be the command name.
       # All subsequent arguments are added to $command_arguments.
-      if [[ -n $command ]]; then
+      if [[ -n $cmd ]]; then
         command_arguments+=("$opt")
       else
-        command=$opt
+        cmd=$opt
       fi
       ;;
   esac
 done
 
-_debug && printf "\$command: %s\n" "$command"
+_debug && printf "\$cmd: %s\n" "$cmd"
 _debug && printf "\$raw_options: %s\n" "$raw_options"
 _debug && printf "\$command_options: %s\n" "${command_options[*]}"
 _debug && printf "\$command_arguments: %s\n" "${command_arguments[*]}"
@@ -78,7 +78,61 @@ _me=$(basename "$0")
 _debug && printf "\$_me: %s\n" "$_me"
 
 ###############################################################################
+# Main
+###############################################################################
+
+# _main()
+#
+# Usage:
+#   _main
+#
+# The primary function for starting the program.
+#
+# NOTE: must be called at end of program after all commands have been defined.
+_main() {
+  # If $cmd is blank, then set to help
+  if [[ -z $cmd ]]; then
+    cmd="help"
+  fi
+
+  # Get the list of defined commands.
+  defined_commands=($(commands --raw))
+
+  # Run the command and pass the command arguments.
+  if ( _contains "$cmd" "${defined_commands[@]}" ); then
+    $cmd "${command_arguments[@]}"
+  else
+    printf "Unknown command: %s\n" "$cmd"
+    exit 1
+  fi
+}
+
+###############################################################################
 # Utility Functions
+###############################################################################
+
+# _function_exists()
+#
+# Takes a potential function name as an argument and returns whether a function
+# exists with that name.
+_function_exists() {
+  [ "$(type -t "$1")" == 'function' ]
+}
+
+# _contains()
+#
+# Takes an item and a list and determines whether the list contains the item.
+#
+# Usage:
+#   _contains "$item" "${list[@]}"
+_contains() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
+###############################################################################
+# desc
 ###############################################################################
 
 # desc()
@@ -102,26 +156,87 @@ EOM
   fi
 }
 
-# _function_exists()
-#
-# Takes a potential function name as an argument and returns whether a function
-# exists with that name.
-_function_exists() {
-  [ "$(type -t "$1")" == 'function' ]
-}
-
-# _contains()
-#
-# Takes an item and a list and determines whether the list contains the item.
+# _print_desc()
 #
 # Usage:
-#   _contains "$item" "${list[@]}"
-_contains() {
-  local e
-  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
-  return 1
+#   _print_desc <command>
+#
+# Prints the description for a given command, provided the description has been
+# set using the desc() function.
+_print_desc() {
+  var="_desc_$1"
+  if [[ -n ${!var} ]]; then
+    printf "%s\n" "${!var}"
+  else
+   printf "No additional information for \`%s\`\n" "$1"
+  fi
 }
 
+###############################################################################
+# Default Commands
+###############################################################################
+
+# Help ########################################################################
+
+desc help <<EOM
+Usage:
+  $_me help [<command>]
+
+Display help information for $_me or a specified command
+EOM
+help() {
+  if [[ $# = 0 ]]; then
+    cat <<EOM
+       ___                       _       _
+      / / |_ ___ _ __ ___  _ __ | | __ _| |_ ___
+     / /| __/ _ \\ '_ \` _ \| '_ \| |/ _\` | __/ _ \\
+  _ / / | ||  __/ | | | | | |_) | | (_| | ||  __/
+ (_)_/   \\__\\___|_| |_| |_| .__/|_|\\__,_|\\__\\___|
+                          |_|
+
+A template for creating a bash program with commands.
+
+Usage:
+  $_me command [<command-arguments>]
+
+Help:
+  $_me help [<command>]
+
+$(commands)
+EOM
+  else
+    _print_desc "$1"
+  fi
+}
+
+# Command List ################################################################
+
+desc commands <<EOM
+Usage:
+  $_me commands [--raw]
+
+Display the list of available commands.
+EOM
+commands() {
+  function_list=($(declare -F))
+  command_list=()
+  for c in "${function_list[@]}"
+  do
+    if ! ( [[ "$c" == "declare" ]] || \
+           [[ "$c" == "-f" ]] || \
+           [[ "$c" =~ ^_(.*) ]] || \
+           [[ "$c" == "desc" ]]
+    ); then
+      command_list+=("$c")
+    fi
+  done
+  if _contains "--raw" "${command_options[@]}"; then
+    printf "%s " "${command_list[@]}"
+  else
+    printf "Available commands:\n"
+    printf "  %s\n" "${command_list[@]}"
+  fi
+}
 
 ###############################################################################
 # Commands
@@ -130,7 +245,7 @@ _contains() {
 # Example command group structure:
 #
 # desc example ""   - Optional. A short description for the command.
-# example() { : }   - The command called by the use.
+# example() { : }   - The command called by the user.
 #
 #
 # desc example <<EOM
@@ -147,7 +262,8 @@ _contains() {
 # --------------------------------------------------------------------- example
 
 desc example <<EOM
-Usage: $_me example [<name>] [--casual]
+Usage:
+  $_me example [<name>] [--casual]
 
 Print "Hello, World!"
 EOM
@@ -171,89 +287,9 @@ example() {
   fi
 }
 
-# Help ########################################################################
-
-desc help <<EOM
-Usage: $_me help [<command>]
-
-Display help information for $_me or a specified command
-EOM
-help() {
-  if [[ $# = 0 ]]; then
-    cat <<EOM
-       ___                       _       _
-      / / |_ ___ _ __ ___  _ __ | | __ _| |_ ___
-     / /| __/ _ \\ '_ \` _ \| '_ \| |/ _\` | __/ _ \\
-  _ / / | ||  __/ | | | | | |_) | | (_| | ||  __/
- (_)_/   \\__\\___|_| |_| |_| .__/|_|\\__,_|\\__\\___|
-                          |_|
-
-A template for creating a bash program with commands.
-
-Usage:
-  $_me command [<command-arguments>]
-
-Help:
-  $_me help [<command>]
-
-$(list)
-EOM
-  else
-    var="_desc_$1"
-    if [[ -n ${!var} ]]; then
-      printf "%s\n" "${!var}"
-    else
-      printf "No additional information for %s\n" "$1"
-    fi
-  fi
-}
-
-# Command List ################################################################
-
-desc list <<EOM
-Usage: $_me list [--raw]
-
-Display the list of available commands.
-EOM
-list() {
-  function_list=($(declare -F))
-  command_list=()
-  for t in "${function_list[@]}"
-  do
-    if ! ( [[ $t == "declare" ]] || \
-           [[ $t == "-f" ]] || \
-           [[ "$t" =~ ^_(.*) ]] || \
-           [[ "$t" == "desc" ]]
-    ); then
-      command_list+=("$t")
-    fi
-  done
-  if _contains "--raw" "${command_options[@]}"; then
-    printf "%s " "${command_list[@]}"
-  else
-    printf "Available commands:\n"
-    printf "  %s\n" "${command_list[@]}"
-  fi
-}
-
 ###############################################################################
-# Main
+# Run Program
 ###############################################################################
 
-# If $command is blank, then set to help
-if [[ -z $command ]]; then
-  command="help"
-fi
-
-# Get the list of defined tasks.
-defined_commands=($(list --raw))
-
-# Run the command and pass the task arguments.
-if ( _contains "$command" "${defined_commands[@]}" ); then
-  $command "${command_arguments[@]}"
-else
-  printf "Unknown command: %s\n" "$command"
-  exit 1
-fi
-
-
+# Calling the _main function after everything has been defined.
+_main
