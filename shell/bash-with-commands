@@ -10,6 +10,12 @@
 # A template for creating a bash program with commands.
 
 ###############################################################################
+# Globals
+###############################################################################
+
+_VERSION="1.0.0-alpha"
+
+###############################################################################
 # Debug
 ###############################################################################
 
@@ -42,6 +48,9 @@ while [ $# -gt 0 ]; do
   case "$opt" in
     -h|--help)
       cmd="help"
+      ;;
+    --version)
+      cmd="version"
       ;;
     --debug)
       debug=1
@@ -176,6 +185,21 @@ _print_desc() {
 # Default Commands
 ###############################################################################
 
+# Version #####################################################################
+
+desc version <<EOM
+Usage:
+  $_me version
+  $_me --version
+
+Display the current program version.
+
+To save you the trouble, the current version is $_VERSION
+EOM
+version() {
+  printf "%s\n" "$_VERSION"
+}
+
 # Help ########################################################################
 
 desc help <<EOM
@@ -195,6 +219,8 @@ _/ ___\/  _ \ /     \ /     \\__  \  /    \  / __ |/  ___/
      \/            \/      \/     \/     \/      \/    \/
 
 A template for creating a bash program with commands.
+
+Version: $_VERSION
 
 Usage:
   $_me command [<command-arguments>]
