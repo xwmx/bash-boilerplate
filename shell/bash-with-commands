@@ -26,7 +26,7 @@ _VERSION="1.0.0-alpha"
 #
 # Usage:
 #   _debug && printf "Debug info"
-_debug() { [[ -n "$debug" ]]; }
+_debug() { [[ -n "$debug" ]] && "$@"; }
 
 ###############################################################################
 # Options
@@ -70,10 +70,10 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-_debug && printf "\$cmd: %s\n" "$cmd"
-_debug && printf "\$raw_options: %s\n" "$raw_options"
-_debug && printf "\$command_options: %s\n" "${command_options[*]}"
-_debug && printf "\$command_arguments: %s\n" "${command_arguments[*]}"
+_debug printf "\$cmd: %s\n" "$cmd"
+_debug printf "\$raw_options: %s\n" "$raw_options"
+_debug printf "\$command_options: %s\n" "${command_options[*]}"
+_debug printf "\$command_arguments: %s\n" "${command_arguments[*]}"
 
 ###############################################################################
 # Environment
@@ -84,7 +84,7 @@ _debug && printf "\$command_arguments: %s\n" "${command_arguments[*]}"
 # Set to the program's basename.
 _me=$(basename "$0")
 
-_debug && printf "\$_me: %s\n" "$_me"
+_debug printf "\$_me: %s\n" "$_me"
 
 ###############################################################################
 # Main
@@ -301,8 +301,8 @@ example() {
   fi
   name="${command_arguments[0]}"
 
-  _debug && printf "example() \$greeting: %s\n" "$greeting"
-  _debug && printf "example() \$name: %s\n" "$name"
+  _debug printf "example() \$greeting: %s\n" "$greeting"
+  _debug printf "example() \$name: %s\n" "$name"
 
   if [[ "$name" == "Bill" ]]; then
     printf "%s, William!\n" "$greeting"
