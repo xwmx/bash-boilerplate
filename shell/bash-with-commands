@@ -10,6 +10,73 @@
 # A template for creating a bash program with commands.
 
 ###############################################################################
+# Safety
+###############################################################################
+
+# Treat unset variables and parameters other than the special parameters ‘@’ or
+# ‘*’ as an error when performing parameter expansion. An error message will be
+# written to the standard error, and a non-interactive shell will exit.
+#
+# This requires using parameter expansion to test for unset variables.
+#
+# http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion
+#
+# Examples
+# ========
+#
+# Array:
+#
+#   ${some_array[@]:+${some_array[@]}}
+#   ${some_array[*]:+${some_array[*]}}
+#
+# Postitional variables:
+#
+#   ${1:-alternative} # when a default value can be sepecified
+#   ${2:-}            # when the desired alternative is a blank / null
+# Short form: set -u
+set -o nounset
+
+# Exit immediately if a pipeline returns non-zero.
+#
+# NOTE: this has issues. When using read -rd '' with a heredoc, the exit
+# status is non-zero, even though there isn't an error, and this setting
+# then causes the script to exit. read -rd '' is synonymous to read -d $'\0',
+# which means read until it finds a NUL byte, but it reaches the EOF (end of
+# heredoc) without finding one and exits with a 1 status. Therefore, when
+# reading from heredocs with set -e, there are three potential solutions:
+#
+# Solution 1. set +e / set -e again:
+#
+# set +e
+# read -rd '' variable <<EOF
+# EOF
+# set -e
+#
+# Solution 2. <<EOF || true:
+#
+# read -rd '' variable <<EOF || true
+# EOF
+#
+# Solution 3. Don't use set -e or set -o errexit at all.
+#
+# More information:
+#
+# https://www.mail-archive.com/bug-bash@gnu.org/msg12170.html
+#
+# Short form: set -e
+set -o errexit
+
+# Return value of a pipeline is the value of the last (rightmost) command to
+# exit with a non-zero status, or zero if all commands in the pipeline exit
+# successfully.
+set -o pipefail
+
+# Set IFS to just newline and tab at the start
+#
+# http://www.dwheeler.com/essays/filenames-in-shell.html
+IFS="$(printf '\n\t')"
+
+###############################################################################
 # Globals
 ###############################################################################
 
@@ -26,14 +93,20 @@ _VERSION="1.0.0-alpha"
 #
 # Usage:
 #   _debug printf "Debug info"
-_debug() { [[ -n "$debug" ]] && "$@"; }
+_debug() {
+  if [[ "${debug:-"0"}" -eq 1 ]]; then
+    printf "🐛  "
+    "$@"
+    printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
+  fi
+}
 
 ###############################################################################
 # Options
 ###############################################################################
 
 # Get raw options for any commands that expect them.
-raw_options=$*
+raw_options="$*"
 
 # Initialize command options and arguments arrays.
 #
@@ -41,6 +114,10 @@ raw_options=$*
 # Commands handle their own argument and option checks using the created arrays.
 command_options=()
 command_arguments=()
+# Initialize $cmd and $debug, which can continue to be blank depending on what
+# the program needs.
+cmd=""
+debug=0
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -71,9 +148,9 @@ while [ $# -gt 0 ]; do
 done
 
 _debug printf "\$cmd: %s\n" "$cmd"
-_debug printf "\$raw_options: %s\n" "$raw_options"
-_debug printf "\$command_options: %s\n" "${command_options[*]}"
-_debug printf "\$command_arguments: %s\n" "${command_arguments[*]}"
+_debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
+_debug printf "\$command_options: %s\n" "${command_options[*]:+${command_options[*]}}"
+_debug printf "\$command_arguments: %s\n" "${command_arguments[*]:+${command_arguments[*]}}"
 
 ###############################################################################
 # Environment
@@ -85,6 +162,38 @@ _debug printf "\$command_arguments: %s\n" "${command_arguments[*]}"
 _me=$(basename "$0")
 
 _debug printf "\$_me: %s\n" "$_me"
+
+###############################################################################
+# Load Commands
+###############################################################################
+
+# Initialize defined_commands array.
+defined_commands=()
+
+# _load_commands()
+#
+# Loads all of the commands sourced in the environment.
+#
+# Usage:
+#   _load_commands
+_load_commands() {
+  _debug printf "_load_commands(): entering...\n"
+  _debug printf "_load_commands() declare -F:\n%s\n" "$(declare -F)"
+  function_list=($(declare -F))
+  for c in "${function_list[@]}"
+  do
+    function_name=$(printf "%s" "$c" | awk '{ print $3 }')
+    _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
+    if ! ( [[ "$function_name" =~ ^_(.*) ]] || \
+           [[ "$function_name" == "desc" ]]
+    ); then
+      defined_commands+=("$function_name")
+    fi
+  done
+  _debug printf \
+    "commands() \$defined_commands:\n%s\n" \
+    "${defined_commands[*]:+${defined_commands[*]}}"
+}
 
 ###############################################################################
 # Main
@@ -99,17 +208,19 @@ _debug printf "\$_me: %s\n" "$_me"
 #
 # NOTE: must be called at end of program after all commands have been defined.
 _main() {
+  _debug printf "main(): entering...\n"
+
   # If $cmd is blank, then set to help
   if [[ -z $cmd ]]; then
     cmd="help"
   fi
 
-  # Get the list of defined commands.
-  defined_commands=($(commands --raw))
+  # Load all of the commands.
+  _load_commands
 
   # Run the command and pass the command arguments.
-  if ( _contains "$cmd" "${defined_commands[@]}" ); then
-    $cmd "${command_arguments[@]}"
+  if ( _contains "$cmd" "${defined_commands[@]:+${defined_commands[@]}}" ); then
+    $cmd "${command_arguments[@]:+${command_arguments[@]}}"
   else
     printf "Unknown command: %s\n" "$cmd"
     exit 1
@@ -148,7 +259,7 @@ _contains() {
 # Usage:
 #   _command_options_include "--an-option"
 _command_options_include() {
-  _contains "$1" "${command_options[@]}"
+  _contains "$1" "${command_options[@]:+${command_options[@]}}"
 }
 
 # _commnd_arguments_include()
@@ -159,7 +270,7 @@ _command_options_include() {
 # Usage:
 #   _command_arguments_include "an_argument"
 _command_arguments_include() {
-  _contains "$1" "${command_arguments[@]}"
+  _contains "$1" "${command_arguments[@]:+${command_arguments[@]}}"
 }
 
 ###############################################################################
@@ -177,14 +288,18 @@ _command_arguments_include() {
 # To make the description text available to other functions, desc() assigns the
 # text to a variable with the format $_desc_function_name
 desc() {
+  set +e
   [[ -z $1 ]] && printf "desc: No command name specified.\n" && exit 1
-  if [[ -n $2 ]]; then
+  if [[ -n ${2:-} ]]; then
     read -d '' "_desc_$1" <<EOM
 $2
 EOM
+    _debug printf "desc() set with argument: _desc_%s\n" "$1"
   else
     read -d '' "_desc_$1"
+    _debug printf "desc() set with pipe: _desc_%s\n" "$1"
   fi
+  set -e
 }
 
 # _print_desc()
@@ -266,23 +381,11 @@ Usage:
 Display the list of available commands.
 EOM
 commands() {
-  function_list=($(declare -F))
-  command_list=()
-  for c in "${function_list[@]}"
-  do
-    if ! ( [[ "$c" == "declare" ]] || \
-           [[ "$c" == "-f" ]] || \
-           [[ "$c" =~ ^_(.*) ]] || \
-           [[ "$c" == "desc" ]]
-    ); then
-      command_list+=("$c")
-    fi
-  done
   if _command_options_include "--raw"; then
-    printf "%s " "${command_list[@]}"
+    printf "%s\n" "${defined_commands[@]:+${defined_commands[@]}}"
   else
     printf "Available commands:\n"
-    printf "  %s\n" "${command_list[@]}"
+    printf "  %s\n" "${defined_commands[@]:+${defined_commands[@]}}"
   fi
 }
 
@@ -321,7 +424,7 @@ example() {
   else
     greeting="Hello"
   fi
-  name="${command_arguments[0]}"
+  name="${command_arguments[0]:+${command_arguments[0]}}"
 
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
