@@ -222,7 +222,7 @@ _main() {
   _load_commands
 
   # Run the command and pass the command arguments.
-  if ( _contains "$cmd" "${defined_commands[@]:-}" ); then
+  if ( _contains "$cmd" "${defined_commands[*]:-}" ); then
     $cmd "${command_arguments[@]:-}"
   else
     printf "Unknown command: %s\n" "$cmd"
@@ -301,12 +301,14 @@ _function_exists() {
 # Takes an item and a list and determines whether the list contains the item.
 #
 # Usage:
-#   _contains "$item" "${list[@]}"
+#   _contains "$item" "${list[*]}"
 _contains() {
-  local element
-  for element in "${@:2}"
+  _test_list=(${*:2})
+  for _test_element in "${_test_list[@]:-}"
   do
-    if [[ "$element" == "$1" ]]; then
+    _debug printf "_contains() \$_test_element: %s\n" "$_test_element"
+    if [[ "$_test_element" == "$1" ]]; then
+      _debug printf "_contains() match: %s\n" "$1"
       return 0
     fi
   done
@@ -321,7 +323,7 @@ _contains() {
 # Usage:
 #   _command_options_include "--an-option"
 _command_options_include() {
-  _contains "$1" "${command_options[@]:-}"
+  _contains "$1" "${command_options[*]:-}"
 }
 
 # _commnd_arguments_include()
@@ -332,7 +334,7 @@ _command_options_include() {
 # Usage:
 #   _command_arguments_include "an_argument"
 _command_arguments_include() {
-  _contains "$1" "${command_arguments[@]:-}"
+  _contains "$1" "${command_arguments[*]:-}"
 }
 
 ###############################################################################
