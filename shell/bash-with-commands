@@ -240,23 +240,11 @@ _main() {
 #
 # Usage:
 #   $(_get_command_argument 0)
-#   $(_get_command_argument '*')
-#
-# To pass the output of this function as an array to another function, use the
-# following pattern:
-#
-#   __command_arguments=($(_get_command_argument '*'))
-#   function "${__command_arguments[@]}"
-#
 _get_command_argument() {
   position="${1:-}"
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_argument(): no value specified.\n"
     exit 1
-  elif [[ "$position" == "*" ]]; then
-    printf \
-      "%s" \
-      "${command_arguments[*]:+${command_arguments[*]}}"
   else
     printf \
       "%s" \
@@ -267,9 +255,6 @@ _get_command_argument() {
 _debug printf \
   "\$(_get_command_argument 0): %s\n" \
   "$(_get_command_argument 0)"
-_debug printf \
-  "\$(_get_command_arguments '*'): %s\n" \
-  "$(_get_command_argument '*')"
 
 # _get_command_option()
 #
@@ -280,23 +265,11 @@ _debug printf \
 #
 # Usage:
 #   $(_get_command_option 0)
-#   $(_get_command_option '*')
-#
-# To pass the output of this function as an array to another function, use the
-# following pattern:
-#
-#   __command_options=($(_get_command_option '*'))
-#   function "${__command_options[@]}"
-#
 _get_command_option() {
   position="${1:-}"
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_option(): no value specified.\n"
     exit 1
-  elif [[ "$position" == "*" ]]; then
-    printf \
-      "%s" \
-      "${command_options[*]:+${command_options[*]}}"
   else
     printf \
       "%s" \
@@ -307,9 +280,6 @@ _get_command_option() {
 _debug printf \
   "\$(_get_command_option 0): %s\n" \
   "$(_get_command_option 0)"
-_debug printf \
-  "\$(_get_command_option '*'): %s\n" \
-  "$(_get_command_option '*')"
 
 ###############################################################################
 # Utility Functions
@@ -343,8 +313,7 @@ _contains() {
 # Usage:
 #   _command_options_include "--an-option"
 _command_options_include() {
-  __command_options=($(_get_command_option '*'))
-  _contains "$1" "${__command_options[@]:-}"
+  _contains "$1" "${command_options[@]:-}"
 }
 
 # _commnd_arguments_include()
@@ -355,8 +324,7 @@ _command_options_include() {
 # Usage:
 #   _command_arguments_include "an_argument"
 _command_arguments_include() {
-  __command_arguments=($(_get_command_argument '*'))
-  _contains "$1" "${__command_arguments[@]:-}"
+  _contains "$1" "${command_arguments[@]:-}"
 }
 
 ###############################################################################
