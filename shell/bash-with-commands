@@ -344,7 +344,7 @@ _contains() {
 #   _command_options_include "--an-option"
 _command_options_include() {
   __command_options=($(_get_command_option '*'))
-  _contains "$1" "${__command_options[@]}"
+  _contains "$1" "${__command_options[@]:-}"
 }
 
 # _commnd_arguments_include()
@@ -356,7 +356,7 @@ _command_options_include() {
 #   _command_arguments_include "an_argument"
 _command_arguments_include() {
   __command_arguments=($(_get_command_argument '*'))
-  _contains "$1" "${__command_arguments[@]}"
+  _contains "$1" "${__command_arguments[@]:-}"
 }
 
 ###############################################################################
