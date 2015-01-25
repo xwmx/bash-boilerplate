@@ -10,7 +10,7 @@
 # A template for creating a bash program with commands.
 
 ###############################################################################
-# Safety
+# Strict
 ###############################################################################
 
 # Treat unset variables and parameters other than the special parameters ‘@’ or
