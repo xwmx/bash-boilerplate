@@ -239,16 +239,21 @@ _main() {
 # Print the value of a command argument at the specified position. This is
 # simply an accessor for the command_arguments array.
 #
-# NOTE: index starts at 0
+# NOTE: index starts at 1, just like normal bash parameters.
 #
 # Usage:
-#   $(_get_command_argument 0)
+#   $(_get_command_argument 1)
 _get_command_argument() {
   position="${1:-}"
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_argument(): no value specified.\n"
     exit 1
+  elif [[ "$position" -eq 0 ]]; then
+    _debug printf "_get_command_option(): Invalid 0 position.\n"
+    printf "0 is not valid because arguments start at '1'\n"
+    exit 1
   else
+    position=$((position - 1))
     printf \
       "%s" \
       "${command_arguments[${position:-}]:-}"
@@ -256,24 +261,29 @@ _get_command_argument() {
 }
 
 _debug printf \
-  "\$(_get_command_argument 0): %s\n" \
-  "$(_get_command_argument 0)"
+  "\$(_get_command_argument 1): %s\n" \
+  "$(_get_command_argument 1)"
 
 # _get_command_option()
 #
 # Print the value of a command option at the specified position. This is
 # simply an accessor for the command_options array.
 #
-# NOTE: index starts at 0
+# NOTE: index starts at 1, just like normal bash parameters.
 #
 # Usage:
-#   $(_get_command_option 0)
+#   $(_get_command_option 1)
 _get_command_option() {
   position="${1:-}"
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_option(): no value specified.\n"
     exit 1
+  elif [[ "$position" -eq 0 ]]; then
+    _debug printf "_get_command_option(): Invalid 0 position.\n"
+    printf "0 is not valid because arguments start at '1'\n"
+    exit 1
   else
+    position=$((position - 1))
     printf \
       "%s" \
       "${command_options[${position:-}]:-}"
@@ -281,8 +291,8 @@ _get_command_option() {
 }
 
 _debug printf \
-  "\$(_get_command_option 0): %s\n" \
-  "$(_get_command_option 0)"
+  "\$(_get_command_option 1): %s\n" \
+  "$(_get_command_option 1)"
 
 ###############################################################################
 # Utility Functions
@@ -488,7 +498,7 @@ example() {
   else
     greeting="Hello"
   fi
-  name=$(_get_command_argument 0)
+  name=$(_get_command_argument 1)
 
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
