@@ -228,6 +228,90 @@ _main() {
 }
 
 ###############################################################################
+# Getters
+###############################################################################
+
+# _get_command_argument()
+#
+# Print the value of a command argument at the specified position. This is
+# simply an accessor for the command_arguments array.
+#
+# NOTE: index starts at 0
+#
+# Usage:
+#   $(_get_command_argument 0)
+#   $(_get_command_argument '*')
+#
+# To pass the output of this function as an array to another function, use the
+# following pattern:
+#
+#   __command_arguments=($(_get_command_argument '*'))
+#   function "${__command_arguments[@]}"
+#
+_get_command_argument() {
+  position="${1:-}"
+  if [[ -z "$position" ]]; then
+    printf "Error: _get_command_argument(): no value specified.\n"
+    exit 1
+  elif [[ "$position" == "*" ]]; then
+    printf \
+      "%s" \
+      "${command_arguments[*]:+${command_arguments[*]}}"
+  else
+    printf \
+      "%s" \
+      "${command_arguments[${position:-}]:+${command_arguments[${postion:-}]}}"
+  fi
+}
+
+_debug printf \
+  "\$(_get_command_argument 0): %s\n" \
+  "$(_get_command_argument 0)"
+_debug printf \
+  "\$(_get_command_arguments '*'): %s\n" \
+  "$(_get_command_argument '*')"
+
+# _get_command_option()
+#
+# Print the value of a command option at the specified position. This is
+# simply an accessor for the command_options array.
+#
+# NOTE: index starts at 0
+#
+# Usage:
+#   $(_get_command_option 0)
+#   $(_get_command_option '*')
+#
+# To pass the output of this function as an array to another function, use the
+# following pattern:
+#
+#   __command_options=($(_get_command_option '*'))
+#   function "${__command_options[@]}"
+#
+_get_command_option() {
+  position="${1:-}"
+  if [[ -z "$position" ]]; then
+    printf "Error: _get_command_option(): no value specified.\n"
+    exit 1
+  elif [[ "$position" == "*" ]]; then
+    printf \
+      "%s" \
+      "${command_options[*]:+${command_options[*]}}"
+  else
+    printf \
+      "%s" \
+      "${command_options[${position:-}]:+${command_options[${postion:-}]}}"
+  fi
+}
+
+_debug printf \
+  "\$(_get_command_option 0): %s\n" \
+  "$(_get_command_option 0)"
+_debug printf \
+  "\$(_get_command_option '*'): %s\n" \
+  "$(_get_command_option '*')"
+
+###############################################################################
 # Utility Functions
 ###############################################################################
 
@@ -259,7 +343,8 @@ _contains() {
 # Usage:
 #   _command_options_include "--an-option"
 _command_options_include() {
-  _contains "$1" "${command_options[@]:+${command_options[@]}}"
+  __command_options=($(_get_command_option '*'))
+  _contains "$1" "${__command_options[@]}"
 }
 
 # _commnd_arguments_include()
@@ -270,7 +355,8 @@ _command_options_include() {
 # Usage:
 #   _command_arguments_include "an_argument"
 _command_arguments_include() {
-  _contains "$1" "${command_arguments[@]:+${command_arguments[@]}}"
+  __command_arguments=($(_get_command_argument '*'))
+  _contains "$1" "${__command_arguments[@]}"
 }
 
 ###############################################################################
@@ -424,7 +510,7 @@ example() {
   else
     greeting="Hello"
   fi
-  name="${command_arguments[0]:+${command_arguments[0]}}"
+  name=$(_get_command_argument 0)
 
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
