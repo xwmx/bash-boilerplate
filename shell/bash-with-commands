@@ -26,13 +26,15 @@
 #
 # Array:
 #
-#   ${some_array[@]:+${some_array[@]}}
-#   ${some_array[*]:+${some_array[*]}}
+#   ${some_array[@]:-}
+#   ${some_array[*]:-}
+#   ${some_array[0]:-}
 #
 # Postitional variables:
 #
 #   ${1:-alternative} # when a default value can be sepecified
 #   ${2:-}            # when the desired alternative is a blank / null
+#
 # Short form: set -u
 set -o nounset
 
@@ -149,8 +151,8 @@ done
 
 _debug printf "\$cmd: %s\n" "$cmd"
 _debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
-_debug printf "\$command_options: %s\n" "${command_options[*]:+${command_options[*]}}"
-_debug printf "\$command_arguments: %s\n" "${command_arguments[*]:+${command_arguments[*]}}"
+_debug printf "\$command_options: %s\n" "${command_options[*]:-}"
+_debug printf "\$command_arguments: %s\n" "${command_arguments[*]:-}"
 
 ###############################################################################
 # Environment
@@ -192,7 +194,7 @@ _load_commands() {
   done
   _debug printf \
     "commands() \$defined_commands:\n%s\n" \
-    "${defined_commands[*]:+${defined_commands[*]}}"
+    "${defined_commands[*]:-}"
 }
 
 ###############################################################################
@@ -209,6 +211,7 @@ _load_commands() {
 # NOTE: must be called at end of program after all commands have been defined.
 _main() {
   _debug printf "main(): entering...\n"
+  _debug printf "main() \$cmd (upon entering): %s\n" "$cmd"
 
   # If $cmd is blank, then set to help
   if [[ -z $cmd ]]; then
@@ -219,8 +222,8 @@ _main() {
   _load_commands
 
   # Run the command and pass the command arguments.
-  if ( _contains "$cmd" "${defined_commands[@]:+${defined_commands[@]}}" ); then
-    $cmd "${command_arguments[@]:+${command_arguments[@]}}"
+  if ( _contains "$cmd" "${defined_commands[@]:-}" ); then
+    $cmd "${command_arguments[@]:-}"
   else
     printf "Unknown command: %s\n" "$cmd"
     exit 1
@@ -248,7 +251,7 @@ _get_command_argument() {
   else
     printf \
       "%s" \
-      "${command_arguments[${position:-}]:+${command_arguments[${postion:-}]}}"
+      "${command_arguments[${position:-}]:-}"
   fi
 }
 
@@ -273,7 +276,7 @@ _get_command_option() {
   else
     printf \
       "%s" \
-      "${command_options[${position:-}]:+${command_options[${postion:-}]}}"
+      "${command_options[${position:-}]:-}"
   fi
 }
 
@@ -365,7 +368,7 @@ EOM
 # set using the desc() function.
 _print_desc() {
   var="_desc_$1"
-  if [[ -n ${!var} ]]; then
+  if [[ -n ${!var:-} ]]; then
     printf "%s\n" "${!var}"
   else
    printf "No additional information for \`%s\`\n" "$1"
@@ -400,7 +403,7 @@ Usage:
 Display help information for $_me or a specified command
 EOM
 help() {
-  if [[ $# = 0 ]]; then
+  if [[ ${#command_arguments[@]:-} = 0 ]]; then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -436,10 +439,10 @@ Display the list of available commands.
 EOM
 commands() {
   if _command_options_include "--raw"; then
-    printf "%s\n" "${defined_commands[@]:+${defined_commands[@]}}"
+    printf "%s\n" "${defined_commands[@]:-}"
   else
     printf "Available commands:\n"
-    printf "  %s\n" "${defined_commands[@]:+${defined_commands[@]}}"
+    printf "  %s\n" "${defined_commands[@]:-}"
   fi
 }
 
