@@ -1,0 +1,220 @@
+#!/usr/bin/env bash
+#       _                 _
+#   ___(_)_ __ ___  _ __ | | ___   _
+#  / __| | '_ ` _ \| '_ \| |/ _ \_| |_
+#  \__ \ | | | | | | |_) | |  __/_   _|
+#  |___/_|_| |_| |_| .__/|_|\___| |_|
+#                  |_|
+#
+# A template for creating a simple bash script with some basic strictness
+# checks, help features, easy debug printing.
+#
+# NOTE: extensive descriptions are included for easy reference.
+#
+# Usage:
+#   bash-simple-plus argument
+#
+# Depends on:
+#  list
+#  of
+#  programs
+#  expected
+#  in
+#  environment
+#
+# Copyright (c) 2015 William Melody • hi@williammelody.com
+
+###############################################################################
+# Strict Mode
+###############################################################################
+
+# Treat unset variables and parameters other than the special parameters ‘@’ or
+# ‘*’ as an error when performing parameter expansion. An error message will be
+# written to the standard error, and a non-interactive shell will exit.
+#
+# This requires using parameter expansion to test for unset variables.
+#
+# http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion
+#
+# Examples
+# ========
+#
+# Array:
+#
+#   ${some_array[@]:-}
+#   ${some_array[*]:-}
+#   ${some_array[0]:-}
+#
+# Postitional variables:
+#
+#   ${1:-alternative} # when a default value can be sepecified
+#   ${2:-}            # when the desired alternative is a blank / null
+#
+# Short form: set -u
+set -o nounset
+
+# Exit immediately if a pipeline returns non-zero.
+#
+# NOTE: this has issues. When using read -rd '' with a heredoc, the exit
+# status is non-zero, even though there isn't an error, and this setting
+# then causes the script to exit. read -rd '' is synonymous to read -d $'\0',
+# which means read until it finds a NUL byte, but it reaches the EOF (end of
+# heredoc) without finding one and exits with a 1 status. Therefore, when
+# reading from heredocs with set -e, there are three potential solutions:
+#
+# Solution 1. set +e / set -e again:
+#
+# set +e
+# read -rd '' variable <<EOF
+# EOF
+# set -e
+#
+# Solution 2. <<EOF || true:
+#
+# read -rd '' variable <<EOF || true
+# EOF
+#
+# Solution 3. Don't use set -e or set -o errexit at all.
+#
+# More information:
+#
+# https://www.mail-archive.com/bug-bash@gnu.org/msg12170.html
+#
+# Short form: set -e
+set -o errexit
+
+# Return value of a pipeline is the value of the last (rightmost) command to
+# exit with a non-zero status, or zero if all commands in the pipeline exit
+# successfully.
+set -o pipefail
+
+# Set IFS to just newline and tab at the start
+#
+# http://www.dwheeler.com/essays/filenames-in-shell.html
+IFS="$(printf '\n\t')"
+
+###############################################################################
+# Environment
+###############################################################################
+
+# $_me
+#
+# Set to the program's basename.
+_me=$(basename "$0")
+
+###############################################################################
+# Debug
+###############################################################################
+
+# _debug()
+#
+# Shortcut for testing against the existence of a $debug variable. Primarily
+# intended to be used before a printf statement.
+#
+# Usage:
+#   _debug printf "Debug info"
+_debug() {
+  if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
+    printf "🐛  "
+    "$@"
+  fi
+}
+
+###############################################################################
+# Help
+###############################################################################
+
+# Set $_program_help
+#
+# The `read` form of assignment is used for a balance of ease of
+# implementation and simplicity. There is an alternative assignment form
+# that could be used here:
+#
+# var="$(cat <<'EOM'
+# some message
+# EOM
+# )
+#
+# However, this form appears to require trailing space after backslases to
+# preserve newlines, which is unexpected. Using `read` simply requires
+# escaping backslashes, which is more common.
+read -d '' "_program_help" <<EOM || true
+      _                 _
+  ___(_)_ __ ___  _ __ | | ___   _
+ / __| | '_ \` _ \\\| '_ \\\\| |/ _ \\\\\_| |_
+ \\\__ \\\ | | | | | | |_) | |  __/_   _|
+ |___/_|_| |_| |_| .__/|_|\\\___| |_|
+                 |_|
+
+A template for creating a simple bash script with some basic strictness
+checks and help features, and easy debug printing, and basic option handling.
+
+Usage:
+  $_me argument
+EOM
+
+###############################################################################
+# Options
+###############################################################################
+
+# Initialize program variables.
+_print_help=0
+_use_debug=0
+
+# Initialize expected operation variables
+_option_x=0
+
+while [ $# -gt 0 ]; do
+  opt="$1"
+  shift
+  case "$opt" in
+    -h|--help)
+      _print_help=1
+      ;;
+    --debug)
+      _use_debug=1
+      ;;
+    -x|--option-x)
+      _option_x=1
+      ;;
+    -*|--*)
+      printf "Unexpected option: %s\n" "$opt"
+      printf "%s\n" "$_program_help"
+      ;;
+    *)
+      # do nothing for unexpected non-option arguments
+      #
+      # colon is bash no-op
+      :
+      ;;
+  esac
+done
+
+###############################################################################
+# Program Functions
+###############################################################################
+
+_simple() {
+  _debug printf ">> Performing operation...\n"
+
+  if [[ "$_option_x" == 1 ]]; then
+    printf "Perform a simple operation with --option-x.\n"
+  else
+    printf "Perform a simple operation.\n"
+  fi
+}
+
+###############################################################################
+# Main
+###############################################################################
+
+_main() {
+  if [[ "$_print_help" == 1 ]]; then
+    printf "%s\n" "$_program_help"
+  else
+    _simple "$@"
+  fi
+}
+
+_main "$@"
+
