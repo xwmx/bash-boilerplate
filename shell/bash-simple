@@ -152,7 +152,7 @@ _main() {
   # argument, just a blank value.
   #
   # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
-  # the block of code, as defined by curly braces. It's easist to just think
+  # the block of code, as defined by curly braces. It's easiest to just think
   # of them as local to a function.
   local arg1=${1:-}
 

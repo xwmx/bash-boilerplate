@@ -135,7 +135,7 @@ _debug() {
 # EOM
 # )
 #
-# However, this form appears to require trailing space after backslases to
+# However, this form appears to require trailing space after backslashes to
 # preserve newlines, which is unexpected. Using `read` simply requires
 # escaping backslashes, which is more common.
 read -d '' "_program_help" <<EOM || true
@@ -177,7 +177,7 @@ _require_argument() {
   # Set local variables from arguments.
   #
   # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
-  # the block of code, as defined by curly braces. It's easist to just think
+  # the block of code, as defined by curly braces. It's easiest to just think
   # of them as local to a function.
   local option="$1"
   local value="$2"
