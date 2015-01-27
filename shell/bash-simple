@@ -21,6 +21,11 @@
 #
 # Copyright (c) 2015 William Melody • hi@williammelody.com
 
+set -o nounset
+set -o errexit
+set -o pipefail
+IFS="$(printf '\n\t')"
+
 _simple() {
   printf "Perform a simple operation."
 }
