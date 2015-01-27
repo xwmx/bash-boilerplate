@@ -7,7 +7,7 @@
 #  \___  >____/|__|_|  /__|_|  (____  /___|  /\____ /____  >
 #      \/            \/      \/     \/     \/      \/    \/
 #
-# A template for creating a bash program with commands.
+# Boilerplate for creating a bash program with commands.
 #
 # Copyright (c) 2015 William Melody • hi@williammelody.com
 
@@ -446,7 +446,7 @@ _/ ___\/  _ \ /     \ /     \\__  \  /    \  / __ |/  ___/
  \___  >____/|__|_|  /__|_|  (____  /___|  /\____ /____  >
      \/            \/      \/     \/     \/      \/    \/
 
-A template for creating a bash program with commands.
+Boilerplate for creating a bash program with commands.
 
 Version: $_VERSION
 
