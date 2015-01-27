@@ -18,6 +18,8 @@
 #  expected
 #  in
 #  environment
+#
+# Copyright (c) 2015 William Melody • hi@williammelody.com
 
 _simple() {
   printf "Perform a simple operation."

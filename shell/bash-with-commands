@@ -8,6 +8,8 @@
 #      \/            \/      \/     \/     \/      \/    \/
 #
 # A template for creating a bash program with commands.
+#
+# Copyright (c) 2015 William Melody • hi@williammelody.com
 
 ###############################################################################
 # Strict Mode
