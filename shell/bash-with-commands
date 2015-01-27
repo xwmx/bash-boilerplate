@@ -363,6 +363,21 @@ _command_arguments_include() {
 #
 # To make the description text available to other functions, desc() assigns the
 # text to a variable with the format $_desc_function_name
+#
+# NOTE:
+#
+# The `read` form of assignment is used for a balance of ease of
+# implementation and simplicity. There is an alternative assignment form
+# that could be used here:
+#
+# var="$(cat <<'EOM'
+# some message
+# EOM
+# )
+#
+# However, this form appears to require trailing space after backslases to
+# preserve newlines, which is unexpected. Using `read` simply requires
+# escaping backslashes, which is more common.
 desc() {
   set +e
   [[ -z $1 ]] && printf "desc: No command name specified.\n" && exit 1
