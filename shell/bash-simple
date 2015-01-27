@@ -6,7 +6,8 @@
 #  |___/_|_| |_| |_| .__/|_|\___|
 #                  |_|
 #
-# A template for creating a simple bash script.
+# A template for creating a simple bash script with some basic strictness
+# checks and help features.
 #
 # NOTE: extensive descriptions are included for easy reference.
 #
@@ -127,7 +128,8 @@ read -d '' "_program_help" <<EOM || true
  |___/_|_| |_| |_| .__/|_|\\\___|
                  |_|
 
-A template for creating a simple bash script.
+A template for creating a simple bash script with some basic strictness
+checks and help features.
 
 Usage:
   $_me argument
