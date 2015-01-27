@@ -35,14 +35,6 @@ A template for creating a simple bash script.
 
 Usage:
   bash-simple argument
-
-Depends on:
- list
- of
- programs
- expected
- in
- environment
 "
 if [[ -z "$1" || "$1" = "-h" ]]; then
   printf "%s\n" "$usage"
