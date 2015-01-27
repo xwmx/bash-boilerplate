@@ -163,7 +163,17 @@ _use_debug=0
 
 # Initialize expected operation variables
 _option_x=0
+_short_option_with_argument=""
+_long_option_with_argument=""
 
+# getopts and getopts have inconsistent behavior, so using a simple home-brewed
+# while loop. This isn't perfectly compliant with POSIX, but it's close enough
+# and this appears to be a widely used approach.
+#
+# More info:
+#   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
+#   http://stackoverflow.com/a/14203146
+#   http://stackoverflow.com/a/7948533
 while [ $# -gt 0 ]; do
   opt="$1"
   shift
@@ -177,12 +187,27 @@ while [ $# -gt 0 ]; do
     -x|--option-x)
       _option_x=1
       ;;
+    -o)
+      _short_option_with_argument="${1:-}"
+      if [[ -z "$_short_option_with_argument" ]]; then
+        printf "Option requires an argument: %s\n" "$opt"
+        exit 1
+      fi
+      shift
+      ;;
+    --long-option-with-argument=*)
+      _long_option_with_argument="${opt#*=}"
+      if [[ -z "$_long_option_with_argument" ]]; then
+        printf "Option requires an argument: %s\n" "$opt"
+        exit 1
+      fi
+      ;;
     -*|--*)
       printf "Unexpected option: %s\n" "$opt"
       printf "%s\n" "$_program_help"
       ;;
     *)
-      # do nothing for unexpected non-option arguments
+      # In this case, do nothing for unexpected non-option arguments
       #
       # colon is bash no-op
       :
@@ -201,6 +226,12 @@ _simple() {
     printf "Perform a simple operation with --option-x.\n"
   else
     printf "Perform a simple operation.\n"
+  fi
+  if [[ -n "$_short_option_with_argument" ]]; then
+    printf "Short option value: %s\n" "$_short_option_with_argument"
+  fi
+  if [[ -n "$_long_option_with_argument" ]]; then
+    printf "Long option value: %s\n" "$_long_option_with_argument"
   fi
 }
 
