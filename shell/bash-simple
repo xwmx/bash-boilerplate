@@ -8,6 +8,8 @@
 #
 # A template for creating a simple bash script.
 #
+# NOTE: extensive descriptions are included for easy reference.
+#
 # Usage:
 #   bash-simple argument
 #
