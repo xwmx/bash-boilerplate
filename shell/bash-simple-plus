@@ -166,6 +166,21 @@ _option_x=0
 _short_option_with_argument=""
 _long_option_with_argument=""
 
+# _require_argument()
+#
+# Usage:
+#  _require_argument "$opt" "$_value_variable"
+#
+# Checks if an value has been set to the expected variable and, if not, prints
+# and error message and exits with status 1.
+_require_argument() {
+  _option="$1"
+  _value="$2"
+  if [[ -z "$_value" ]]; then
+    printf "Option requires an argument: %s\n" "$_option"
+    exit 1
+  fi
+}
 # getopts and getopts have inconsistent behavior, so using a simple home-brewed
 # while loop. This isn't perfectly compliant with POSIX, but it's close enough
 # and this appears to be a widely used approach.
@@ -189,22 +204,17 @@ while [ $# -gt 0 ]; do
       ;;
     -o)
       _short_option_with_argument="${1:-}"
-      if [[ -z "$_short_option_with_argument" ]]; then
-        printf "Option requires an argument: %s\n" "$opt"
-        exit 1
-      fi
-      shift
+      _require_argument "$opt" "$_short_option_with_argument"
+       shift
       ;;
     --long-option-with-argument=*)
       _long_option_with_argument="${opt#*=}"
-      if [[ -z "$_long_option_with_argument" ]]; then
-        printf "Option requires an argument: %s\n" "$opt"
-        exit 1
-      fi
+      _require_argument "$opt" "$_long_option_with_argument"
       ;;
     -*|--*)
       printf "Unexpected option: %s\n" "$opt"
       printf "%s\n" "$_program_help"
+      exit 1
       ;;
     *)
       # In this case, do nothing for unexpected non-option arguments
