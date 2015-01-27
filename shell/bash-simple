@@ -42,7 +42,7 @@ _simple() {
 # Main
 ###############################################################################
 
-# Set $usage
+# Set $_program_help
 #
 # The `read` form of assignment is used for a balance of ease of
 # implementation and simplicity. There is an alternative assignment form
@@ -62,7 +62,7 @@ _simple() {
 # the pipe exit with a 1 status rather than 0. Another possible approach
 # is to temporarily disable `set -e` by calling `set +e`, running the read,
 # then calling `set -e` again.
-read -d '' "usage" <<'EOM' || true
+read -d '' "_program_help" <<'EOM' || true
       _                 _
   ___(_)_ __ ___  _ __ | | ___
  / __| | '_ ` _ \\| '_ \\| |/ _ \\
@@ -77,7 +77,7 @@ Usage:
 EOM
 
 if [[ -z "$1" || "$1" = "-h" ]]; then
-  printf "%s\n" "$usage"
+  printf "%s\n" "$_program_help"
   exit 0
 fi
 
