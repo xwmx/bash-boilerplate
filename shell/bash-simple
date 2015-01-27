@@ -25,9 +25,69 @@
 # Strict Mode
 ###############################################################################
 
+# Treat unset variables and parameters other than the special parameters ‘@’ or
+# ‘*’ as an error when performing parameter expansion. An error message will be
+# written to the standard error, and a non-interactive shell will exit.
+#
+# This requires using parameter expansion to test for unset variables.
+#
+# http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion
+#
+# Examples
+# ========
+#
+# Array:
+#
+#   ${some_array[@]:-}
+#   ${some_array[*]:-}
+#   ${some_array[0]:-}
+#
+# Postitional variables:
+#
+#   ${1:-alternative} # when a default value can be sepecified
+#   ${2:-}            # when the desired alternative is a blank / null
+#
+# Short form: set -u
 set -o nounset
+
+# Exit immediately if a pipeline returns non-zero.
+#
+# NOTE: this has issues. When using read -rd '' with a heredoc, the exit
+# status is non-zero, even though there isn't an error, and this setting
+# then causes the script to exit. read -rd '' is synonymous to read -d $'\0',
+# which means read until it finds a NUL byte, but it reaches the EOF (end of
+# heredoc) without finding one and exits with a 1 status. Therefore, when
+# reading from heredocs with set -e, there are three potential solutions:
+#
+# Solution 1. set +e / set -e again:
+#
+# set +e
+# read -rd '' variable <<EOF
+# EOF
+# set -e
+#
+# Solution 2. <<EOF || true:
+#
+# read -rd '' variable <<EOF || true
+# EOF
+#
+# Solution 3. Don't use set -e or set -o errexit at all.
+#
+# More information:
+#
+# https://www.mail-archive.com/bug-bash@gnu.org/msg12170.html
+#
+# Short form: set -e
 set -o errexit
+
+# Return value of a pipeline is the value of the last (rightmost) command to
+# exit with a non-zero status, or zero if all commands in the pipeline exit
+# successfully.
 set -o pipefail
+
+# Set IFS to just newline and tab at the start
+#
+# http://www.dwheeler.com/essays/filenames-in-shell.html
 IFS="$(printf '\n\t')"
 
 ###############################################################################
@@ -57,12 +117,6 @@ _me=$(basename "$0")
 # However, this form appears to require trailing space after backslases to
 # preserve newlines, which is unexpected. Using `read` simply requires
 # escaping backslashes, which is more common.
-#
-# The `|| true` after the first `'EOM'` is used to circumvent the null byte
-# expectation that `set -o errexit` (aka, `set -e`) has for heredocs, making
-# the pipe exit with a 1 status rather than 0. Another possible approach
-# is to temporarily disable `set -e` by calling `set +e`, running the read,
-# then calling `set -e` again.
 read -d '' "_program_help" <<EOM || true
       _                 _
   ___(_)_ __ ___  _ __ | | ___
