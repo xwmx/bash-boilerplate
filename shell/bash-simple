@@ -145,10 +145,22 @@ _simple() {
 # Main
 ###############################################################################
 
-if [[ -z "$1" || "$1" = "-h" ]]; then
-  printf "%s\n" "$_program_help"
-  exit 0
-fi
+_main() {
+  # Set _arg1 to the first argument or, if there is no first argument, just a
+  # blank value.
+  _arg1=${1:-}
 
-_simple "$@"
+  # Avoiding getops (or pattern equivalent) to avoid complexity when only one
+  # program option is expected.
+  if ( \
+    [[ "$_arg1" == "-h"     ]] ||
+    [[ "$_arg1" == "--help" ]]
+  ); then
+    printf "%s\n" "$_program_help"
+  else
+    _simple "$@"
+  fi
+}
+
+_main "$@"
 
