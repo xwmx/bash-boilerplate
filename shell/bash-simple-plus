@@ -174,10 +174,16 @@ _long_option_with_argument=""
 # Checks if an value has been set to the expected variable and, if not, prints
 # and error message and exits with status 1.
 _require_argument() {
-  _option="$1"
-  _value="$2"
-  if [[ -z "$_value" ]]; then
-    printf "Option requires an argument: %s\n" "$_option"
+  # Set local variables from arguments.
+  #
+  # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
+  # the block of code, as defined by curly braces. It's easist to just think
+  # of them as local to a function.
+  local option="$1"
+  local value="$2"
+
+  if [[ -z "$value" ]]; then
+    printf "Option requires an argument: %s\n" "$option"
     exit 1
   fi
 }

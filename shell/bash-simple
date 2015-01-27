@@ -148,15 +148,19 @@ _simple() {
 ###############################################################################
 
 _main() {
-  # Set _arg1 to the first argument or, if there is no first argument, just a
-  # blank value.
-  _arg1=${1:-}
+  # Set a local arg1 variable to the first argument or, if there is no first
+  # argument, just a blank value.
+  #
+  # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
+  # the block of code, as defined by curly braces. It's easist to just think
+  # of them as local to a function.
+  local arg1=${1:-}
 
   # Avoiding getops (or pattern equivalent) to avoid complexity when only one
   # program option is expected.
   if ( \
-    [[ "$_arg1" == "-h"     ]] ||
-    [[ "$_arg1" == "--help" ]]
+    [[ "$arg1" == "-h"     ]] ||
+    [[ "$arg1" == "--help" ]]
   ); then
     printf "%s\n" "$_program_help"
   else
