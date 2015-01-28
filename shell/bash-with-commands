@@ -98,7 +98,7 @@ _VERSION="1.0.0-alpha"
 # Usage:
 #   _debug printf "Debug info"
 _debug() {
-  if [[ "${debug:-"0"}" -eq 1 ]]; then
+  if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
     printf "🐛  "
     "$@"
     printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
@@ -118,10 +118,10 @@ raw_options="$*"
 # Commands handle their own argument and option checks using the created arrays.
 command_options=()
 command_arguments=()
-# Initialize $cmd and $debug, which can continue to be blank depending on what
-# the program needs.
+# Initialize $cmd and $_use_debug, which can continue to be blank depending on
+# what the program needs.
 cmd=""
-debug=0
+_use_debug=0
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -134,7 +134,7 @@ while [ $# -gt 0 ]; do
       cmd="version"
       ;;
     --debug)
-      debug=1
+      _use_debug=1
       ;;
     -*|--*)
       command_options+=("$opt")
