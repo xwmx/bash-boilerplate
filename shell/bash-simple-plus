@@ -226,11 +226,16 @@ while [ $# -gt 0 ]; do
       _long_option_with_argument="${opt#*=}"
       _require_argument "$opt" "$_long_option_with_argument"
       ;;
+    --)
+      # Terminate option parsing.
+      break
+      ;;
     -*|--*)
       printf "Unexpected option: %s\n" "$opt"
       _print_help
       exit 1
       ;;
+
     *)
       # In this case, do nothing for unexpected non-option arguments
       #
