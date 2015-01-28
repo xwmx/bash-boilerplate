@@ -91,7 +91,20 @@ set -o pipefail
 # Set IFS to just newline and tab at the start
 #
 # http://www.dwheeler.com/essays/filenames-in-shell.html
-IFS="$(printf '\n\t')"
+#
+# $DEFAULT_IFS and $SAFER_IFS
+#
+# $DEFAULT_IFS contains the default $IFS value in case it's needed, such as
+# when expanding an array and you want to separate elements by spaces.
+# $SAFER_IFS contains the preferred settings for the program, and setting it
+# separately makes it easier to switch between the two if needed.
+#
+# NOTE: also printing $DEFAULT_IFS to /dev/null to avoid shellcheck warnings
+# about the variable being unused.
+DEFAULT_IFS="$IFS"; printf "%s" "$DEFAULT_IFS" > /dev/null
+SAFER_IFS="$(printf '\n\t')"
+# Then set $IFS
+IFS="$SAFER_IFS"
 
 ###############################################################################
 # Environment
