@@ -437,7 +437,7 @@ Usage:
 Display help information for $_me or a specified command
 EOM
 help() {
-  if [[ ${#command_arguments[@]:-} = 0 ]]; then
+  if [[ ${#command_arguments[@]:-"0"} = 0 ]]; then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
