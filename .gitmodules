@@ -17,3 +17,6 @@
 [submodule "vendor/com/github/e36freak/templates"]
 	path = vendor/com/github/e36freak/templates
 	url = https://github.com/e36freak/templates.git
+[submodule "vendor/com/github/oxyc/bash-boilerplate"]
+	path = vendor/com/github/oxyc/bash-boilerplate
+	url = https://github.com/oxyc/bash-boilerplate.git
