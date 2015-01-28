@@ -7,3 +7,10 @@
 [submodule "vendor/com/github/dhg/Skeleton"]
 	path = vendor/com/github/dhg/Skeleton
 	url = https://github.com/dhg/Skeleton.git
+[submodule "vendor/com/github/c00kiemon5ter/hello-world"]
+	path = vendor/com/github/c00kiemon5ter/hello-world
+	url = https://github.com/c00kiemon5ter/hello-world.git
+[submodule "vendor/com/github/leachim6/hello-world"]
+	path = vendor/com/github/leachim6/hello-world
+  url = https://github.com/leachim6/hello-world.git
+  ignore = dirty
