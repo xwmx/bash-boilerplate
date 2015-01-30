@@ -125,7 +125,7 @@ _me=$(basename "$0")
 # intended to be used before a printf statement.
 #
 # Usage:
-#   _debug printf "Debug info"
+#   _debug printf "Debug info. Variable: %s\n" "$0"
 _debug() {
   if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
     # Prefix debug message with "bug (U+1F41B)"
@@ -138,6 +138,9 @@ _debug() {
 # Uses the more familiar syntax and echo so printf can be avoided if desired.
 # I prefer printf, personally, since it's more explicit, but I acknowledge that
 # it's more cumbersome.
+#
+# Usage:
+#   debug "Debug info. Variable: $0"
 debug() {
   _debug echo "$@"
 }
@@ -151,6 +154,9 @@ debug() {
 #
 # Simple function for exiting with an error after executing the specified
 # command.
+#
+# Usage:
+#   _die printf "Error message. Variable: %s\n" "$0"
 _die() {
   # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
   printf "❌  "
@@ -162,6 +168,9 @@ _die() {
 # Uses the more familiar syntax and echo so printf can be avoided if desired.
 # I prefer printf, personally, since it's more explicit, but I acknowledge that
 # it's more cumbersome.
+#
+# Usage:
+#   die "Error message. Variable: $0"
 die() {
   _die echo "$@"
 }
