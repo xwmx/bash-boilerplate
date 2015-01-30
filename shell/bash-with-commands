@@ -201,12 +201,11 @@ unset options
 
 # Parse Options ###############################################################
 
-# Initialize command options and arguments arrays.
+# Initialize command_argv array
 #
-# These contain any options and arguments that will be used by the commands.
-# Commands handle their own argument and option checks using the created arrays.
-command_options=()
-command_arguments=()
+# This array contains all of the arguments that get passed along to each
+# command.
+command_argv=()
 # Initialize $cmd and $_use_debug, which can continue to be blank depending on
 # what the program needs.
 cmd=""
@@ -225,16 +224,13 @@ while [ $# -gt 0 ]; do
     --debug)
       _use_debug=1
       ;;
-    -*|--*)
-      command_options+=("$opt")
-      ;;
     *)
       # The first non-option argument is assumed to be the command name.
       # All subsequent arguments are added to $command_arguments.
       if [[ -n $cmd ]]; then
-        command_arguments+=("$opt")
+        command_argv+=("$opt")
       else
-        cmd=$opt
+        cmd="$opt"
       fi
       ;;
   esac
@@ -242,8 +238,7 @@ done
 
 _debug printf "\$cmd: %s\n" "$cmd"
 _debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
-_debug printf "\$command_options: %s\n" "${command_options[*]:-}"
-_debug printf "\$command_arguments: %s\n" "${command_arguments[*]:-}"
+_debug printf "\$command_argv: %s\n" "${command_argv[*]:-}"
 
 ###############################################################################
 # Environment
@@ -314,7 +309,7 @@ _main() {
 
   # Run the command and pass the command arguments.
   if ( _contains "$cmd" "${defined_commands[*]:-}" ); then
-    $cmd "${command_arguments[@]:-}"
+    $cmd "${command_argv[@]:-}"
   else
     printf "Unknown command: %s\n" "$cmd"
     exit 1
@@ -325,65 +320,35 @@ _main() {
 # Getters
 ###############################################################################
 
-# _get_command_argument()
+# _get_command_argv()
 #
 # Print the value of a command argument at the specified position. This is
-# simply an accessor for the command_arguments array.
+# simply an accessor for the command_argv array.
 #
 # NOTE: index starts at 1, just like normal bash parameters.
 #
 # Usage:
-#   $(_get_command_argument 1)
-_get_command_argument() {
+#   $(_get_command_argv 1)
+_get_command_argv() {
   position="${1:-}"
   if [[ -z "$position" ]]; then
-    printf "Error: _get_command_argument(): no value specified.\n"
+    printf "Error: _get_command_argv(): no value specified.\n"
     exit 1
   elif [[ "$position" -eq 0 ]]; then
-    _debug printf "_get_command_option(): Invalid 0 position.\n"
+    _debug printf "_get_command_argv(): Invalid 0 position.\n"
     printf "0 is not valid because arguments start at '1'\n"
     exit 1
   else
     position=$((position - 1))
     printf \
       "%s" \
-      "${command_arguments[${position:-}]:-}"
+      "${command_argv[${position:-}]:-}"
   fi
 }
 
 _debug printf \
-  "\$(_get_command_argument 1): %s\n" \
-  "$(_get_command_argument 1)"
-
-# _get_command_option()
-#
-# Print the value of a command option at the specified position. This is
-# simply an accessor for the command_options array.
-#
-# NOTE: index starts at 1, just like normal bash parameters.
-#
-# Usage:
-#   $(_get_command_option 1)
-_get_command_option() {
-  position="${1:-}"
-  if [[ -z "$position" ]]; then
-    printf "Error: _get_command_option(): no value specified.\n"
-    exit 1
-  elif [[ "$position" -eq 0 ]]; then
-    _debug printf "_get_command_option(): Invalid 0 position.\n"
-    printf "0 is not valid because arguments start at '1'\n"
-    exit 1
-  else
-    position=$((position - 1))
-    printf \
-      "%s" \
-      "${command_options[${position:-}]:-}"
-  fi
-}
-
-_debug printf \
-  "\$(_get_command_option 1): %s\n" \
-  "$(_get_command_option 1)"
+  "\$(_get_command_argv 1): %s\n" \
+  "$(_get_command_argv 1)"
 
 ###############################################################################
 # Utility Functions
@@ -416,17 +381,6 @@ _contains() {
   return 1
 }
 
-# _commnd_options_include()
-#
-# Takes a possible command option and determines whether it is included in
-# the command option list.
-#
-# Usage:
-#   _command_options_include "--an-option"
-_command_options_include() {
-  _contains "$1" "${command_options[*]:-}"
-}
-
 # _commnd_arguments_include()
 #
 # Takes a possible command argument and determines whether it is included in
@@ -434,8 +388,8 @@ _command_options_include() {
 #
 # Usage:
 #   _command_arguments_include "an_argument"
-_command_arguments_include() {
-  _contains "$1" "${command_arguments[*]:-}"
+_command_argv_includes() {
+  _contains "$1" "${_get_command_argv[*]:-}"
 }
 
 ###############################################################################
@@ -526,7 +480,7 @@ Usage:
 Display help information for $_me or a specified command
 EOM
 help() {
-  if [[ ${#command_arguments[@]:-"0"} = 0 ]]; then
+  if [[ ${#command_argv[@]:-"0"} = 0 ]]; then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -561,7 +515,7 @@ Usage:
 Display the list of available commands.
 EOM
 commands() {
-  if _command_options_include "--raw"; then
+  if _command_argv_includes "--raw"; then
     printf "%s\n" "${defined_commands[@]:-}"
   else
     printf "Available commands:\n"
@@ -599,12 +553,21 @@ Usage:
 Print "Hello, World!"
 EOM
 example() {
-  if ( _command_options_include "--casual" ); then
-    greeting="Hi"
-  else
-    greeting="Hello"
-  fi
-  name=$(_get_command_argument 1)
+  # Set default greeting.
+  greeting="Hello"
+  # Initialize arguments array.
+  arguments=()
+
+  # Parse command arguments.
+  for arg in "${command_argv[@]:-}"; do
+    case $1 in
+      --casual) greeting="hi";;
+      *) arguments+=$arg;;
+    esac
+    shift
+  done
+
+  name=${arguments[0]:-}
 
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
