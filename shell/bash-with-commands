@@ -318,14 +318,23 @@ _load_commands() {
   _debug printf "_load_commands(): entering...\n"
   _debug printf "_load_commands() declare -F:\n%s\n" "$(declare -F)"
 
+  # declare is a bash built-in shell function that, when called with the '-F'
+  # option, displays all of the functions with the format
+  # `declare -f function_name`. These are then assigned as elements in the
+  # $function_list array.
   local function_list=($(declare -F))
 
   for c in "${function_list[@]}"
   do
+    # Each element has the format `declare -f function_name`, so set the name
+    # to only the the 'function_name' part of the string.
     local function_name=$(printf "%s" "$c" | awk '{ print $3 }')
 
     _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
 
+    # Add the function name to the $defined_commands array unless it starts
+    # with an underscore or is the desc() function, since these are treated
+    # as having 'private' visibility.
     if ! ( [[ "$function_name" =~ ^_(.*) ]] || \
            [[ "$function_name" == "desc" ]]
     ); then
