@@ -316,7 +316,7 @@ while [[ "${1:-}" = -?* ]]; do
       _require_argument "$opt" "$_long_option_with_argument"
       shift
       ;;
-    --)
+    --endopts)
       # Terminate option parsing.
       break
       ;;
