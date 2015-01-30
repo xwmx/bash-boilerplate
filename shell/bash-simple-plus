@@ -322,7 +322,6 @@ while [[ "${1:-}" = -?* ]]; do
       ;;
     *)
       printf "Unexpected option: %s\n" "$opt"
-      _print_help
       exit 1
       ;;
   esac
