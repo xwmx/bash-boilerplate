@@ -16,26 +16,46 @@
 ###############################################################################
 
 # Treat unset variables and parameters other than the special parameters ‘@’ or
-# ‘*’ as an error when performing parameter expansion. An error message will be
-# written to the standard error, and a non-interactive shell will exit.
+# ‘*’ as an error when performing parameter expansion. An 'unbound variable'
+# error message will be written to the standard error, and a non-interactive
+# shell will exit.
 #
 # This requires using parameter expansion to test for unset variables.
 #
 # http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion
 #
+# The two approaches that are probably the most appropriate are:
+#
+# ${parameter:-word}
+#   If parameter is unset or null, the expansion of word is substituted.
+#   Otherwise, the value of parameter is substituted. In other words, "word"
+#   acts as a default value when the value of "$parameter" is blank. If "word"
+#   is not present, then the default is blank (essentially an empty string).
+#
+# ${parameter:?word}
+#   If parameter is null or unset, the expansion of word (or a message to that
+#   effect if word is not present) is written to the standard error and the
+#   shell, if it is not interactive, exits. Otherwise, the value of parameter
+#   is substituted.
+#
 # Examples
 # ========
 #
-# Array:
+# Arrays:
 #
-#   ${some_array[@]:-}
-#   ${some_array[*]:-}
-#   ${some_array[0]:-}
+#   ${some_array[@]:-}              # blank default value
+#   ${some_array[*]:-}              # blank default value
+#   ${some_array[0]:-}              # blank default value
+#   ${some_array[0]:-default_value} # default value: the string 'default_value'
 #
 # Postitional variables:
 #
-#   ${1:-alternative} # when a default value can be sepecified
-#   ${2:-}            # when the desired alternative is a blank / null
+#   ${1:-alternative} # default value: the string 'alternative'
+#   ${2:-}            # blank default value
+#
+# With an error message:
+#
+#   ${1:?'error message'}  # exit with 'error message' if variable is unbound
 #
 # Short form: set -u
 set -o nounset
