@@ -562,6 +562,15 @@ Usage:
 Print "Hello, World!"
 EOM
 example() {
+  # These debug statements demonstrate the different behaviors of the
+  # positional parameters, the special variables, and the two generated
+  # command argument arrays.
+  #
+  # Note in particular that $@ and $* omit the script name like the
+  # $command_parameters array does, whereas the positional parameter variables
+  # $0, $1, $2 do include it, like the $command_argv array.
+  #
+  # Individual elements 0, 1, and 2 of each:
   _debug printf "example() \$0: %s\n" "${0:-}"
   _debug printf "example() \${command_argv[0]:-}: %s\n" "${command_argv[0]:-}"
   _debug \
@@ -577,8 +586,7 @@ example() {
   _debug \
     printf "example() \${command_parameters[2]:-}: %s\n" \
     "${command_parameters[2]:-}"
-
-  # Note that $@ and $* omit the script name.
+  # Each expanded to string:
   _debug printf "example() \${*:-}: %s\n" "${*:-}"
   _debug printf "example() \${command_argv[*]:-}: %s\n" "${command_argv[*]:-}"
   _debug \
