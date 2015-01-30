@@ -320,17 +320,10 @@ while [[ "${1:-}" = -?* ]]; do
       # Terminate option parsing.
       break
       ;;
-    -*|--*)
+    *)
       printf "Unexpected option: %s\n" "$opt"
       _print_help
       exit 1
-      ;;
-
-    *)
-      # In this case, do nothing for unexpected non-option arguments
-      #
-      # colon is bash no-op
-      :
       ;;
   esac
 done
