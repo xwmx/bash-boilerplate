@@ -596,7 +596,7 @@ commands() {
 #   Example help text. Options specified with http://docopt.org/
 # EOM
 # example() {
-#   echo "Hello, World!"
+#   printf "Hello, World!\n"
 # }
 #
 ###############################################################################
