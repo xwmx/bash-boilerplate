@@ -274,7 +274,9 @@ _load_commands() {
   for c in "${function_list[@]}"
   do
     local function_name=$(printf "%s" "$c" | awk '{ print $3 }')
+
     _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
+
     if ! ( [[ "$function_name" =~ ^_(.*) ]] || \
            [[ "$function_name" == "desc" ]]
     ); then
@@ -335,6 +337,7 @@ _main() {
 #   $(_get_command_argv 1)
 _get_command_argv() {
   local position="${1:-}"
+
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_argv(): no value specified.\n"
     exit 1
