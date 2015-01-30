@@ -293,7 +293,7 @@ _require_argument() {
 #   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
 #   http://stackoverflow.com/a/14203146
 #   http://stackoverflow.com/a/7948533
-while [ $# -gt 0 ]; do
+while [[ "${1:-}" = -?* ]]; do
   opt="$1"
   shift
   case "$opt" in
