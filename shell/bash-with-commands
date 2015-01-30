@@ -327,7 +327,7 @@ _load_commands() {
   for c in "${function_list[@]}"
   do
     # Each element has the format `declare -f function_name`, so set the name
-    # to only the the 'function_name' part of the string.
+    # to only the 'function_name' part of the string.
     local function_name=$(printf "%s" "$c" | awk '{ print $3 }')
 
     _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
