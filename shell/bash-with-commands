@@ -333,10 +333,12 @@ _load_commands() {
     _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
 
     # Add the function name to the $defined_commands array unless it starts
-    # with an underscore or is the desc() function, since these are treated
-    # as having 'private' visibility.
-    if ! ( [[ "$function_name" =~ ^_(.*) ]] || \
-           [[ "$function_name" == "desc" ]]
+    # with an underscore or is one of the desc(), debug(), or die() functions,
+    # since these are treated as having 'private' visibility.
+    if ! ( [[ "$function_name" =~ ^_(.*)  ]] || \
+           [[ "$function_name" == "desc"  ]] || \
+           [[ "$function_name" == "debug" ]] || \
+           [[ "$function_name" == "die"   ]]
     ); then
       defined_commands+=("$function_name")
     fi
