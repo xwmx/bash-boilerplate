@@ -516,10 +516,10 @@ Display the list of available commands.
 EOM
 commands() {
   if _command_argv_includes "--raw"; then
-    printf "%s\n" "${defined_commands[@]:-}"
+    printf "%s\n" "${defined_commands[@]}"
   else
     printf "Available commands:\n"
-    printf "  %s\n" "${defined_commands[@]:-}"
+    printf "  %s\n" "${defined_commands[@]}"
   fi
 }
 
