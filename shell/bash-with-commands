@@ -269,11 +269,11 @@ _load_commands() {
   _debug printf "_load_commands(): entering...\n"
   _debug printf "_load_commands() declare -F:\n%s\n" "$(declare -F)"
 
-  function_list=($(declare -F))
+  local function_list=($(declare -F))
 
   for c in "${function_list[@]}"
   do
-    function_name=$(printf "%s" "$c" | awk '{ print $3 }')
+    local function_name=$(printf "%s" "$c" | awk '{ print $3 }')
     _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
     if ! ( [[ "$function_name" =~ ^_(.*) ]] || \
            [[ "$function_name" == "desc" ]]
@@ -334,7 +334,7 @@ _main() {
 # Usage:
 #   $(_get_command_argv 1)
 _get_command_argv() {
-  position="${1:-}"
+  local position="${1:-}"
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_argv(): no value specified.\n"
     exit 1
@@ -373,8 +373,8 @@ _function_exists() {
 # Usage:
 #   _contains "$item" "${list[*]}"
 _contains() {
-  _test_list=(${*:2})
-  for _test_element in "${_test_list[@]:-}"
+  local test_list=(${*:2})
+  for _test_element in "${test_list[@]:-}"
   do
     _debug printf "_contains() \$_test_element: %s\n" "$_test_element"
     if [[ "$_test_element" == "$1" ]]; then
@@ -448,7 +448,7 @@ EOM
 # Prints the description for a given command, provided the description has been
 # set using the desc() function.
 _print_desc() {
-  var="_desc_$1"
+  local var="_desc_$1"
   if [[ -n ${!var:-} ]]; then
     printf "%s\n" "${!var}"
   else
@@ -558,9 +558,9 @@ Print "Hello, World!"
 EOM
 example() {
   # Set default greeting.
-  greeting="Hello"
+  local greeting="Hello"
   # Initialize arguments array.
-  arguments=()
+  local arguments=()
 
   # Parse command arguments.
   for arg in "${command_argv[@]:-}"; do
@@ -571,7 +571,7 @@ example() {
     shift
   done
 
-  name=${arguments[0]:-}
+  local name=${arguments[0]:-}
 
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
