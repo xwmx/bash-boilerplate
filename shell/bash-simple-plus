@@ -9,8 +9,6 @@
 # Boilerplate for creating a simple bash script with some basic strictness
 # checks, help features, easy debug printing.
 #
-# NOTE: extensive descriptions are included for easy reference.
-#
 # Usage:
 #   bash-simple-plus argument
 #
@@ -23,6 +21,23 @@
 #  environment
 #
 # Copyright (c) 2015 William Melody • hi@williammelody.com
+
+# Notes #######################################################################
+
+# Extensive descriptions are included for easy reference.
+#
+# I prefer explicitness over cleverness, esspecially since bash can be
+# difficult to read. This leads to noiser, longer code, but should be easier to
+# maintain. As a result, some general design preferences:
+#
+# - Group related code into sections with large, easily scannable headers.
+# - Prefer printf over echo. For more information, see:
+#   http://unix.stackexchange.com/a/65819
+# - Prefer $explicit_variable_name over $var
+# - Prefer splitting statements across multiple lines rather than writing
+#   one-liners.
+# - Describe behavior in comments as much as possible, assuming the reader is
+#   a programmer
 
 ###############################################################################
 # Strict Mode
