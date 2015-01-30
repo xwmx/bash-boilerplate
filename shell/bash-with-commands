@@ -265,9 +265,12 @@ defined_commands=()
 # Usage:
 #   _load_commands
 _load_commands() {
+
   _debug printf "_load_commands(): entering...\n"
   _debug printf "_load_commands() declare -F:\n%s\n" "$(declare -F)"
+
   function_list=($(declare -F))
+
   for c in "${function_list[@]}"
   do
     function_name=$(printf "%s" "$c" | awk '{ print $3 }')
@@ -278,6 +281,7 @@ _load_commands() {
       defined_commands+=("$function_name")
     fi
   done
+
   _debug printf \
     "commands() \$defined_commands:\n%s\n" \
     "${defined_commands[*]:-}"
