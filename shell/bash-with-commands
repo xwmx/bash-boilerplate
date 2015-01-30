@@ -238,9 +238,15 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+# Set $command_parameters to $command_argv, minus the initial element, $0. This
+# provides an array that is equivalent to $* and $@ within each command
+# function, though the array is zero-indexed, which could lead to confusion.
+command_parameters=(${command_argv[@]:1})
+
 _debug printf "\$cmd: %s\n" "$cmd"
 _debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
 _debug printf "\$command_argv: %s\n" "${command_argv[*]}"
+_debug printf "\$command_parameters: %s\n" "${command_parameters[*]:-}"
 
 ###############################################################################
 # Environment
@@ -318,7 +324,7 @@ _main() {
   # If the command is defined, run it, otherwise return an error.
   if ( _contains "$cmd" "${defined_commands[*]:-}" ); then
     # Pass all comment arguments to the program except for the first ($0).
-    $cmd "${command_argv[@]:1}"
+    $cmd "${command_parameters[@]:-}"
   else
     printf "Unknown command: %s\n" "$cmd"
     exit 1
