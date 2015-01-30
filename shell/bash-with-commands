@@ -127,6 +127,8 @@ _debug() {
 # Simple function for exiting with an error after executing the specified
 # command.
 _die() {
+  # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
+  printf "❌  "
   "$@" 1>&2
   exit 1
 }
