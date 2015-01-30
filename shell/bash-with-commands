@@ -204,8 +204,10 @@ unset options
 # Initialize command_argv array
 #
 # This array contains all of the arguments that get passed along to each
-# command.
-command_argv=()
+# command. This is essentially the same as the program arguments, minus those
+# that have been filtered out in the program option parsing loop. This array
+# is initialized with $0, which is the program's name.
+command_argv=("$0")
 # Initialize $cmd and $_use_debug, which can continue to be blank depending on
 # what the program needs.
 cmd=""
@@ -238,7 +240,7 @@ done
 
 _debug printf "\$cmd: %s\n" "$cmd"
 _debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
-_debug printf "\$command_argv: %s\n" "${command_argv[*]:-}"
+_debug printf "\$command_argv: %s\n" "${command_argv[*]}"
 
 ###############################################################################
 # Environment
@@ -313,9 +315,10 @@ _main() {
   # Load all of the commands.
   _load_commands
 
-  # Run the command and pass the command arguments.
+  # If the command is defined, run it, otherwise return an error.
   if ( _contains "$cmd" "${defined_commands[*]:-}" ); then
-    $cmd "${command_argv[@]:-}"
+    # Pass all comment arguments to the program except for the first ($0).
+    $cmd "${command_argv[@]:1}"
   else
     printf "Unknown command: %s\n" "$cmd"
     exit 1
@@ -331,8 +334,6 @@ _main() {
 # Print the value of a command argument at the specified position. This is
 # simply an accessor for the command_argv array.
 #
-# NOTE: index starts at 1, just like normal bash parameters.
-#
 # Usage:
 #   $(_get_command_argv 1)
 _get_command_argv() {
@@ -341,15 +342,10 @@ _get_command_argv() {
   if [[ -z "$position" ]]; then
     printf "Error: _get_command_argv(): no value specified.\n"
     exit 1
-  elif [[ "$position" -eq 0 ]]; then
-    _debug printf "_get_command_argv(): Invalid 0 position.\n"
-    printf "0 is not valid because arguments start at '1'\n"
-    exit 1
   else
-    position=$((position - 1))
     printf \
       "%s" \
-      "${command_argv[${position:-}]:-}"
+      "${command_argv[${position:-}]:-}" # return a blank if not present
   fi
 }
 
@@ -396,7 +392,7 @@ _contains() {
 # Usage:
 #   _command_arguments_include "an_argument"
 _command_argv_includes() {
-  _contains "$1" "${_get_command_argv[*]:-}"
+  _contains "$1" "${command_argv[*]}"
 }
 
 ###############################################################################
@@ -487,7 +483,7 @@ Usage:
 Display help information for $_me or a specified command
 EOM
 help() {
-  if [[ ${#command_argv[@]:-"0"} = 0 ]]; then
+  if [[ ${#command_argv[@]} = 1 ]]; then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -560,8 +556,8 @@ Usage:
 Print "Hello, World!"
 EOM
 example() {
-  _debug printf "example() \$0: %s\n" "$0"
-  _debug printf "example() \$1: %s\n" "$1"
+  _debug printf "example() \$0: %s\n" "${0:-}"
+  _debug printf "example() \$1: %s\n" "${1:-}"
 
   # Set default greeting.
   local greeting="Hello"
@@ -570,14 +566,14 @@ example() {
 
   # Parse command arguments.
   for arg in "${command_argv[@]:-}"; do
-    case $1 in
-      --casual) greeting="hi";;
-      *) arguments+=$arg;;
+    case $arg in
+    --casual) greeting="hi";;
+    -*) printf "Unexpected option: %s\n" "$arg"; exit 1;;
+    *) arguments+=($arg);;
     esac
-    shift
   done
 
-  local name=${arguments[0]:-}
+  local name=${arguments[1]:-}
 
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
