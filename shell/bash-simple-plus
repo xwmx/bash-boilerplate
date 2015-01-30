@@ -128,9 +128,42 @@ _me=$(basename "$0")
 #   _debug printf "Debug info"
 _debug() {
   if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
+    # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
     "$@"
   fi
+}
+# debug()
+#
+# Uses the more familiar syntax and echo so printf can be avoided if desired.
+# I prefer printf, personally, since it's more explicit, but I acknowledge that
+# it's more cumbersome.
+debug() {
+  _debug echo "$@"
+}
+
+
+###############################################################################
+# Die
+###############################################################################
+
+# _die()
+#
+# Simple function for exiting with an error after executing the specified
+# command.
+_die() {
+  # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
+  printf "❌  "
+  "$@" 1>&2
+  exit 1
+}
+# die()
+#
+# Uses the more familiar syntax and echo so printf can be avoided if desired.
+# I prefer printf, personally, since it's more explicit, but I acknowledge that
+# it's more cumbersome.
+die() {
+  _die echo "$@"
 }
 
 ###############################################################################
