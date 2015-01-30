@@ -314,8 +314,7 @@ _require_argument() {
   local value="$2"
 
   if [[ -z "$value" ]]; then
-    printf "Option requires an argument: %s\n" "$option"
-    exit 1
+    _die printf "Option requires an argument: %s\n" "$option"
   fi
 }
 # getopts and getopts have inconsistent behavior, so using a simple home-brewed
@@ -354,8 +353,7 @@ while [[ "${1:-}" = -?* ]]; do
       break
       ;;
     *)
-      printf "Unexpected option: %s\n" "$opt"
-      exit 1
+      _die printf "Unexpected option: %s\n" "$opt"
       ;;
   esac
 done
