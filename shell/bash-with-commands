@@ -118,6 +118,15 @@ _debug() {
     printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
   fi
 }
+# debug()
+#
+# Uses the more familiar syntax and echo so printf can be avoided if desired.
+# I prefer printf, personally, since it's more explicit, but I acknowledge that
+# it's more cumbersome.
+debug() {
+  _debug echo "$@"
+}
+
 
 ###############################################################################
 # Die
