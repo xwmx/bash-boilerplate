@@ -119,6 +119,27 @@ _debug() {
 }
 
 ###############################################################################
+# Die
+###############################################################################
+
+# _die()
+#
+# Simple function for exiting with an error after executing the specified
+# command.
+_die() {
+  "$@" 1>&2
+  exit 1
+}
+# die()
+#
+# Uses the more familiar syntax and echo so printf can be avoided if desired.
+# I prefer printf, personally, since it's more explicit, but I acknowledge that
+# it's more cumbersome.
+die() {
+  _die echo "$@"
+}
+
+###############################################################################
 # Options
 ###############################################################################
 
@@ -326,8 +347,7 @@ _main() {
     # Pass all comment arguments to the program except for the first ($0).
     $cmd "${command_parameters[@]:-}"
   else
-    printf "Unknown command: %s\n" "$cmd"
-    exit 1
+    _die printf "Unknown command: %s\n" "$cmd"
   fi
 }
 
@@ -346,8 +366,7 @@ _get_command_argv() {
   local position="${1:-}"
 
   if [[ -z "$position" ]]; then
-    printf "Error: _get_command_argv(): no value specified.\n"
-    exit 1
+    _die printf "Error: _get_command_argv(): no value specified.\n"
   else
     printf \
       "%s" \
@@ -432,7 +451,7 @@ _command_argv_includes() {
 # escaping backslashes, which is more common.
 desc() {
   set +e
-  [[ -z $1 ]] && printf "desc: No command name specified.\n" && exit 1
+  [[ -z $1 ]] && _die printf "desc: No command name specified.\n"
   if [[ -n ${2:-} ]]; then
     read -d '' "_desc_$1" <<EOM
 $2
@@ -602,7 +621,7 @@ example() {
   for arg in "${command_argv[@]:-}"; do
     case $arg in
     --casual) greeting="hi";;
-    -*) printf "Unexpected option: %s\n" "$arg"; exit 1;;
+    -*) _die printf "Unexpected option: %s\n" "$arg";;
     *) arguments+=($arg);;
     esac
   done
