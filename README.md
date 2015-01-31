@@ -1,6 +1,7 @@
 Bash Boilerplate
 ================
 
-These is a small collection of bash scripts that can act as a starting
-point for developing bash scripts. They are also used to record and
-document various common approaches and conventions.
+A collection of example bash scripts that can be used as starting points. They
+are also used to record and document various common approaches and conventions.
+
+Copyright (c) 2015 William Melody • hi@williammelody.com
