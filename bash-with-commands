@@ -23,7 +23,7 @@
 
 # Extensive descriptions are included for easy reference.
 #
-# I prefer explicitness over cleverness, esspecially since bash can be
+# I prefer explicitness over cleverness, especially since bash can be
 # difficult to read. This leads to noiser, longer code, but should be easier to
 # maintain. As a result, some general design preferences:
 #
