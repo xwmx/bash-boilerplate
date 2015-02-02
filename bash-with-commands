@@ -625,7 +625,7 @@ Usage:
   $_me commands [--raw]
 
 Options:
-  --raw  Display command list without header.
+  --raw  Display the command list without formatting.
 
 Description:
   Display the list of available commands.
