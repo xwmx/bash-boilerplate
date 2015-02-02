@@ -600,11 +600,13 @@ Boilerplate for creating a bash program with commands.
 Version: $_VERSION
 
 Usage:
-$_me command [--help] [--version] [--command-options] [<arguments>]
+  $_me command [--command-options] [<arguments>]
+  $_me -h | --help
+  $_me --version
 
 Options:
+  -h --help   Display this help information.
   --version   Display version information.
-  --help      Display this help information.
 
 Help:
   $_me help [<command>]
@@ -622,7 +624,11 @@ desc commands <<EOM
 Usage:
   $_me commands [--raw]
 
-Display the list of available commands.
+Options:
+  --raw     Display command list without header.
+
+Description:
+  Display the list of available commands.
 EOM
 commands() {
   if _command_argv_includes "--raw"; then
