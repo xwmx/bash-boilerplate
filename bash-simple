@@ -182,6 +182,10 @@ checks and help features.
 
 Usage:
   $_me argument
+  $_me -h | --help
+
+Options:
+  -h --help   Show this screen.
 EOM
 
 # _print_help()
