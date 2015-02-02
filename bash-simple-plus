@@ -239,7 +239,11 @@ Boilerplate for creating a simple bash script with some basic strictness
 checks and help features, and easy debug printing, and basic option handling.
 
 Usage:
-  $_me argument
+  $_me [--options] [<arguments>]
+  $_me -h | --help
+
+Options:
+  -h --help   Display this help information.
 EOM
 
 # _print_help()
