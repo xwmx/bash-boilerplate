@@ -652,10 +652,10 @@ commands() {
 # --------------------------------------------------------------------- example
 
 desc example <<EOM
-Usage:
-  $_me example [<name>] [--casual]
-
 Print "Hello, World!"
+
+Usage:
+  $_me example [<name>] [--farewell]
 EOM
 example() {
   # These debug statements demonstrate the different behaviors of the
@@ -711,8 +711,8 @@ example() {
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
 
-  if [[ "$name" == "Bill" ]]; then
-    printf "%s, William!\n" "$greeting"
+  if [[ "$name" == "Moon" ]]; then
+    printf "%s, Luna!\n" "$greeting"
   elif [[ -n "$name" ]]; then
     printf "%s, %s!\n" "$greeting" "$name"
   else
