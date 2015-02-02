@@ -185,7 +185,7 @@ Usage:
   $_me -h | --help
 
 Options:
-  -h --help   Show this screen.
+  -h --help  Show this screen.
 EOM
 
 # _print_help()

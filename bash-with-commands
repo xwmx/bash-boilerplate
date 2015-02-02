@@ -605,8 +605,8 @@ Usage:
   $_me --version
 
 Options:
-  -h --help   Display this help information.
-  --version   Display version information.
+  -h --help  Display this help information.
+  --version  Display version information.
 
 Help:
   $_me help [<command>]
@@ -625,7 +625,7 @@ Usage:
   $_me commands [--raw]
 
 Options:
-  --raw     Display command list without header.
+  --raw  Display command list without header.
 
 Description:
   Display the list of available commands.
@@ -667,7 +667,7 @@ Usage:
   $_me example [<name>] [--farewell]
 
 Options:
-  --farewell      Print "Goodbye, World!"
+  --farewell  Print "Goodbye, World!"
 
 Description:
   Print "Hello, World!"
