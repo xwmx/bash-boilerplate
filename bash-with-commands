@@ -565,12 +565,12 @@ _print_desc() {
 
 desc version <<EOM
 Usage:
-  $_me version
-  $_me --version
+  $_me ( version | --version )
 
-Display the current program version.
+Description:
+  Display the current program version.
 
-To save you the trouble, the current version is $_VERSION
+  To save you the trouble, the current version is $_VERSION
 EOM
 version() {
   printf "%s\n" "$_VERSION"
@@ -582,7 +582,8 @@ desc help <<EOM
 Usage:
   $_me help [<command>]
 
-Display help information for $_me or a specified command
+Description:
+  Display help information for $_me or a specified command.
 EOM
 help() {
   if [[ ${#command_argv[@]} = 1 ]]; then
@@ -599,7 +600,11 @@ Boilerplate for creating a bash program with commands.
 Version: $_VERSION
 
 Usage:
-  $_me command [<command-arguments>]
+$_me command [--help] [--version] [--command-options] [<arguments>]
+
+Options:
+  --version   Display version information.
+  --help      Display this help information.
 
 Help:
   $_me help [<command>]
@@ -652,10 +657,14 @@ commands() {
 # --------------------------------------------------------------------- example
 
 desc example <<EOM
-Print "Hello, World!"
-
 Usage:
   $_me example [<name>] [--farewell]
+
+Options:
+  --farewell      Print "Goodbye, World!"
+
+Description:
+  Print "Hello, World!"
 EOM
 example() {
   # These debug statements demonstrate the different behaviors of the
@@ -697,7 +706,7 @@ example() {
   # Parse command arguments.
   for arg in "${command_argv[@]:-}"; do
     case $arg in
-    --casual) greeting="hi";;
+    --farewell) greeting="Goodbye";;
     -*) _die printf "Unexpected option: %s\n" "$arg";;
     *) arguments+=($arg);;
     esac
