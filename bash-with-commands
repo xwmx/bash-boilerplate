@@ -486,13 +486,13 @@ _contains() {
   return 1
 }
 
-# _commnd_arguments_include()
+# _command_argv_includes()
 #
 # Takes a possible command argument and determines whether it is included in
 # the command argument list.
 #
 # Usage:
-#   _command_arguments_include "an_argument"
+#   _command_argv_includes "an_argument"
 _command_argv_includes() {
   _contains "$1" "${command_argv[*]}"
 }
