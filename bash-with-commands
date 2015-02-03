@@ -653,7 +653,15 @@ commands() {
 #
 #
 # desc example <<EOM
-#   Example help text. Options specified with http://docopt.org/
+#   Usage:
+#     $_me example
+#
+#   Description:
+#     Print "Hello, World!"
+#
+#     For usage formatting conventions see:
+#     - http://docopt.org/
+#     - http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
 # EOM
 # example() {
 #   printf "Hello, World!\n"
