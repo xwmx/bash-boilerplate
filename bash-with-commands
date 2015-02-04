@@ -429,33 +429,6 @@ _main() {
 }
 
 ###############################################################################
-# Getters
-###############################################################################
-
-# _get_command_argv()
-#
-# Print the value of a command argument at the specified position. This is
-# simply an accessor for the command_argv array.
-#
-# Usage:
-#   $(_get_command_argv 1)
-_get_command_argv() {
-  local position="${1:-}"
-
-  if [[ -z "$position" ]]; then
-    _die printf "Error: _get_command_argv(): no value specified.\n"
-  else
-    printf \
-      "%s" \
-      "${command_argv[${position:-}]:-}" # return a blank if not present
-  fi
-}
-
-_debug printf \
-  "\$(_get_command_argv 1): %s\n" \
-  "$(_get_command_argv 1)"
-
-###############################################################################
 # Utility Functions
 ###############################################################################
 
