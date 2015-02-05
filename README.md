@@ -150,7 +150,8 @@ Solution 3. Don't use `set -e` or `set -o errexit` at all.
 
 More information:
 
-https://www.mail-archive.com/bug-bash@gnu.org/msg12170.html
+['builtin "read -d" behaves differently after "set -e"'
+](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
 
 ##### Usage
 
