@@ -26,18 +26,19 @@
 
 # Extensive descriptions are included for easy reference.
 #
-# I prefer explicitness over cleverness, especially since bash can be
-# difficult to read. This leads to noiser, longer code, but should be easier to
-# maintain. As a result, some general design preferences:
+# Explicitness and clarity are generally preferable, especially since bash can
+# be difficult to read. This leads to noisier, longer code, but should be
+# easier to maintain. As a result, some general design preferences:
 #
 # - Group related code into sections with large, easily scannable headers.
-# - Prefer printf over echo. For more information, see:
+# - Prefer `printf` over `echo`. For more information, see:
 #   http://unix.stackexchange.com/a/65819
-# - Prefer $explicit_variable_name over $var
+# - Prefer `$explicit_variable_name` over names like `$var`
 # - Prefer splitting statements across multiple lines rather than writing
 #   one-liners.
 # - Describe behavior in comments as much as possible, assuming the reader is
-#   a programmer
+#   a programmer familiar with the shell, but not experienced writing shell
+#   scripts.
 
 ###############################################################################
 # Strict Mode
