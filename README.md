@@ -3,17 +3,17 @@ Bash Boilerplate
 
 A collection of example bash scripts that can be used as starting points.
 
-I also use these script to record and document various common approaches and
-conventions that I've learning and encountered while working with bash. To this
-end, each script contains a lot of comments attempting to describe the
-functionality and syntax as much as possible.
+I also use these scripts to record and document various common approaches
+and conventions that I've learning and encountered while working with bash.
+To this end, each script contains a lot of comments attempting to describe
+the functionality and syntax as much as possible.
 
 In many cases there are debug statements or example code that demonstrate
 functionality or reveal the state of the program at a certain point. These
-should generally be removed when customizing the scripts, while retaining the
-parts that still apply. Especially in the case of the `bash-with-commands`
-script, it's probably a good idea to play around with the different features
-before diving into customization.
+should generally be removed when customizing the scripts, while retaining
+the parts that still apply. Especially in the case of the
+`bash-with-commands` script, it's probably a good idea to play around with
+the different features before diving into customization.
 
 ## Scripts
 
@@ -61,8 +61,10 @@ It can be used with vim via
 These boilerplate scripts use a some common settings for enforcing strictness
 in Bash scripts, thereby preventing some errors.
 
-For some additional background, see Aaron Maxwell's ["Unofficial Bash Strict
-Mode"](http://redsymbol.net/articles/unofficial-bash-strict-mode/) post.
+For some additional background, see Aaron Maxwell's
+["Unofficial Bash Strict Mode"
+](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
+post.
 
 #### `set -o nounset` / `set -u`
 
@@ -178,9 +180,11 @@ Long form (no short form available):
 
 #### `$IFS`
 
-Set IFS to just newline and tab at the start
+Set IFS to just newline and tab.
 
-http://www.dwheeler.com/essays/filenames-in-shell.html
+For some background, see
+[Filenames and Pathnames in Shell: How to do it Correctly
+](http://www.dwheeler.com/essays/filenames-in-shell.html)
 
 ##### `$DEFAULT_IFS` and `$SAFER_IFS`
 
