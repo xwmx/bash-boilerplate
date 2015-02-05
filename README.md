@@ -239,6 +239,12 @@ easier to maintain. As a result, some general design preferences:
   a programmer familiar with the shell, but not experienced writing shell
   scripts.
 
+### Related Projects
+
+- [oxyc/bash-boilerplate](https://github.com/oxyc/bash-boilerplate)
+- [e36freak/templates](https://github.com/e36freak/templates)
+- [alphabetum/starters](https://github.com/alphabetum/starters)
+
 ---
 
 Copyright (c) 2015 William Melody • hi@williammelody.com
