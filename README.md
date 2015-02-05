@@ -17,6 +17,11 @@ the different features before diving into customization.
 
 ## Scripts
 
+There are multiple boilerplate scripts included, each with an increasing
+amount of complexity. Since these are boilerplate scripts, it's easiest
+just to start with the simplest structure for the task rather than using
+a more complex one and removing a bunch of things that aren't needed.
+
 ### [bash-simple](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple)
 
 A simple bash script with some basic strictness checks and help features.
@@ -56,9 +61,10 @@ tasks.
 - `debug` printing with `--debug` flag,
 - `die` command with error message printing and exiting,
 - Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing,
-- Automatic command loading,
+- Automatic arbitrary command loading,
 - A DSL for specifying per-command help,
 - Built-in commands for help, version, and command listing,
+- Conventions for distinguishing between functions and program commands,
 - Useful utility functions.
 
 ## Notes
@@ -275,6 +281,7 @@ easier to maintain. As a result, some general design preferences:
 - [oxyc/bash-boilerplate](https://github.com/oxyc/bash-boilerplate)
 - [e36freak/templates](https://github.com/e36freak/templates)
 - [alphabetum/starters](https://github.com/alphabetum/starters)
+- [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
 
 ---
 
