@@ -62,7 +62,7 @@ These boilerplate scripts use a some common settings for enforcing strictness
 in Bash scripts, thereby preventing some errors.
 
 For some additional background, see Aaron Maxwell's
-["Unofficial Bash Strict Mode"
+["Unofficial Bash Strict Mode" (redsymbol.net)
 ](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
 post.
 
@@ -150,7 +150,7 @@ Solution 3. Don't use `set -e` or `set -o errexit` at all.
 
 More information:
 
-['builtin "read -d" behaves differently after "set -e"'
+['builtin "read -d" behaves differently after "set -e"' (lists.gnu.org)
 ](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
 
 ##### Usage
@@ -184,7 +184,7 @@ Long form (no short form available):
 Set IFS to just newline and tab.
 
 For some background, see
-[Filenames and Pathnames in Shell: How to do it Correctly
+[Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
 ](http://www.dwheeler.com/essays/filenames-in-shell.html)
 
 ##### `$DEFAULT_IFS` and `$SAFER_IFS`
