@@ -20,15 +20,46 @@ the different features before diving into customization.
 ### [bash-simple](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple)
 
 A simple bash script with some basic strictness checks and help features.
+Useful for simple programs that don't have many features and don't take
+options other than help.
+
+###### Notable Features
+
+- Strict Mode,
+- Help template, printable with `-h` or `--help`.
+
 
 ### [bash-simple-plus](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple-plus)
 
 A simple bash script with some basic strictness checks, option parsing,
-help features, easy debug printing.
+help features, easy debug printing. Useful for regular scripts.
+
+###### Notable Features
+
+- Strict Mode,
+- Help template, printable with `-h` or `--help`,
+- `debug` printing with `--debug` flag,
+- `die` command with error message printing and exiting,
+- Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing.
+
 
 ### [bash-with-commands](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-with-commands)
 
-An example of a bash program with commands. This contains lots of features.
+An example of a bash program with commands. This contains lots of features
+and should be usable for creating bash programs that do multiple related
+tasks.
+
+###### Notable Features
+
+- Strict Mode,
+- Help template, printable with `-h` or `--help`,
+- `debug` printing with `--debug` flag,
+- `die` command with error message printing and exiting,
+- Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing,
+- Automatic command loading,
+- A DSL for specifying per-command help,
+- Built-in commands for help, version, and command listing,
+- Useful utility functions.
 
 ## Notes
 
