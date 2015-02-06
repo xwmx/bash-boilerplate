@@ -33,7 +33,6 @@ options other than help.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`.
 
-
 ### [bash-simple-plus](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple-plus)
 
 A simple bash script with some basic strictness checks, option parsing,
@@ -46,7 +45,6 @@ help features, easy debug printing. Useful for regular scripts.
 - `debug` printing with `--debug` flag,
 - `die` command with error message printing and exiting,
 - Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing.
-
 
 ### [bash-with-commands](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-with-commands)
 
