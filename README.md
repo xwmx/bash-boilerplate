@@ -137,7 +137,7 @@ Arrays:
     ${some_array[0]:-}              # blank default value
     ${some_array[0]:-default_value} # default value: the string 'default_value'
 
-Postitional variables:
+Positional variables:
 
     ${1:-alternative} # default value: the string 'alternative'
     ${2:-}            # blank default value
