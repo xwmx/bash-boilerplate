@@ -4,7 +4,7 @@ Bash Boilerplate
 A collection of example bash scripts that can be used as starting points.
 
 I also use these scripts to record and document various common approaches
-and conventions that I've learning and encountered while working with bash.
+and conventions that I've learned and encountered while working with bash.
 To this end, each script contains a lot of comments attempting to describe
 the functionality and syntax as much as possible.
 
