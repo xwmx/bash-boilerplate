@@ -244,7 +244,8 @@ about the variable being unused.
 
 #### 'Strict Mode' TL;DR
 
-Add this to the top of every script:
+Add this to the top of every script (note: this is already included in the
+boilerplate scripts):
 
     # Bash 'Strict Mode'
     # https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
