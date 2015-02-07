@@ -87,7 +87,7 @@ issues where corner cases can cause delayed failures.
 - https://github.com/koalaman/shellcheck
 
 It can be used with Vim via
-[syntastic](https://github.com/scrooloose/syntastic)
+[Syntastic](https://github.com/scrooloose/syntastic)
 and Emacs via
 [Flycheck](https://github.com/flycheck/flycheck)
 
