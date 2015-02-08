@@ -12,7 +12,7 @@ In many cases there are debug statements or example code that demonstrate
 functionality or reveal the state of the program at a certain point. These
 should generally be removed when customizing the scripts, while retaining
 the parts that still apply. Especially in the case of the
-`bash-with-commands` script, it's probably a good idea to play around with
+`bash-commands` script, it's probably a good idea to play around with
 the different features before diving into customization.
 
 ## Scripts
@@ -46,7 +46,7 @@ help features, easy debug printing. Useful for regular scripts.
 - `die` command with error message printing and exiting,
 - Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing.
 
-### [bash-with-commands](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-with-commands)
+### [bash-commands](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-commands)
 
 An example of a bash program with commands. This contains lots of features
 and should be usable for creating bash programs that do multiple related
