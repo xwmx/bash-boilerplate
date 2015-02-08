@@ -161,8 +161,9 @@ _me=$(basename "$0")
 
 # _debug()
 #
-# Shortcut for testing against the existence of a $debug variable. Primarily
-# intended to be used before a printf statement.
+# A simple function for executing a specified command if the `_use_debug`
+# variable has been set. The command is expected to print a message and
+# should typically be either `echo`, `printf`, or `cat`.
 #
 # Usage:
 #   _debug printf "Debug info. Variable: %s\n" "$0"
@@ -175,9 +176,9 @@ _debug() {
 }
 # debug()
 #
-# Uses the more familiar syntax and echo so printf can be avoided if desired.
-# I prefer printf, personally, since it's more explicit, but I acknowledge that
-# it's more cumbersome.
+# Print the specified message if the `_use_debug` variable has been set.
+#
+# This is a shortcut for the _debug() function that simply echos the message.
 #
 # Usage:
 #   debug "Debug info. Variable: $0"
@@ -191,8 +192,9 @@ debug() {
 
 # _die()
 #
-# Simple function for exiting with an error after executing the specified
-# command.
+# A simple function for exiting with an error after executing the specified
+# command. The command is expected to print a message and should typically
+# be either `echo`, `printf`, or `cat`.
 #
 # Usage:
 #   _die printf "Error message. Variable: %s\n" "$0"
@@ -204,9 +206,9 @@ _die() {
 }
 # die()
 #
-# Uses the more familiar syntax and echo so printf can be avoided if desired.
-# I prefer printf, personally, since it's more explicit, but I acknowledge that
-# it's more cumbersome.
+# Exit with an error and print the specified message.
+#
+# This is a shortcut for the _die() function that simply echos the message.
 #
 # Usage:
 #   die "Error message. Variable: $0"
