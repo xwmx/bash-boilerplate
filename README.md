@@ -244,20 +244,17 @@ about the variable being unused.
 
 ---
 
-#### 'Strict Mode' TL;DR
+#### Simple 'Strict Mode' TL;DR
 
-Add this to the top of every script (note: this is already included in the
-boilerplate scripts):
+Add this to the top of every script (note: an extended version of this is
+already included in the boilerplate scripts):
 
     # Bash 'Strict Mode'
     # https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
     set -o nounset
     set -o errexit
     set -o pipefail
-    DEFAULT_IFS="$IFS"; printf "%s" "$DEFAULT_IFS" > /dev/null
-    SAFER_IFS="$(printf '\n\t')"
-    # Then set $IFS
-    IFS="$SAFER_IFS"
+    IFS="$(printf '\n\t')"
 
 ---
 
