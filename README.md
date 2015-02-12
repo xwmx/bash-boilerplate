@@ -293,6 +293,8 @@ easier to maintain. As a result, some general design preferences:
 
 - [oxyc/bash-boilerplate](https://github.com/oxyc/bash-boilerplate)
 - [e36freak/templates](https://github.com/e36freak/templates)
+- [connermcd/bash-boilerplate](https://github.com/connermcd/bash-boilerplate)
+- [chrisopedia/bash-boilerplate](https://github.com/chrisopedia/bash-boilerplate)
 - [alphabetum/starters](https://github.com/alphabetum/starters)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
 
