@@ -276,6 +276,19 @@ easier to maintain. As a result, some general design preferences:
   a programmer familiar with the shell, but not experienced writing shell
   scripts
 
+### Resources
+
+- [About ShellCheck (shellcheck.net)](http://www.shellcheck.net/about.html)
+- [Bash Reference Manual (gnu.org)](http://www.gnu.org/software/bash/manual/bashref.html)
+- ["Unofficial Bash Strict Mode" (redsymbol.net)
+](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
+- [Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
+](http://www.dwheeler.com/essays/filenames-in-shell.html)
+- [Understanding Exit Codes and how to use them in bash scripts (bencane.com)
+](http://bencane.com/2014/09/02/understanding-exit-codes-and-how-to-use-them-in-bash-scripts/)
+- ['builtin "read -d" behaves differently after "set -e"' (lists.gnu.org)
+](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
+
 ### Related Projects
 
 - [oxyc/bash-boilerplate](https://github.com/oxyc/bash-boilerplate)
