@@ -588,7 +588,7 @@ Boilerplate for creating a bash program with commands.
 Version: $_VERSION
 
 Usage:
-  $_me command [--command-options] [<arguments>]
+  $_me <command> [--command-options] [<arguments>]
   $_me -h | --help
   $_me --version
 

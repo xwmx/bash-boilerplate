@@ -185,7 +185,7 @@ Boilerplate for creating a simple bash script with some basic strictness
 checks and help features.
 
 Usage:
-  $_me argument
+  $_me [<arguments>]
   $_me -h | --help
 
 Options:
