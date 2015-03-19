@@ -149,6 +149,12 @@ IFS="$SAFER_IFS"
 
 _VERSION="0.1.0-alpha"
 
+# DEFAULT_COMMAND
+#
+# The command to be run by default, when no command name is specified. If the
+# environment has an existing $DEFAULT_COMMAND set, then that value is used.
+DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
+
 ###############################################################################
 # Debug
 ###############################################################################
@@ -419,7 +425,7 @@ _main() {
 
   # If $cmd is blank, then set to help
   if [[ -z $cmd ]]; then
-    cmd="help"
+    cmd="$DEFAULT_COMMAND"
   fi
 
   # Load all of the commands.
