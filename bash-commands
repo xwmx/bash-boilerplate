@@ -471,6 +471,22 @@ _contains() {
   return 1
 }
 
+# _join()
+#
+# Takes a separator and a list of items, joining that list of items with the
+# separator.
+#
+# Usage:
+#   _join "," a b c
+#   _join "${an_array[@]}"
+_join() {
+  local separator="$1"
+  local target_array=(${@:2})
+  local dirty="$(printf "${separator}%s"  "${target_array[@]}")"
+  local clean="${dirty:${#separator}}"
+  printf "%s" "${clean}"
+}
+
 # _command_argv_includes()
 #
 # Takes a possible command argument and determines whether it is included in
