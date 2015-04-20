@@ -351,12 +351,12 @@ _debug printf "\$command_parameters: %s\n" "${command_parameters[*]:-}"
 # Environment
 ###############################################################################
 
-# $_me
+# $_ME
 #
 # Set to the program's basename.
-_me=$(basename "$0")
+_ME=$(basename "$0")
 
-_debug printf "\$_me: %s\n" "$_me"
+_debug printf "\$_ME: %s\n" "$_ME"
 
 ###############################################################################
 # Load Commands
@@ -569,7 +569,7 @@ _print_desc() {
 
 desc version <<EOM
 Usage:
-  $_me ( version | --version )
+  $_ME ( version | --version )
 
 Description:
   Display the current program version.
@@ -584,10 +584,10 @@ version() {
 
 desc help <<EOM
 Usage:
-  $_me help [<command>]
+  $_ME help [<command>]
 
 Description:
-  Display help information for $_me or a specified command.
+  Display help information for $_ME or a specified command.
 EOM
 help() {
   if [[ ${#command_argv[@]} = 1 ]]; then
@@ -604,16 +604,16 @@ Boilerplate for creating a bash program with commands.
 Version: $_VERSION
 
 Usage:
-  $_me <command> [--command-options] [<arguments>]
-  $_me -h | --help
-  $_me --version
+  $_ME <command> [--command-options] [<arguments>]
+  $_ME -h | --help
+  $_ME --version
 
 Options:
   -h --help  Display this help information.
   --version  Display version information.
 
 Help:
-  $_me help [<command>]
+  $_ME help [<command>]
 
 $(commands)
 EOM
@@ -626,7 +626,7 @@ EOM
 
 desc commands <<EOM
 Usage:
-  $_me commands [--raw]
+  $_ME commands [--raw]
 
 Options:
   --raw  Display the command list without formatting.
@@ -655,7 +655,7 @@ commands() {
 #
 # desc example <<EOM
 #   Usage:
-#     $_me example
+#     $_ME example
 #
 #   Description:
 #     Print "Hello, World!"
@@ -676,7 +676,7 @@ commands() {
 
 desc example <<EOM
 Usage:
-  $_me example [<name>] [--farewell]
+  $_ME example [<name>] [--farewell]
 
 Options:
   --farewell  Print "Goodbye, World!"

@@ -150,10 +150,10 @@ IFS="$SAFER_IFS"
 # Environment
 ###############################################################################
 
-# $_me
+# $_ME
 #
 # Set to the program's basename.
-_me=$(basename "$0")
+_ME=$(basename "$0")
 
 ###############################################################################
 # Debug
@@ -246,8 +246,8 @@ Boilerplate for creating a simple bash script with some basic strictness
 checks and help features, and easy debug printing, and basic option handling.
 
 Usage:
-  $_me [--options] [<arguments>]
-  $_me -h | --help
+  $_ME [--options] [<arguments>]
+  $_ME -h | --help
 
 Options:
   -h --help  Display this help information.
