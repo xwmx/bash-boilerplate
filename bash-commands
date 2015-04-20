@@ -481,11 +481,14 @@ _contains() {
 #   _join "," a b c
 #   _join "${an_array[@]}"
 _join() {
-  local separator="$1"
-  local target_array=(${@:2})
+  local separator
+  local target_array
   local dirty
+  local clean
+  separator="$1"
+  target_array=(${@:2})
   dirty="$(printf "${separator}%s"  "${target_array[@]}")"
-  local clean="${dirty:${#separator}}"
+  clean="${dirty:${#separator}}"
   printf "%s" "${clean}"
 }
 
