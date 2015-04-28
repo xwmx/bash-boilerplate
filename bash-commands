@@ -562,7 +562,7 @@ _print_desc() {
   if [[ -n ${!var:-} ]]; then
     printf "%s\n" "${!var}"
   else
-   printf "No additional information for \`%s\`\n" "$1"
+    printf "No additional information for \`%s\`\n" "$1"
   fi
 }
 
