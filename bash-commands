@@ -311,6 +311,7 @@ command_argv=("$0")
 # what the program needs.
 cmd=""
 _use_debug=0
+_fallback_to_version_as_cmd=
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -320,22 +321,38 @@ while [ $# -gt 0 ]; do
       cmd="help"
       ;;
     --version)
-      cmd="version"
+      _fallback_to_version_as_cmd=1
       ;;
     --debug)
       _use_debug=1
       ;;
     *)
-      # The first non-option argument is assumed to be the command name.
-      # All subsequent arguments are added to $command_arguments.
-      if [[ -n $cmd ]]; then
-        command_argv+=("$opt")
-      else
-        cmd="$opt"
-      fi
+      command_argv+=("$opt")
       ;;
   esac
 done
+
+# If the command wasn't set in the previous step, set it to the argument in
+# in the second place in the command_argv array ("1"), which is assumed to be
+# a command name, then remove that element from the array. By doing this as
+# a second step, the -h and --help options take precedence over any command
+# names, making it possible to used the -h and --help flags to show command
+# help.
+if [[ -z $cmd ]]; then
+  cmd="${command_argv[1]:-}"
+  # Remove the element in the 1 position by making an array from the slices
+  # before and after it.
+  command_argv=(${command_argv[@]:0:1} ${command_argv[@]:2})
+fi
+
+# If the command has still not been set, then check to see if the version
+# flag was used and, if so, set the command to 'version'.
+if [[ -z $cmd ]]; then
+  if ((_fallback_to_version_as_cmd)); then
+    cmd="version"
+  fi
+fi
+
 
 # Set $command_parameters to $command_argv, minus the initial element, $0. This
 # provides an array that is equivalent to $* and $@ within each command
@@ -595,7 +612,26 @@ Description:
   Display help information for $_ME or a specified command.
 EOM
 help() {
-  if [[ ${#command_argv[@]} = 1 ]]; then
+  local _target_command=
+
+  for arg in "${command_parameters[@]:-}"; do
+    case $arg in
+      *)
+        if [[ -z "$_target_command" ]]; then
+          _target_command=$arg
+        fi
+        ;;
+    esac
+  done
+
+  _debug printf \
+    "help() \${command_parameters[*]}: %s\n" \
+    "${command_argv[*]:-}"
+  _debug printf \
+    "help() \$_target_command: %s\n" \
+    "$_target_command"
+
+  if [[ -z "$_target_command" ]]; then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -623,7 +659,7 @@ Help:
 $(commands)
 EOM
   else
-    _print_desc "$1"
+    _print_desc "$_target_command"
   fi
 }
 
