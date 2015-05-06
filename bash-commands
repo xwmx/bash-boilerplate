@@ -729,9 +729,9 @@ example() {
   # Parse command arguments.
   for arg in "${command_argv[@]:-}"; do
     case $arg in
-    --farewell) greeting="Goodbye";;
-    -*) _die printf "Unexpected option: %s\n" "$arg";;
-    *) arguments+=($arg);;
+      --farewell) greeting="Goodbye";;
+      -*) _die printf "Unexpected option: %s\n" "$arg";;
+      *) arguments+=($arg);;
     esac
   done
 
