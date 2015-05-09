@@ -464,6 +464,9 @@ _main() {
 
 # _function_exists()
 #
+# Usage:
+#   _function_exists "possible_function_name"
+#
 # Takes a potential function name as an argument and returns whether a function
 # exists with that name.
 _function_exists() {
@@ -471,6 +474,9 @@ _function_exists() {
 }
 
 # _command_exists()
+#
+# Usage:
+#   _command_exists "possible_command_name"
 #
 # Takes a potential command name as an argument and returns whether a command
 # exists with that name.
@@ -483,10 +489,10 @@ _command_exists() {
 
 # _contains()
 #
-# Takes an item and a list and determines whether the list contains the item.
-#
 # Usage:
 #   _contains "$item" "${list[*]}"
+#
+# Takes an item and a list and determines whether the list contains the item.
 _contains() {
   local test_list=(${*:2})
   for _test_element in "${test_list[@]:-}"
@@ -502,12 +508,12 @@ _contains() {
 
 # _join()
 #
-# Takes a separator and a list of items, joining that list of items with the
-# separator.
-#
 # Usage:
 #   _join "," a b c
 #   _join "${an_array[@]}"
+#
+# Takes a separator and a list of items, joining that list of items with the
+# separator.
 _join() {
   local separator
   local target_array
@@ -522,16 +528,36 @@ _join() {
 
 # _command_argv_includes()
 #
+# Usage:
+#   _command_argv_includes "an_argument"
+#
 # Takes a possible command argument and determines whether it is included in
 # the command argument list.
 #
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
-#
-# Usage:
-#   _command_argv_includes "an_argument"
 _command_argv_includes() {
   _contains "$1" "${command_argv[*]}"
+}
+
+# _blank()
+#
+# Usage:
+#   _blank "$an_argument"
+#
+# Takes an argument and returns true if it is blank.
+_blank() {
+  [[ -z "${1:-}" ]]
+}
+
+# _present()
+#
+# Usage:
+#   _present "$an_argument"
+#
+# Takes an argument and returns true if it is present.
+_present() {
+  [[ -n "${1:-}" ]]
 }
 
 ###############################################################################
