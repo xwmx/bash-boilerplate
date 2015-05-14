@@ -222,7 +222,7 @@ die() {
 ###############################################################################
 
 # Get raw options for any commands that expect them.
-raw_options="$*"
+RAW_OPTIONS="$*"
 
 # Steps:
 #
@@ -343,7 +343,7 @@ done
 COMMAND_PARAMETERS=("${COMMAND_ARGV[@]:1}")
 
 _debug printf "\$cmd: %s\n" "$cmd"
-_debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
+_debug printf "\$RAW_OPTIONS (one per line):\n%s\n" "$RAW_OPTIONS"
 _debug printf "\$COMMAND_ARGV: %s\n" "${COMMAND_ARGV[*]}"
 _debug printf "\$COMMAND_PARAMETERS: %s\n" "${COMMAND_PARAMETERS[*]:-}"
 
