@@ -161,14 +161,14 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 
 # _debug()
 #
-# A simple function for executing a specified command if the `_use_debug`
+# A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
 #
 # Usage:
 #   _debug printf "Debug info. Variable: %s\n" "$0"
 _debug() {
-  if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
+  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
     "$@"
@@ -177,7 +177,7 @@ _debug() {
 }
 # debug()
 #
-# Print the specified message if the `_use_debug` variable has been set.
+# Print the specified message if the `$_USE_DEBUG` variable has been set.
 #
 # This is a shortcut for the _debug() function that simply echos the message.
 #
@@ -307,10 +307,10 @@ unset options
 # that have been filtered out in the program option parsing loop. This array
 # is initialized with $0, which is the program's name.
 command_argv=("$0")
-# Initialize $cmd and $_use_debug, which can continue to be blank depending on
-# what the program needs.
+# Initialize $cmd and `$_USE_DEBUG`, which can continue to be blank depending
+# on what the program needs.
 cmd=""
-_use_debug=0
+_USE_DEBUG=0
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -323,7 +323,7 @@ while [ $# -gt 0 ]; do
       cmd="version"
       ;;
     --debug)
-      _use_debug=1
+      _USE_DEBUG=1
       ;;
     *)
       # The first non-option argument is assumed to be the command name.
