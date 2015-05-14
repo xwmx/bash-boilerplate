@@ -300,7 +300,7 @@ unset options
 
 # Parse Options ###############################################################
 
-# Initialize COMMAND_ARGV array
+# Initialize $COMMAND_ARGV array
 #
 # This array contains all of the arguments that get passed along to each
 # command. This is essentially the same as the program arguments, minus those
