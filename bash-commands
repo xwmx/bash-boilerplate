@@ -793,5 +793,5 @@ example() {
 # Run Program
 ###############################################################################
 
-# Calling the _main function after everything has been defined.
+# Call the `_main` function after everything has been defined.
 _main
