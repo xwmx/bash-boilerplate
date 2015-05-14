@@ -433,7 +433,7 @@ _main() {
   _load_commands
 
   # If the command is defined, run it, otherwise return an error.
-  if ( _contains "$_CMD" "${defined_commands[*]:-}" ); then
+  if _contains "$_CMD" "${defined_commands[*]:-}"; then
     # Pass all comment arguments to the program except for the first ($0).
     $_CMD "${COMMAND_PARAMETERS[@]:-}"
   else
