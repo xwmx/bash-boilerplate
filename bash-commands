@@ -609,7 +609,7 @@ _print_desc() {
 
 # Version #####################################################################
 
-desc version <<EOM
+desc "version" <<EOM
 Usage:
   $_ME ( version | --version )
 
@@ -624,7 +624,7 @@ version() {
 
 # Help ########################################################################
 
-desc help <<EOM
+desc "help" <<EOM
 Usage:
   $_ME help [<command>]
 
@@ -666,7 +666,7 @@ EOM
 
 # Command List ################################################################
 
-desc commands <<EOM
+desc "commands" <<EOM
 Usage:
   $_ME commands [--raw]
 
@@ -716,7 +716,7 @@ commands() {
 
 # --------------------------------------------------------------------- example
 
-desc example <<EOM
+desc "example" <<EOM
 Usage:
   $_ME example [<name>] [--farewell]
 
