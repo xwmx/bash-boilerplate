@@ -337,15 +337,15 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# Set $command_parameters to $COMMAND_ARGV, minus the initial element, $0. This
+# Set $COMMAND_PARAMETERS to $COMMAND_ARGV, minus the initial element, $0. This
 # provides an array that is equivalent to $* and $@ within each command
 # function, though the array is zero-indexed, which could lead to confusion.
-command_parameters=("${COMMAND_ARGV[@]:1}")
+COMMAND_PARAMETERS=("${COMMAND_ARGV[@]:1}")
 
 _debug printf "\$cmd: %s\n" "$cmd"
 _debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
 _debug printf "\$COMMAND_ARGV: %s\n" "${COMMAND_ARGV[*]}"
-_debug printf "\$command_parameters: %s\n" "${command_parameters[*]:-}"
+_debug printf "\$COMMAND_PARAMETERS: %s\n" "${COMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
 # Environment
@@ -435,7 +435,7 @@ _main() {
   # If the command is defined, run it, otherwise return an error.
   if ( _contains "$cmd" "${defined_commands[*]:-}" ); then
     # Pass all comment arguments to the program except for the first ($0).
-    $cmd "${command_parameters[@]:-}"
+    $cmd "${COMMAND_PARAMETERS[@]:-}"
   else
     _die printf "Unknown command: %s\n" "$cmd"
   fi
@@ -732,31 +732,31 @@ example() {
   # command argument arrays.
   #
   # Note in particular that $@ and $* omit the script name like the
-  # $command_parameters array does, whereas the positional parameter variables
+  # $COMMAND_PARAMETERS array does, whereas the positional parameter variables
   # $0, $1, $2 do include it, like the $COMMAND_ARGV array.
   #
   # Individual elements 0, 1, and 2 of each:
   _debug printf "example() \$0: %s\n" "${0:-}"
   _debug printf "example() \${COMMAND_ARGV[0]:-}: %s\n" "${COMMAND_ARGV[0]:-}"
   _debug \
-    printf "example() \${command_parameters[0]:-}: %s\n" \
-    "${command_parameters[0]:-}"
+    printf "example() \${COMMAND_PARAMETERS[0]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[0]:-}"
   _debug printf "example() \$1: %s\n" "${1:-}"
   _debug printf "example() \${COMMAND_ARGV[1]:-}: %s\n" "${COMMAND_ARGV[1]:-}"
   _debug \
-    printf "example() \${command_parameters[1]:-}: %s\n" \
-    "${command_parameters[1]:-}"
+    printf "example() \${COMMAND_PARAMETERS[1]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[1]:-}"
   _debug printf "example() \$2: %s\n" "${2:-}"
   _debug printf "example() \${COMMAND_ARGV[2]:-}: %s\n" "${COMMAND_ARGV[2]:-}"
   _debug \
-    printf "example() \${command_parameters[2]:-}: %s\n" \
-    "${command_parameters[2]:-}"
+    printf "example() \${COMMAND_PARAMETERS[2]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[2]:-}"
   # Each expanded to string:
   _debug printf "example() \${*:-}: %s\n" "${*:-}"
   _debug printf "example() \${COMMAND_ARGV[*]:-}: %s\n" "${COMMAND_ARGV[*]:-}"
   _debug \
-    printf "example() \${command_parameters[*]:-}: %s\n" \
-    "${command_parameters[*]:-}"
+    printf "example() \${COMMAND_PARAMETERS[*]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[*]:-}"
 
   # Set default greeting.
   local greeting="Hello"
