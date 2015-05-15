@@ -149,7 +149,7 @@ IFS="$SAFER_IFS"
 
 _VERSION="0.1.0-alpha"
 
-# DEFAULT_COMMAND
+# $DEFAULT_COMMAND
 #
 # The command to be run by default, when no command name is specified. If the
 # environment has an existing $DEFAULT_COMMAND set, then that value is used.
@@ -161,14 +161,14 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 
 # _debug()
 #
-# A simple function for executing a specified command if the `_use_debug`
+# A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
 #
 # Usage:
 #   _debug printf "Debug info. Variable: %s\n" "$0"
 _debug() {
-  if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
+  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
     "$@"
@@ -177,7 +177,7 @@ _debug() {
 }
 # debug()
 #
-# Print the specified message if the `_use_debug` variable has been set.
+# Print the specified message if the `$_USE_DEBUG` variable has been set.
 #
 # This is a shortcut for the _debug() function that simply echos the message.
 #
@@ -222,7 +222,7 @@ die() {
 ###############################################################################
 
 # Get raw options for any commands that expect them.
-raw_options="$*"
+RAW_OPTIONS="$*"
 
 # Steps:
 #
@@ -300,17 +300,17 @@ unset options
 
 # Parse Options ###############################################################
 
-# Initialize command_argv array
+# Initialize $COMMAND_ARGV array
 #
 # This array contains all of the arguments that get passed along to each
 # command. This is essentially the same as the program arguments, minus those
 # that have been filtered out in the program option parsing loop. This array
 # is initialized with $0, which is the program's name.
-command_argv=("$0")
-# Initialize $cmd and $_use_debug, which can continue to be blank depending on
-# what the program needs.
-cmd=""
-_use_debug=0
+COMMAND_ARGV=("$0")
+# Initialize $_CMD and `$_USE_DEBUG`, which can continue to be blank depending
+# on what the program needs.
+_CMD=""
+_USE_DEBUG=0
 _fallback_to_version_as_cmd=
 
 while [ $# -gt 0 ]; do
@@ -318,16 +318,17 @@ while [ $# -gt 0 ]; do
   shift
   case "$opt" in
     -h|--help)
-      cmd="help"
+      _CMD="help"
       ;;
     --version)
       _fallback_to_version_as_cmd=1
+      _CMD="version"
       ;;
     --debug)
-      _use_debug=1
+      _USE_DEBUG=1
       ;;
     *)
-      command_argv+=("$opt")
+      COMMAND_ARGV+=("$opt")
       ;;
   esac
 done
@@ -338,31 +339,31 @@ done
 # a second step, the -h and --help options take precedence over any command
 # names, making it possible to used the -h and --help flags to show command
 # help.
-if [[ -z $cmd ]]; then
-  cmd="${command_argv[1]:-}"
+if [[ -z $_CMD ]]; then
+  _CMD="${COMMAND_ARGV[1]:-}"
   # Remove the element in the 1 position by making an array from the slices
   # before and after it.
-  command_argv=(${command_argv[@]:0:1} ${command_argv[@]:2})
+  COMMAND_ARGV=(${COMMAND_ARGV[@]:0:1} ${COMMAND_ARGV[@]:2})
 fi
 
 # If the command has still not been set, then check to see if the version
 # flag was used and, if so, set the command to 'version'.
-if [[ -z $cmd ]]; then
+if [[ -z $_CMD ]]; then
   if ((_fallback_to_version_as_cmd)); then
-    cmd="version"
+    _CMD="version"
   fi
 fi
 
 
-# Set $command_parameters to $command_argv, minus the initial element, $0. This
+# Set $COMMAND_PARAMETERS to $COMMAND_ARGV, minus the initial element, $0. This
 # provides an array that is equivalent to $* and $@ within each command
 # function, though the array is zero-indexed, which could lead to confusion.
-command_parameters=("${command_argv[@]:1}")
+COMMAND_PARAMETERS=("${COMMAND_ARGV[@]:1}")
 
-_debug printf "\$cmd: %s\n" "$cmd"
-_debug printf "\$raw_options (one per line):\n%s\n" "$raw_options"
-_debug printf "\$command_argv: %s\n" "${command_argv[*]}"
-_debug printf "\$command_parameters: %s\n" "${command_parameters[*]:-}"
+_debug printf "\$_CMD: %s\n" "$_CMD"
+_debug printf "\$RAW_OPTIONS (one per line):\n%s\n" "$RAW_OPTIONS"
+_debug printf "\$COMMAND_ARGV: %s\n" "${COMMAND_ARGV[*]}"
+_debug printf "\$COMMAND_PARAMETERS: %s\n" "${COMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
 # Environment
@@ -379,8 +380,8 @@ _debug printf "\$_ME: %s\n" "$_ME"
 # Load Commands
 ###############################################################################
 
-# Initialize defined_commands array.
-defined_commands=()
+# Initialize $DEFINED_COMMANDS array.
+DEFINED_COMMANDS=()
 
 # _load_commands()
 #
@@ -408,7 +409,7 @@ _load_commands() {
 
     _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
 
-    # Add the function name to the $defined_commands array unless it starts
+    # Add the function name to the $DEFINED_COMMANDS array unless it starts
     # with an underscore or is one of the desc(), debug(), or die() functions,
     # since these are treated as having 'private' visibility.
     if ! ( [[ "$function_name" =~ ^_(.*)  ]] || \
@@ -416,13 +417,13 @@ _load_commands() {
            [[ "$function_name" == "debug" ]] || \
            [[ "$function_name" == "die"   ]]
     ); then
-      defined_commands+=("$function_name")
+      DEFINED_COMMANDS+=("$function_name")
     fi
   done
 
   _debug printf \
-    "commands() \$defined_commands:\n%s\n" \
-    "${defined_commands[*]:-}"
+    "commands() \$DEFINED_COMMANDS:\n%s\n" \
+    "${DEFINED_COMMANDS[*]:-}"
 }
 
 ###############################################################################
@@ -439,22 +440,22 @@ _load_commands() {
 # NOTE: must be called at end of program after all commands have been defined.
 _main() {
   _debug printf "main(): entering...\n"
-  _debug printf "main() \$cmd (upon entering): %s\n" "$cmd"
+  _debug printf "main() \$_CMD (upon entering): %s\n" "$_CMD"
 
-  # If $cmd is blank, then set to help
-  if [[ -z $cmd ]]; then
-    cmd="$DEFAULT_COMMAND"
+  # If $_CMD is blank, then set to help
+  if [[ -z $_CMD ]]; then
+    _CMD="$DEFAULT_COMMAND"
   fi
 
   # Load all of the commands.
   _load_commands
 
   # If the command is defined, run it, otherwise return an error.
-  if ( _contains "$cmd" "${defined_commands[*]:-}" ); then
+  if _contains "$_CMD" "${DEFINED_COMMANDS[*]:-}"; then
     # Pass all comment arguments to the program except for the first ($0).
-    $cmd "${command_parameters[@]:-}"
+    $_CMD "${COMMAND_PARAMETERS[@]:-}"
   else
-    _die printf "Unknown command: %s\n" "$cmd"
+    _die printf "Unknown command: %s\n" "$_CMD"
   fi
 }
 
@@ -537,7 +538,7 @@ _join() {
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
 _command_argv_includes() {
-  _contains "$1" "${command_argv[*]}"
+  _contains "$1" "${COMMAND_ARGV[*]}"
 }
 
 # _blank()
@@ -626,7 +627,7 @@ _print_desc() {
 
 # Version #####################################################################
 
-desc version <<EOM
+desc "version" <<EOM
 Usage:
   $_ME ( version | --version )
 
@@ -641,7 +642,7 @@ version() {
 
 # Help ########################################################################
 
-desc help <<EOM
+desc "help" <<EOM
 Usage:
   $_ME help [<command>]
 
@@ -651,7 +652,7 @@ EOM
 help() {
   local _target_command=
 
-  for arg in "${command_parameters[@]:-}"; do
+  for arg in "${COMMAND_PARAMETERS[@]:-}"; do
     case $arg in
       *)
         if [[ -z "$_target_command" ]]; then
@@ -662,8 +663,8 @@ help() {
   done
 
   _debug printf \
-    "help() \${command_parameters[*]}: %s\n" \
-    "${command_argv[*]:-}"
+    "help() \${COMMAND_PARAMETERS[*]}: %s\n" \
+    "${COMMAND_ARGV[*]:-}"
   _debug printf \
     "help() \$_target_command: %s\n" \
     "$_target_command"
@@ -702,7 +703,7 @@ EOM
 
 # Command List ################################################################
 
-desc commands <<EOM
+desc "commands" <<EOM
 Usage:
   $_ME commands [--raw]
 
@@ -714,10 +715,10 @@ Description:
 EOM
 commands() {
   if _command_argv_includes "--raw"; then
-    printf "%s\n" "${defined_commands[@]}"
+    printf "%s\n" "${DEFINED_COMMANDS[@]}"
   else
     printf "Available commands:\n"
-    printf "  %s\n" "${defined_commands[@]}"
+    printf "  %s\n" "${DEFINED_COMMANDS[@]}"
   fi
 }
 
@@ -752,7 +753,7 @@ commands() {
 
 # --------------------------------------------------------------------- example
 
-desc example <<EOM
+desc "example" <<EOM
 Usage:
   $_ME example [<name>] [--farewell]
 
@@ -768,31 +769,31 @@ example() {
   # command argument arrays.
   #
   # Note in particular that $@ and $* omit the script name like the
-  # $command_parameters array does, whereas the positional parameter variables
-  # $0, $1, $2 do include it, like the $command_argv array.
+  # $COMMAND_PARAMETERS array does, whereas the positional parameter variables
+  # $0, $1, $2 do include it, like the $COMMAND_ARGV array.
   #
   # Individual elements 0, 1, and 2 of each:
   _debug printf "example() \$0: %s\n" "${0:-}"
-  _debug printf "example() \${command_argv[0]:-}: %s\n" "${command_argv[0]:-}"
+  _debug printf "example() \${COMMAND_ARGV[0]:-}: %s\n" "${COMMAND_ARGV[0]:-}"
   _debug \
-    printf "example() \${command_parameters[0]:-}: %s\n" \
-    "${command_parameters[0]:-}"
+    printf "example() \${COMMAND_PARAMETERS[0]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[0]:-}"
   _debug printf "example() \$1: %s\n" "${1:-}"
-  _debug printf "example() \${command_argv[1]:-}: %s\n" "${command_argv[1]:-}"
+  _debug printf "example() \${COMMAND_ARGV[1]:-}: %s\n" "${COMMAND_ARGV[1]:-}"
   _debug \
-    printf "example() \${command_parameters[1]:-}: %s\n" \
-    "${command_parameters[1]:-}"
+    printf "example() \${COMMAND_PARAMETERS[1]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[1]:-}"
   _debug printf "example() \$2: %s\n" "${2:-}"
-  _debug printf "example() \${command_argv[2]:-}: %s\n" "${command_argv[2]:-}"
+  _debug printf "example() \${COMMAND_ARGV[2]:-}: %s\n" "${COMMAND_ARGV[2]:-}"
   _debug \
-    printf "example() \${command_parameters[2]:-}: %s\n" \
-    "${command_parameters[2]:-}"
+    printf "example() \${COMMAND_PARAMETERS[2]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[2]:-}"
   # Each expanded to string:
   _debug printf "example() \${*:-}: %s\n" "${*:-}"
-  _debug printf "example() \${command_argv[*]:-}: %s\n" "${command_argv[*]:-}"
+  _debug printf "example() \${COMMAND_ARGV[*]:-}: %s\n" "${COMMAND_ARGV[*]:-}"
   _debug \
-    printf "example() \${command_parameters[*]:-}: %s\n" \
-    "${command_parameters[*]:-}"
+    printf "example() \${COMMAND_PARAMETERS[*]:-}: %s\n" \
+    "${COMMAND_PARAMETERS[*]:-}"
 
   # Set default greeting.
   local greeting="Hello"
@@ -800,7 +801,7 @@ example() {
   local arguments=()
 
   # Parse command arguments.
-  for arg in "${command_argv[@]:-}"; do
+  for arg in "${COMMAND_ARGV[@]:-}"; do
     case $arg in
       --farewell) greeting="Goodbye";;
       -*) _die printf "Unexpected option: %s\n" "$arg";;
@@ -829,5 +830,5 @@ example() {
 # Run Program
 ###############################################################################
 
-# Calling the _main function after everything has been defined.
+# Call the `_main` function after everything has been defined.
 _main

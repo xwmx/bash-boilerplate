@@ -161,14 +161,14 @@ _ME=$(basename "$0")
 
 # _debug()
 #
-# A simple function for executing a specified command if the `_use_debug`
+# A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
 #
 # Usage:
 #   _debug printf "Debug info. Variable: %s\n" "$0"
 _debug() {
-  if [[ "${_use_debug:-"0"}" -eq 1 ]]; then
+  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
     "$@"
@@ -176,7 +176,7 @@ _debug() {
 }
 # debug()
 #
-# Print the specified message if the `_use_debug` variable has been set.
+# Print the specified message if the `$_USE_DEBUG` variable has been set.
 #
 # This is a shortcut for the _debug() function that simply echos the message.
 #
@@ -344,7 +344,7 @@ unset options
 
 # Initialize program option variables.
 _print_help=0
-_use_debug=0
+_USE_DEBUG=0
 
 # Initialize additional expected option variables.
 _option_x=0
@@ -387,7 +387,7 @@ while [[ "${1:-}" = -?* ]]; do
       _print_help=1
       ;;
     --debug)
-      _use_debug=1
+      _USE_DEBUG=1
       ;;
     -x|--option-x)
       _option_x=1
