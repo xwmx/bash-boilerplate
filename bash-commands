@@ -300,13 +300,13 @@ unset options
 
 # Parse Options ###############################################################
 
-# Initialize $COMMAND_ARGV array
+# Initialize $_COMMAND_ARGV array
 #
 # This array contains all of the arguments that get passed along to each
 # command. This is essentially the same as the program arguments, minus those
 # that have been filtered out in the program option parsing loop. This array
 # is initialized with $0, which is the program's name.
-COMMAND_ARGV=("$0")
+_COMMAND_ARGV=("$0")
 # Initialize $_CMD and `$_USE_DEBUG`, which can continue to be blank depending
 # on what the program needs.
 _CMD=""
@@ -327,9 +327,9 @@ while [ $# -gt 0 ]; do
       ;;
     *)
       # The first non-option argument is assumed to be the command name.
-      # All subsequent arguments are added to $COMMAND_ARGV.
+      # All subsequent arguments are added to $_COMMAND_ARGV.
       if [[ -n $_CMD ]]; then
-        COMMAND_ARGV+=("$opt")
+        _COMMAND_ARGV+=("$opt")
       else
         _CMD="$opt"
       fi
@@ -337,14 +337,14 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# Set $COMMAND_PARAMETERS to $COMMAND_ARGV, minus the initial element, $0. This
+# Set $COMMAND_PARAMETERS to $_COMMAND_ARGV, minus the initial element, $0. This
 # provides an array that is equivalent to $* and $@ within each command
 # function, though the array is zero-indexed, which could lead to confusion.
-COMMAND_PARAMETERS=("${COMMAND_ARGV[@]:1}")
+COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")
 
 _debug printf "\$_CMD: %s\n" "$_CMD"
 _debug printf "\$_RAW_OPTIONS (one per line):\n%s\n" "$_RAW_OPTIONS"
-_debug printf "\$COMMAND_ARGV: %s\n" "${COMMAND_ARGV[*]}"
+_debug printf "\$_COMMAND_ARGV: %s\n" "${_COMMAND_ARGV[*]}"
 _debug printf "\$COMMAND_PARAMETERS: %s\n" "${COMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
@@ -520,7 +520,7 @@ _join() {
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
 _command_argv_includes() {
-  _contains "$1" "${COMMAND_ARGV[*]}"
+  _contains "$1" "${_COMMAND_ARGV[*]}"
 }
 
 # _blank()
@@ -632,7 +632,7 @@ Description:
   Display help information for $_ME or a specified command.
 EOM
 help() {
-  if [[ ${#COMMAND_ARGV[@]} = 1 ]]; then
+  if [[ ${#_COMMAND_ARGV[@]} = 1 ]]; then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -733,27 +733,27 @@ example() {
   #
   # Note in particular that $@ and $* omit the script name like the
   # $COMMAND_PARAMETERS array does, whereas the positional parameter variables
-  # $0, $1, $2 do include it, like the $COMMAND_ARGV array.
+  # $0, $1, $2 do include it, like the $_COMMAND_ARGV array.
   #
   # Individual elements 0, 1, and 2 of each:
   _debug printf "example() \$0: %s\n" "${0:-}"
-  _debug printf "example() \${COMMAND_ARGV[0]:-}: %s\n" "${COMMAND_ARGV[0]:-}"
+  _debug printf "example() \${_COMMAND_ARGV[0]:-}: %s\n" "${_COMMAND_ARGV[0]:-}"
   _debug \
     printf "example() \${COMMAND_PARAMETERS[0]:-}: %s\n" \
     "${COMMAND_PARAMETERS[0]:-}"
   _debug printf "example() \$1: %s\n" "${1:-}"
-  _debug printf "example() \${COMMAND_ARGV[1]:-}: %s\n" "${COMMAND_ARGV[1]:-}"
+  _debug printf "example() \${_COMMAND_ARGV[1]:-}: %s\n" "${_COMMAND_ARGV[1]:-}"
   _debug \
     printf "example() \${COMMAND_PARAMETERS[1]:-}: %s\n" \
     "${COMMAND_PARAMETERS[1]:-}"
   _debug printf "example() \$2: %s\n" "${2:-}"
-  _debug printf "example() \${COMMAND_ARGV[2]:-}: %s\n" "${COMMAND_ARGV[2]:-}"
+  _debug printf "example() \${_COMMAND_ARGV[2]:-}: %s\n" "${_COMMAND_ARGV[2]:-}"
   _debug \
     printf "example() \${COMMAND_PARAMETERS[2]:-}: %s\n" \
     "${COMMAND_PARAMETERS[2]:-}"
   # Each expanded to string:
   _debug printf "example() \${*:-}: %s\n" "${*:-}"
-  _debug printf "example() \${COMMAND_ARGV[*]:-}: %s\n" "${COMMAND_ARGV[*]:-}"
+  _debug printf "example() \${_COMMAND_ARGV[*]:-}: %s\n" "${_COMMAND_ARGV[*]:-}"
   _debug \
     printf "example() \${COMMAND_PARAMETERS[*]:-}: %s\n" \
     "${COMMAND_PARAMETERS[*]:-}"
@@ -764,7 +764,7 @@ example() {
   local arguments=()
 
   # Parse command arguments.
-  for arg in "${COMMAND_ARGV[@]:-}"; do
+  for arg in "${_COMMAND_ARGV[@]:-}"; do
     case $arg in
       --farewell) greeting="Goodbye";;
       -*) _die printf "Unexpected option: %s\n" "$arg";;
