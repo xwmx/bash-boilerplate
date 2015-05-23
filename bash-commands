@@ -424,7 +424,7 @@ _main() {
   _debug printf "main(): entering...\n"
   _debug printf "main() \$_CMD (upon entering): %s\n" "$_CMD"
 
-  # If $_CMD is blank, then set to help
+  # If $_CMD is blank, then set to `$DEFAULT_COMMAND`
   if [[ -z $_CMD ]]; then
     _CMD="$DEFAULT_COMMAND"
   fi
