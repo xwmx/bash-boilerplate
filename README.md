@@ -95,13 +95,30 @@ and Emacs via
 
 ### Bash "Strict Mode"
 
-These boilerplate scripts use a some common settings for enforcing strictness
+These boilerplate scripts use some common settings for enforcing strictness
 in Bash scripts, thereby preventing some errors.
 
 For some additional background, see Aaron Maxwell's
 ["Unofficial Bash Strict Mode" (redsymbol.net)
 ](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
 post.
+
+---
+
+#### Simple 'Strict Mode' TL;DR
+
+Add this to the top of every script (note: an extended version of this is
+already included in the boilerplate scripts):
+
+    # Bash 'Strict Mode'
+    # http://redsymbol.net/articles/unofficial-bash-strict-mode
+    # https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
+    set -o nounset
+    set -o errexit
+    set -o pipefail
+    IFS="$(printf '\n\t')"
+
+---
 
 #### `set -o nounset` / `set -u`
 
@@ -241,20 +258,6 @@ about the variable being unused.
     SAFER_IFS="$(printf '\n\t')"
     # Then set $IFS
     IFS="$SAFER_IFS"
-
----
-
-#### Simple 'Strict Mode' TL;DR
-
-Add this to the top of every script (note: an extended version of this is
-already included in the boilerplate scripts):
-
-    # Bash 'Strict Mode'
-    # https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
-    set -o nounset
-    set -o errexit
-    set -o pipefail
-    IFS="$(printf '\n\t')"
 
 ---
 
