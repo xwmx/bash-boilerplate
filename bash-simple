@@ -138,13 +138,7 @@ set -o pipefail
 # when expanding an array and you want to separate elements by spaces.
 # $SAFER_IFS contains the preferred settings for the program, and setting it
 # separately makes it easier to switch between the two if needed.
-#
-# NOTE: also printing $DEFAULT_IFS to /dev/null to avoid shellcheck warnings
-# about the variable being unused.
-DEFAULT_IFS="$IFS"; printf "%s" "$DEFAULT_IFS" > /dev/null
-SAFER_IFS="$(printf '\n\t')"
-# Then set $IFS
-IFS="$SAFER_IFS"
+DEFAULT_IFS="$IFS";SAFER_IFS="$(printf '\n\t')";IFS="$SAFER_IFS"
 
 ###############################################################################
 # Environment

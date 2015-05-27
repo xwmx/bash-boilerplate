@@ -138,13 +138,7 @@ set -o pipefail
 # when expanding an array and you want to separate elements by spaces.
 # $SAFER_IFS contains the preferred settings for the program, and setting it
 # separately makes it easier to switch between the two if needed.
-#
-# NOTE: also printing $DEFAULT_IFS to /dev/null to avoid shellcheck warnings
-# about the variable being unused.
-DEFAULT_IFS="$IFS"; printf "%s" "$DEFAULT_IFS" > /dev/null
-SAFER_IFS="$(printf '\n\t')"
-# Then set $IFS
-IFS="$SAFER_IFS"
+DEFAULT_IFS="$IFS";SAFER_IFS="$(printf '\n\t')";IFS="$SAFER_IFS"
 
 ###############################################################################
 # Environment
@@ -161,12 +155,12 @@ _ME=$(basename "$0")
 
 # _debug()
 #
+# Usage:
+#   _debug printf "Debug info. Variable: %s\n" "$0"
+#
 # A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
-#
-# Usage:
-#   _debug printf "Debug info. Variable: %s\n" "$0"
 _debug() {
   if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
     # Prefix debug message with "bug (U+1F41B)"
@@ -176,12 +170,12 @@ _debug() {
 }
 # debug()
 #
+# Usage:
+#   debug "Debug info. Variable: $0"
+#
 # Print the specified message if the `$_USE_DEBUG` variable has been set.
 #
 # This is a shortcut for the _debug() function that simply echos the message.
-#
-# Usage:
-#   debug "Debug info. Variable: $0"
 debug() {
   _debug echo "$@"
 }
@@ -192,12 +186,12 @@ debug() {
 
 # _die()
 #
+# Usage:
+#   _die printf "Error message. Variable: %s\n" "$0"
+#
 # A simple function for exiting with an error after executing the specified
 # command. The command is expected to print a message and should typically
 # be either `echo`, `printf`, or `cat`.
-#
-# Usage:
-#   _die printf "Error message. Variable: %s\n" "$0"
 _die() {
   # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
   printf "❌  "
@@ -206,12 +200,12 @@ _die() {
 }
 # die()
 #
+# Usage:
+#   die "Error message. Variable: $0"
+#
 # Exit with an error and print the specified message.
 #
 # This is a shortcut for the _die() function that simply echos the message.
-#
-# Usage:
-#   die "Error message. Variable: $0"
 die() {
   _die echo "$@"
 }
