@@ -221,7 +221,8 @@ _main() {
   if ( \
     [[ "$arg1" == "-h"     ]] ||
     [[ "$arg1" == "--help" ]]
-  ); then
+  )
+  then
     _print_help
   else
     _simple "$@"

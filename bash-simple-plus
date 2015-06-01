@@ -162,7 +162,8 @@ _ME=$(basename "$0")
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
 _debug() {
-  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
+  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]
+  then
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
     "$@"
@@ -296,12 +297,14 @@ optstring=xo:h
 # argument to the option, such as wget -qO-)
 unset options
 # while the number of arguments is greater than 0
-while (($#)); do
+while (($#))
+do
   case $1 in
     # if option is of type -ab
     -[!-]?*)
       # loop over each character starting with the second
-      for ((i=1; i<${#1}; i++)); do
+      for ((i=1; i<${#1}; i++))
+      do
         # extract 1 character from position 'i'
         c=${1:i:1}
         # add current char to options
@@ -309,14 +312,17 @@ while (($#)); do
 
         # if option takes a required argument, and it's not the last char
         # make the rest of the string its argument
-        if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
+        if [[ $optstring = *"$c:"* && ${1:i+1} ]]
+        then
           options+=("${1:i+1}")
           break
         fi
       done
       ;;
     # if option is of type --foo=bar, split on first '='
-    --?*=*) options+=("${1%%=*}" "${1#*=}");;
+    --?*=*)
+      options+=("${1%%=*}" "${1#*=}")
+      ;;
     # end of options, stop breaking them up
     --)
       options+=(--endopts)
@@ -325,7 +331,9 @@ while (($#)); do
       break
       ;;
     # otherwise, nothing special
-    *) options+=("$1");;
+    *)
+      options+=("$1")
+      ;;
   esac
 
   shift
@@ -361,7 +369,8 @@ _require_argument() {
   local option="$1"
   local value="$2"
 
-  if [[ -z "$value" ]]; then
+  if [[ -z "$value" ]]
+  then
     _die printf "Option requires an argument: %s\n" "$option"
   fi
 }
@@ -373,7 +382,8 @@ _require_argument() {
 #   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
 #   http://stackoverflow.com/a/14203146
 #   http://stackoverflow.com/a/7948533
-while [[ "${1:-}" = -?* ]]; do
+while [[ "${1:-}" = -?* ]]
+do
   opt="$1"
   shift
   case "$opt" in
@@ -413,15 +423,18 @@ done
 _simple() {
   _debug printf ">> Performing operation...\n"
 
-  if [[ "$_option_x" == 1 ]]; then
+  if [[ "$_option_x" == 1 ]]
+  then
     printf "Perform a simple operation with --option-x.\n"
   else
     printf "Perform a simple operation.\n"
   fi
-  if [[ -n "$_short_option_with_argument" ]]; then
+  if [[ -n "$_short_option_with_argument" ]]
+  then
     printf "Short option value: %s\n" "$_short_option_with_argument"
   fi
-  if [[ -n "$_long_option_with_argument" ]]; then
+  if [[ -n "$_long_option_with_argument" ]]
+  then
     printf "Long option value: %s\n" "$_long_option_with_argument"
   fi
 }
@@ -431,7 +444,8 @@ _simple() {
 ###############################################################################
 
 _main() {
-  if [[ "$_print_help" == 1 ]]; then
+  if [[ "$_print_help" == 1 ]]
+  then
     _print_help
   else
     _simple "$@"
