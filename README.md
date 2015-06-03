@@ -116,7 +116,7 @@ already included in the boilerplate scripts):
     set -o nounset
     set -o errexit
     set -o pipefail
-    IFS="$(printf '\n\t')"
+    IFS=$'\n\t'
 
 ---
 
@@ -250,13 +250,8 @@ separately makes it easier to switch between the two if needed.
 
 ##### Usage
 
-NOTE: also printing `$DEFAULT_IFS` to `/dev/null` to avoid
-[ShellCheck](http://www.shellcheck.net/) warnings
-about the variable being unused.
-
-    DEFAULT_IFS="$IFS"; printf "%s" "$DEFAULT_IFS" > /dev/null
-    SAFER_IFS="$(printf '\n\t')"
-    # Then set $IFS
+    DEFAULT_IFS="$IFS"
+    SAFER_IFS=$'\n\t'
     IFS="$SAFER_IFS"
 
 ---
