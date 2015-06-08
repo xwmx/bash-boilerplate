@@ -580,6 +580,38 @@ _readlink_f() {
   printf "%s\n" "${final_path}"
 }
 
+# _readlink_e()
+#
+# Usage:
+#  _readlink_e <file>
+#
+# Portable version of GNU `readlink -e`. Canonicalize by following every
+# symlink in every component of the given name recursively. All components
+# must exist.
+#
+# Depends on:
+#   _readlink_f
+_readlink_e() {
+  local target_path
+  local resolved_path
+
+  target_path="${1:-}"
+
+  if [[ -z "${target_path:-}" ]]; then
+    printf "_readlink_e: missing operand\n"
+    return 1
+  fi
+
+  resolved_path="$(_readlink_f "${target_path}")"
+
+  if [[ -e "${resolved_path}" ]]; then
+    printf "%s\n" "${resolved_path}"
+    return 0
+  else
+    return 1
+  fi
+}
+
 ###############################################################################
 # desc
 ###############################################################################
