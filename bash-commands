@@ -562,7 +562,7 @@ _readlink() {
 
   for arg in "${@:-}"
   do
-    case $arg in
+    case "${arg}" in
       -e|-f)
         _option="${arg}"
         ;;
@@ -579,7 +579,7 @@ _readlink() {
     esac
   done
 
-  if [[ -z "$_option" ]]; then
+  if [[ -z "${_option}" ]]; then
     readlink "$@"
   else
     if [[ -z "${target_path:-}" ]]; then
@@ -603,10 +603,10 @@ _readlink() {
     final_directory="$(pwd -P)"
     final_path="${final_directory}/${target_file}"
 
-    if [[ "$_option" == "-f" ]]; then
+    if [[ "${_option}" == "-f" ]]; then
       printf "%s\n" "${final_path}"
       return 0
-    elif [[ "$_option" == "-e" ]]; then
+    elif [[ "${_option}" == "-e" ]]; then
       if [[ -e "${final_path}" ]]; then
         printf "%s\n" "${final_path}"
         return 0
