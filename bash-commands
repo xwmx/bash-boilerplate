@@ -542,7 +542,7 @@ _present() {
 # _readlink_f()
 #
 # Usage:
-#   _readlink_f <file>
+#   _readlink_f <path/to/symlink>
 #
 # Portable version of GNU `readlink -f`. Canonicalize by following every
 # symlink in every component of the given name recursively. All but the
@@ -583,7 +583,7 @@ _readlink_f() {
 # _readlink_e()
 #
 # Usage:
-#  _readlink_e <file>
+#  _readlink_e <path/to/symlink>
 #
 # Portable version of GNU `readlink -e`. Canonicalize by following every
 # symlink in every component of the given name recursively. All components
