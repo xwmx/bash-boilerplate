@@ -415,7 +415,7 @@ done
 _simple() {
   _debug printf ">> Performing operation...\n"
 
-  if [[ "$_OPTION_X" == 1 ]]; then
+  if (("$_OPTION_X")); then
     printf "Perform a simple operation with --option-x.\n"
   else
     printf "Perform a simple operation.\n"
@@ -433,7 +433,7 @@ _simple() {
 ###############################################################################
 
 _main() {
-  if [[ "$_PRINT_HELP" == 1 ]]; then
+  if (("$_PRINT_HELP")); then
     _print_help
   else
     _simple "$@"
