@@ -339,13 +339,13 @@ unset options
 # Parse Options ###############################################################
 
 # Initialize program option variables.
-_print_help=0
+_PRINT_HELP=0
 _USE_DEBUG=0
 
 # Initialize additional expected option variables.
-_option_x=0
-_short_option_with_argument=""
-_long_option_with_argument=""
+_OPTION_X=0
+_SHORT_OPTION_WITH_ARGUMENT=""
+_LONG_OPTION_WITH_ARGUMENT=""
 
 # _require_argument()
 #
@@ -380,22 +380,22 @@ while [[ "${1:-}" = -?* ]]; do
   shift
   case "$opt" in
     -h|--help)
-      _print_help=1
+      _PRINT_HELP=1
       ;;
     --debug)
       _USE_DEBUG=1
       ;;
     -x|--option-x)
-      _option_x=1
+      _OPTION_X=1
       ;;
     -o)
-      _short_option_with_argument="${1:-}"
-      _require_argument "$opt" "$_short_option_with_argument"
+      _SHORT_OPTION_WITH_ARGUMENT="${1:-}"
+      _require_argument "$opt" "$_SHORT_OPTION_WITH_ARGUMENT"
        shift
       ;;
     --long-option-with-argument)
-      _long_option_with_argument="${1:-}"
-      _require_argument "$opt" "$_long_option_with_argument"
+      _LONG_OPTION_WITH_ARGUMENT="${1:-}"
+      _require_argument "$opt" "$_LONG_OPTION_WITH_ARGUMENT"
       shift
       ;;
     --endopts)
@@ -415,16 +415,16 @@ done
 _simple() {
   _debug printf ">> Performing operation...\n"
 
-  if [[ "$_option_x" == 1 ]]; then
+  if [[ "$_OPTION_X" == 1 ]]; then
     printf "Perform a simple operation with --option-x.\n"
   else
     printf "Perform a simple operation.\n"
   fi
-  if [[ -n "$_short_option_with_argument" ]]; then
-    printf "Short option value: %s\n" "$_short_option_with_argument"
+  if [[ -n "$_SHORT_OPTION_WITH_ARGUMENT" ]]; then
+    printf "Short option value: %s\n" "$_SHORT_OPTION_WITH_ARGUMENT"
   fi
-  if [[ -n "$_long_option_with_argument" ]]; then
-    printf "Long option value: %s\n" "$_long_option_with_argument"
+  if [[ -n "$_LONG_OPTION_WITH_ARGUMENT" ]]; then
+    printf "Long option value: %s\n" "$_LONG_OPTION_WITH_ARGUMENT"
   fi
 }
 
@@ -433,7 +433,7 @@ _simple() {
 ###############################################################################
 
 _main() {
-  if [[ "$_print_help" == 1 ]]; then
+  if [[ "$_PRINT_HELP" == 1 ]]; then
     _print_help
   else
     _simple "$@"
