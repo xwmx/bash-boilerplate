@@ -138,6 +138,9 @@ set -o pipefail
 # when expanding an array and you want to separate elements by spaces.
 # $SAFER_IFS contains the preferred settings for the program, and setting it
 # separately makes it easier to switch between the two if needed.
+#
+# Supress ShellCheck unused variable warning:
+# shellcheck disable=SC2034
 DEFAULT_IFS="$IFS"
 SAFER_IFS=$'\n\t'
 IFS="$SAFER_IFS"
@@ -223,7 +226,8 @@ _main() {
   if ( \
     [[ "$arg1" == "-h"     ]] ||
     [[ "$arg1" == "--help" ]]
-  ); then
+  )
+  then
     _print_help
   else
     _simple "$@"
@@ -231,4 +235,3 @@ _main() {
 }
 
 _main "$@"
-
