@@ -237,6 +237,8 @@ Long form (no short form available):
 
 Set IFS to just newline and tab.
 
+    IFS=$'\n\t'
+
 For some background, see
 [Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
 ](http://www.dwheeler.com/essays/filenames-in-shell.html)
