@@ -110,13 +110,15 @@ post.
 Add this to the top of every script (note: an extended version of this is
 already included in the boilerplate scripts):
 
-    # Bash 'Strict Mode'
-    # http://redsymbol.net/articles/unofficial-bash-strict-mode
-    # https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
-    set -o nounset
-    set -o errexit
-    set -o pipefail
-    IFS=$'\n\t'
+```bash
+# Bash 'Strict Mode'
+# http://redsymbol.net/articles/unofficial-bash-strict-mode
+# https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
+set -o nounset
+set -o errexit
+set -o pipefail
+IFS=$'\n\t'
+```
 
 ---
 
@@ -151,29 +153,39 @@ The two approaches that are probably the most appropriate are:
 
 Arrays:
 
-    ${some_array[@]:-}              # blank default value
-    ${some_array[*]:-}              # blank default value
-    ${some_array[0]:-}              # blank default value
-    ${some_array[0]:-default_value} # default value: the string 'default_value'
+```bash
+${some_array[@]:-}              # blank default value
+${some_array[*]:-}              # blank default value
+${some_array[0]:-}              # blank default value
+${some_array[0]:-default_value} # default value: the string 'default_value'
+```
 
 Positional variables:
 
-    ${1:-alternative} # default value: the string 'alternative'
-    ${2:-}            # blank default value
+```bash
+${1:-alternative} # default value: the string 'alternative'
+${2:-}            # blank default value
+```
 
 With an error message:
 
-    ${1:?'error message'}  # exit with 'error message' if variable is unbound
+```bash
+${1:?'error message'}  # exit with 'error message' if variable is unbound
+```
 
 ##### Usage
 
 Short form:
 
-    set -u
+```bash
+set -u
+```
 
 Long form:
 
-    set -o nounset
+```bash
+set -o nounset
+```
 
 ---
 
@@ -190,15 +202,19 @@ reading from heredocs with `set -e`, there are three potential solutions:
 
 Solution 1. `set +e` / `set -e` again:
 
-    set +e
-    read -rd '' variable <<EOF
-    EOF
-    set -e
+```bash
+set +e
+read -rd '' variable <<EOF
+EOF
+set -e
+```
 
 Solution 2. `<<EOF || true`:
 
-    read -rd '' variable <<EOF || true
-    EOF
+```bash
+read -rd '' variable <<EOF || true
+EOF
+```
 
 Solution 3. Don't use `set -e` or `set -o errexit` at all.
 
@@ -211,11 +227,15 @@ More information:
 
 Short form:
 
-    set -e
+```bash
+set -e
+```
 
 Long form:
 
-    set -o errexit
+```bash
+set -o errexit
+```
 
 ---
 
@@ -229,7 +249,9 @@ successfully.
 
 Long form (no short form available):
 
-    set -o pipefail
+```bash
+set -o pipefail
+```
 
 ---
 
@@ -237,7 +259,9 @@ Long form (no short form available):
 
 Set IFS to just newline and tab.
 
-    IFS=$'\n\t'
+```bash
+IFS=$'\n\t'
+```
 
 For some background, see
 [Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
@@ -252,9 +276,11 @@ separately makes it easier to switch between the two if needed.
 
 ##### Usage
 
-    DEFAULT_IFS="$IFS"
-    SAFER_IFS=$'\n\t'
-    IFS="$SAFER_IFS"
+```bash
+DEFAULT_IFS="$IFS"
+SAFER_IFS=$'\n\t'
+IFS="$SAFER_IFS"
+```
 
 ---
 
