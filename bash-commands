@@ -589,17 +589,20 @@ _readlink() {
         :
         ;;
       *)
-        if [[ -z "${target_path:-}" ]]; then
+        if [[ -z "${target_path:-}" ]]
+        then
           target_path="${arg}"
         fi
         ;;
     esac
   done
 
-  if [[ -z "${option}" ]]; then
+  if [[ -z "${option}" ]]
+  then
     readlink "$@"
   else
-    if [[ -z "${target_path:-}" ]]; then
+    if [[ -z "${target_path:-}" ]]
+    then
       printf "_readlink: missing operand\n"
       return 1
     fi
@@ -620,11 +623,14 @@ _readlink() {
     final_directory="$(pwd -P)"
     final_path="${final_directory}/${target_file}"
 
-    if [[ "${option}" == "-f" ]]; then
+    if [[ "${option}" == "-f" ]]
+    then
       printf "%s\n" "${final_path}"
       return 0
-    elif [[ "${option}" == "-e" ]]; then
-      if [[ -e "${final_path}" ]]; then
+    elif [[ "${option}" == "-e" ]]
+    then
+      if [[ -e "${final_path}" ]]
+      then
         printf "%s\n" "${final_path}"
         return 0
       else
