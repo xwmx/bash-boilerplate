@@ -60,7 +60,7 @@ tasks.
 - `die` command with error message printing and exiting,
 - Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing,
 - Automatic arbitrary command loading,
-- A DSL for specifying per-command help,
+- An nice, clean pattern for specifying per-command help,
 - Built-in commands for help, version, and command listing,
 - Conventions for distinguishing between functions and program commands,
 - Useful utility functions.
