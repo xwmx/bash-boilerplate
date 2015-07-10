@@ -164,7 +164,8 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
 _debug() {
-  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
+  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]
+  then
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
     "$@"
@@ -256,12 +257,14 @@ optstring=h
 # argument to the option, such as wget -qO-)
 unset options
 # while the number of arguments is greater than 0
-while (($#)); do
+while (($#))
+do
   case $1 in
     # if option is of type -ab
     -[!-]?*)
       # loop over each character starting with the second
-      for ((i=1; i<${#1}; i++)); do
+      for ((i=1; i<${#1}; i++))
+      do
         # extract 1 character from position 'i'
         c=${1:i:1}
         # add current char to options
@@ -269,14 +272,17 @@ while (($#)); do
 
         # if option takes a required argument, and it's not the last char
         # make the rest of the string its argument
-        if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
+        if [[ $optstring = *"$c:"* && ${1:i+1} ]]
+        then
           options+=("${1:i+1}")
           break
         fi
       done
       ;;
     # if option is of type --foo=bar, split on first '='
-    --?*=*) options+=("${1%%=*}" "${1#*=}");;
+    --?*=*)
+      options+=("${1%%=*}" "${1#*=}")
+      ;;
     # end of options, stop breaking them up
     --)
       options+=(--endopts)
@@ -285,7 +291,9 @@ while (($#)); do
       break
       ;;
     # otherwise, nothing special
-    *) options+=("$1");;
+    *)
+      options+=("$1")
+      ;;
   esac
 
   shift
@@ -308,7 +316,8 @@ _COMMAND_ARGV=("$0")
 _CMD=""
 _USE_DEBUG=0
 
-while [ $# -gt 0 ]; do
+while [ $# -gt 0 ]
+do
   opt="$1"
   shift
   case "$opt" in
@@ -324,7 +333,8 @@ while [ $# -gt 0 ]; do
     *)
       # The first non-option argument is assumed to be the command name.
       # All subsequent arguments are added to $_COMMAND_ARGV.
-      if [[ -n $_CMD ]]; then
+      if [[ -n $_CMD ]]
+      then
         _COMMAND_ARGV+=("$opt")
       else
         _CMD="$opt"
@@ -394,7 +404,8 @@ _load_commands() {
            [[ "$function_name" == "desc"  ]] || \
            [[ "$function_name" == "debug" ]] || \
            [[ "$function_name" == "die"   ]]
-    ); then
+    )
+    then
       _DEFINED_COMMANDS+=("$function_name")
     fi
   done
@@ -421,7 +432,8 @@ _main() {
   _debug printf "main() \$_CMD (upon entering): %s\n" "$_CMD"
 
   # If $_CMD is blank, then set to `$DEFAULT_COMMAND`
-  if [[ -z $_CMD ]]; then
+  if [[ -z $_CMD ]]
+  then
     _CMD="$DEFAULT_COMMAND"
   fi
 
@@ -429,7 +441,8 @@ _main() {
   _load_commands
 
   # If the command is defined, run it, otherwise return an error.
-  if _contains "$_CMD" "${_DEFINED_COMMANDS[*]:-}"; then
+  if _contains "$_CMD" "${_DEFINED_COMMANDS[*]:-}"
+  then
     # Pass all comment arguments to the program except for the first ($0).
     $_CMD "${_COMMAND_PARAMETERS[@]:-}"
   else
@@ -477,7 +490,8 @@ _contains() {
   for _test_element in "${test_list[@]:-}"
   do
     _debug printf "_contains() \$_test_element: %s\n" "$_test_element"
-    if [[ "$_test_element" == "$1" ]]; then
+    if [[ "$_test_element" == "$1" ]]
+    then
       _debug printf "_contains() match: %s\n" "$1"
       return 0
     fi
@@ -571,7 +585,8 @@ _present() {
 desc() {
   set +e
   [[ -z $1 ]] && _die printf "desc: No command name specified.\n"
-  if [[ -n ${2:-} ]]; then
+  if [[ -n ${2:-} ]]
+  then
     read -d '' "_desc_$1" <<EOM
 $2
 EOM
@@ -592,7 +607,8 @@ EOM
 # set using the desc() function.
 _print_desc() {
   local var="_desc_$1"
-  if [[ -n ${!var:-} ]]; then
+  if [[ -n ${!var:-} ]]
+  then
     printf "%s\n" "${!var}"
   else
     printf "No additional information for \`%s\`\n" "$1"
@@ -628,7 +644,8 @@ Description:
   Display help information for $_ME or a specified command.
 EOM
 help() {
-  if [[ ${#_COMMAND_ARGV[@]} = 1 ]]; then
+  if [[ ${#_COMMAND_ARGV[@]} = 1 ]]
+  then
     cat <<EOM
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -673,7 +690,8 @@ Description:
   Display the list of available commands.
 EOM
 commands() {
-  if _command_argv_includes "--raw"; then
+  if _command_argv_includes "--raw"
+  then
     printf "%s\n" "${_DEFINED_COMMANDS[@]}"
   else
     printf "Available commands:\n"
@@ -760,7 +778,8 @@ example() {
   local arguments=()
 
   # Parse command arguments.
-  for arg in "${_COMMAND_ARGV[@]:-}"; do
+  for arg in "${_COMMAND_ARGV[@]:-}"
+  do
     case $arg in
       --farewell) greeting="Goodbye";;
       -*) _die printf "Unexpected option: %s\n" "$arg";;
@@ -776,9 +795,11 @@ example() {
   _debug printf "example() \$greeting: %s\n" "$greeting"
   _debug printf "example() \$name: %s\n" "$name"
 
-  if [[ "$name" == "Moon" ]]; then
+  if [[ "$name" == "Moon" ]]
+  then
     printf "%s, Luna!\n" "$greeting"
-  elif [[ -n "$name" ]]; then
+  elif [[ -n "$name" ]]
+  then
     printf "%s, %s!\n" "$greeting" "$name"
   else
     printf "%s, World!\n" "$greeting"
