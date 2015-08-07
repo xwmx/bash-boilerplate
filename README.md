@@ -309,6 +309,7 @@ easier to maintain. As a result, some general design preferences:
 
 - [About ShellCheck (shellcheck.net)](http://www.shellcheck.net/about.html)
 - [Bash Reference Manual (gnu.org)](http://www.gnu.org/software/bash/manual/bashref.html)
+- [The Art of Command Line](https://github.com/jlevy/the-art-of-command-line)
 - ["Unofficial Bash Strict Mode" (redsymbol.net)
 ](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
 - [Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
