@@ -309,6 +309,8 @@ easier to maintain. As a result, some general design preferences:
 
 - [About ShellCheck (shellcheck.net)](http://www.shellcheck.net/about.html)
 - [Bash Reference Manual (gnu.org)](http://www.gnu.org/software/bash/manual/bashref.html)
+- [POSIX: Shell Command Language (pubs.opengroup.org)
+](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 - [The Art of Command Line (github.com)](https://github.com/jlevy/the-art-of-command-line)
 - ["Unofficial Bash Strict Mode" (redsymbol.net)
 ](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
