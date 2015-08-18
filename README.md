@@ -320,6 +320,8 @@ easier to maintain. As a result, some general design preferences:
 ](http://bencane.com/2014/09/02/understanding-exit-codes-and-how-to-use-them-in-bash-scripts/)
 - ['builtin "read -d" behaves differently after "set -e"' (lists.gnu.org)
 ](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
+- [Bash Pitfalls (mywiki.wooledge.org)
+](http://mywiki.wooledge.org/BashPitfalls)
 
 ### Related Projects
 
