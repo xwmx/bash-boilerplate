@@ -223,10 +223,7 @@ _main() {
 
   # Avoiding getops (or pattern equivalent) to avoid complexity when only one
   # program option is expected.
-  if ( \
-    [[ "$arg1" == "-h"     ]] ||
-    [[ "$arg1" == "--help" ]]
-  )
+  if [[ "$arg1" == "-h" ]] || [[ "$arg1" == "--help" ]]
   then
     _print_help
   else
