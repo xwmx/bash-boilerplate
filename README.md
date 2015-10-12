@@ -330,6 +330,7 @@ easier to maintain. As a result, some general design preferences:
 - [connermcd/bash-boilerplate](https://github.com/connermcd/bash-boilerplate)
 - [chrisopedia/bash-boilerplate](https://github.com/chrisopedia/bash-boilerplate)
 - [alphabetum/starters](https://github.com/alphabetum/starters)
+- [alphabetum/bask](https://github.com/alphabetum/bask)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
 
 ---
