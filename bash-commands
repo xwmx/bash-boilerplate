@@ -353,7 +353,13 @@ done
 # Set $_COMMAND_PARAMETERS to $_COMMAND_ARGV, minus the initial element, $0. This
 # provides an array that is equivalent to $* and $@ within each command
 # function, though the array is zero-indexed, which could lead to confusion.
-_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")
+#
+# Use `unset` to remove the first element rather than slicing (e.g.,
+# `_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")`) because under bash 3.2 the
+# resulting slice is treated as a quoted string and doesn't easily get coaxed
+# into a new array.
+_COMMAND_PARAMETERS=(${_COMMAND_ARGV[*]})
+unset _COMMAND_PARAMETERS[0]
 
 _debug printf "\$_CMD: %s\n" "$_CMD"
 _debug printf "\$_RAW_OPTIONS (one per line):\n%s\n" "$_RAW_OPTIONS"
