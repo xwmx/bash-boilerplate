@@ -212,6 +212,13 @@ _simple() {
 # Main
 ###############################################################################
 
+# _main()
+#
+# Usage:
+#   _main [<options>] [<arguments>]
+#
+# Description:
+#   Entry point for the program, handling basic option parsing and dispatching.
 _main() {
   # Set a local arg1 variable to the first argument or, if there is no first
   # argument, just a blank value.
@@ -231,4 +238,5 @@ _main() {
   fi
 }
 
+# Call `_main` after everything has been defined.
 _main "$@"

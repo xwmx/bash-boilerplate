@@ -451,6 +451,13 @@ _simple() {
 # Main
 ###############################################################################
 
+# _main()
+#
+# Usage:
+#   _main [<options>] [<arguments>]
+#
+# Description:
+#   Entry point for the program, handling basic option parsing and dispatching.
 _main() {
   if (("$_PRINT_HELP"))
   then
@@ -460,4 +467,5 @@ _main() {
   fi
 }
 
+# Call `_main` after everything has been defined.
 _main "$@"
