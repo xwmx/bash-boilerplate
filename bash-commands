@@ -476,6 +476,9 @@ _main() {
 #
 # Takes a potential function name as an argument and returns whether a function
 # exists with that name.
+#
+# Other implementations, some with better performance:
+# http://stackoverflow.com/q/85880
 _function_exists() {
   [ "$(type -t "$1")" == 'function' ]
 }
