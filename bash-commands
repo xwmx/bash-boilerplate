@@ -491,7 +491,7 @@ _function_exists() {
 # Takes a potential command name as an argument and returns whether a command
 # exists with that name.
 #
-# For information on why `hash` is used here, see:
+# Information on why `hash` is used here:
 # http://stackoverflow.com/a/677212
 _command_exists() {
   hash "$1" 2>/dev/null
