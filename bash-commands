@@ -146,6 +146,10 @@ IFS="$SAFER_IFS"
 # Globals
 ###############################################################################
 
+# $_VERSION
+#
+# Manually set this to to current version of the program. Adhere to the
+# semantic versioning specification: http://semver.org
 _VERSION="0.1.0-alpha"
 
 # $DEFAULT_COMMAND
@@ -166,11 +170,13 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 # A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
+__DEBUG_COUNTER=0
 _debug() {
   if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]
   then
+    __DEBUG_COUNTER=$((__DEBUG_COUNTER+1))
     # Prefix debug message with "bug (U+1F41B)"
-    printf "🐛  "
+    printf "🐛  %s " "${__DEBUG_COUNTER}"
     "$@"
     printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
   fi
@@ -349,7 +355,13 @@ done
 # Set $_COMMAND_PARAMETERS to $_COMMAND_ARGV, minus the initial element, $0. This
 # provides an array that is equivalent to $* and $@ within each command
 # function, though the array is zero-indexed, which could lead to confusion.
-_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")
+#
+# Use `unset` to remove the first element rather than slicing (e.g.,
+# `_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")`) because under bash 3.2 the
+# resulting slice is treated as a quoted string and doesn't easily get coaxed
+# into a new array.
+_COMMAND_PARAMETERS=(${_COMMAND_ARGV[*]})
+unset _COMMAND_PARAMETERS[0]
 
 _debug printf "\$_CMD: %s\n" "$_CMD"
 _debug printf "\$_RAW_OPTIONS (one per line):\n%s\n" "$_RAW_OPTIONS"
@@ -462,8 +474,12 @@ _main() {
 # Usage:
 #   _function_exists "possible_function_name"
 #
-# Takes a potential function name as an argument and returns whether a function
-# exists with that name.
+# Returns:
+#   0  If a function with the given name is defined in the current environment.
+#   1  If not.
+#
+# Other implementations, some with better performance:
+# http://stackoverflow.com/q/85880
 _function_exists() {
   [ "$(type -t "$1")" == 'function' ]
 }
@@ -473,10 +489,11 @@ _function_exists() {
 # Usage:
 #   _command_exists "possible_command_name"
 #
-# Takes a potential command name as an argument and returns whether a command
-# exists with that name.
+# Returns:
+#   0  If a command with the given name is defined in the current environment.
+#   1  If not.
 #
-# For information on why `hash` is used here, see:
+# Information on why `hash` is used here:
 # http://stackoverflow.com/a/677212
 _command_exists() {
   hash "$1" 2>/dev/null
@@ -487,7 +504,9 @@ _command_exists() {
 # Usage:
 #   _contains "$item" "${list[*]}"
 #
-# Takes an item and a list and determines whether the list contains the item.
+# Returns:
+#   0  If the item is included in the list.
+#   1  If not.
 _contains() {
   local test_list=(${*:2})
   for _test_element in "${test_list[@]:-}"
@@ -508,8 +527,9 @@ _contains() {
 #   _join "," a b c
 #   _join "${an_array[@]}"
 #
-# Takes a separator and a list of items, joining that list of items with the
-# separator.
+# Returns:
+#   The list or array of items joined into a string with elements divided by
+#   the optional separator if one is provided.
 _join() {
   local separator
   local target_array
@@ -527,8 +547,10 @@ _join() {
 # Usage:
 #   _command_argv_includes "an_argument"
 #
-# Takes a possible command argument and determines whether it is included in
-# the command argument list.
+# Returns:
+#   0  If the argument is included in `$_COMMAND_ARGV`, the program's command
+#      argument list.
+#   1  If not.
 #
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
@@ -541,7 +563,9 @@ _command_argv_includes() {
 # Usage:
 #   _blank "$an_argument"
 #
-# Takes an argument and returns true if it is blank.
+# Returns:
+#   0  If the argument is not present or null.
+#   1  If the argument is present and not null.
 _blank() {
   [[ -z "${1:-}" ]]
 }
@@ -551,9 +575,35 @@ _blank() {
 # Usage:
 #   _present "$an_argument"
 #
-# Takes an argument and returns true if it is present.
+# Returns:
+#   0  If the argument is present and not null.
+#   1  If the argument is not present or null.
 _present() {
   [[ -n "${1:-}" ]]
+}
+
+# _interactive_input()
+#
+# Usage:
+#   _interactive_input
+#
+# Returns:
+#   0  If the current input is interactive (eg, a shell).
+#   1  If the current input is stdin / piped input.
+_interactive_input() {
+  [[ -t 0 ]]
+}
+
+# _piped_input()
+#
+# Usage:
+#   _piped_input
+#
+# Returns:
+#   0  If the current input is stdin / piped input.
+#   1  If the current input is interactive (eg, a shell).
+_piped_input() {
+  ! _interactive_input
 }
 
 # _readlink()
