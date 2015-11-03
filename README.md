@@ -87,9 +87,12 @@ issues where corner cases can cause delayed failures.
 - https://github.com/koalaman/shellcheck
 
 It can be used with Vim via
-[Syntastic](https://github.com/scrooloose/syntastic)
-and Emacs via
-[Flycheck](https://github.com/flycheck/flycheck)
+[Syntastic](https://github.com/scrooloose/syntastic), Emacs via
+[Flycheck](https://github.com/flycheck/flycheck), Sublime Text 3 via
+[SublimeLinter](http://sublimelinter.readthedocs.org/en/latest/), and Atom via
+[linter](https://atom.io/packages/linter),
+[atom-lint](https://atom.io/packages/atom-lint),
+or [linter-shellcheck](https://atom.io/packages/linter-shellcheck).
 
 ---
 
@@ -306,6 +309,9 @@ easier to maintain. As a result, some general design preferences:
 
 - [About ShellCheck (shellcheck.net)](http://www.shellcheck.net/about.html)
 - [Bash Reference Manual (gnu.org)](http://www.gnu.org/software/bash/manual/bashref.html)
+- [POSIX: Shell Command Language (pubs.opengroup.org)
+](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
+- [The Art of Command Line (github.com)](https://github.com/jlevy/the-art-of-command-line)
 - ["Unofficial Bash Strict Mode" (redsymbol.net)
 ](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
 - [Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
@@ -314,6 +320,8 @@ easier to maintain. As a result, some general design preferences:
 ](http://bencane.com/2014/09/02/understanding-exit-codes-and-how-to-use-them-in-bash-scripts/)
 - ['builtin "read -d" behaves differently after "set -e"' (lists.gnu.org)
 ](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
+- [Bash Pitfalls (mywiki.wooledge.org)
+](http://mywiki.wooledge.org/BashPitfalls)
 
 ### Related Projects
 
@@ -322,6 +330,7 @@ easier to maintain. As a result, some general design preferences:
 - [connermcd/bash-boilerplate](https://github.com/connermcd/bash-boilerplate)
 - [chrisopedia/bash-boilerplate](https://github.com/chrisopedia/bash-boilerplate)
 - [alphabetum/starters](https://github.com/alphabetum/starters)
+- [alphabetum/bask](https://github.com/alphabetum/bask)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
 
 ---
