@@ -474,8 +474,9 @@ _main() {
 # Usage:
 #   _function_exists "possible_function_name"
 #
-# Takes a potential function name as an argument and returns whether a function
-# exists with that name.
+# Returns:
+#   0  If a function with the given name is defined in the current environment.
+#   1  If not.
 #
 # Other implementations, some with better performance:
 # http://stackoverflow.com/q/85880
@@ -488,8 +489,9 @@ _function_exists() {
 # Usage:
 #   _command_exists "possible_command_name"
 #
-# Takes a potential command name as an argument and returns whether a command
-# exists with that name.
+# Returns:
+#   0  If a command with the given name is defined in the current environment.
+#   1  If not.
 #
 # Information on why `hash` is used here:
 # http://stackoverflow.com/a/677212
@@ -502,7 +504,9 @@ _command_exists() {
 # Usage:
 #   _contains "$item" "${list[*]}"
 #
-# Takes an item and a list and determines whether the list contains the item.
+# Returns:
+#   0  If the item is included in the list.
+#   1  If not.
 _contains() {
   local test_list=(${*:2})
   for _test_element in "${test_list[@]:-}"
@@ -523,8 +527,9 @@ _contains() {
 #   _join "," a b c
 #   _join "${an_array[@]}"
 #
-# Takes a separator and a list of items, joining that list of items with the
-# separator.
+# Returns:
+#   The list or array of items joined into a string with elements divided by
+#   the optional separator if one is provided.
 _join() {
   local separator
   local target_array
@@ -542,8 +547,10 @@ _join() {
 # Usage:
 #   _command_argv_includes "an_argument"
 #
-# Takes a possible command argument and determines whether it is included in
-# the command argument list.
+# Returns:
+#   0  If the argument is included in `$_COMMAND_ARGV`, the program's command
+#      argument list.
+#   1  If not.
 #
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
@@ -556,7 +563,9 @@ _command_argv_includes() {
 # Usage:
 #   _blank "$an_argument"
 #
-# Takes an argument and returns true if it is blank.
+# Returns:
+#   0  If the argument is not present or null.
+#   1  If the argument is present and not null.
 _blank() {
   [[ -z "${1:-}" ]]
 }
@@ -566,7 +575,9 @@ _blank() {
 # Usage:
 #   _present "$an_argument"
 #
-# Takes an argument and returns true if it is present.
+# Returns:
+#   0  If the argument is present and not null.
+#   1  If the argument is not present or null.
 _present() {
   [[ -n "${1:-}" ]]
 }
