@@ -322,6 +322,7 @@ easier to maintain. As a result, some general design preferences:
 ](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
 - [Bash Pitfalls (mywiki.wooledge.org)
 ](http://mywiki.wooledge.org/BashPitfalls)
+- [Rich’s sh (POSIX shell) tricks](http://www.etalabs.net/sh_tricks.html)
 
 ### Related Projects
 
