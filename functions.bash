@@ -15,6 +15,33 @@
 # Copyright (c) 2016 William Melody • hi@williammelody.com
 
 ###############################################################################
+# Simple shell function with help / usage.
+#
+# This function provides an example of a simple shell function with help /
+# usage information that is displayed with either the `-h` or `--help` flag.
+###############################################################################
+
+hello() {
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+  then
+    cat <<HEREDOC
+Usage:
+  hello
+  hello -h | --help
+
+Options:
+  -h --help  Display this usage information.
+
+Description:
+  Say hello.
+HEREDOC
+    return 0
+  fi
+
+  printf "Hello.\n"
+}
+
+###############################################################################
 # Simple shell function with help / usage and option flags.
 #
 # This function provides an example of a simple shell function with help /
