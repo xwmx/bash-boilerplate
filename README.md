@@ -17,8 +17,8 @@ the different features before diving into customization.
 
 ## Scripts
 
-There are multiple boilerplate scripts included, each with an increasing
-amount of complexity. Since these are boilerplate scripts, it's easiest
+There are multiple boilerplate scripts included, each with different
+amounts of complexity. Since these are boilerplate scripts, it's easiest
 just to start with the simplest structure for the task rather than using
 a more complex one and removing a bunch of things that aren't needed.
 
@@ -64,6 +64,12 @@ tasks.
 - Built-in commands for help, version, and command listing,
 - Conventions for distinguishing between functions and program commands,
 - Useful utility functions.
+
+### [functions.bash](https://github.com/alphabetum/bash-boilerplate/blob/master/functions.bash)
+
+Shell function examples and boilerplate. The functions in this file are
+intended to be included in the interactive shell, which can be done by
+defining them in a shell init file like `~/.bashrc`.
 
 ## Notes
 
