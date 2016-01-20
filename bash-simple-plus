@@ -375,11 +375,11 @@ _require_parameter() {
   # the block of code, as defined by curly braces. It's easiest to just think
   # of them as local to a function.
   local _option="${1:-}"
-  local _param="${2:-}"
+  local _maybe_param="${2:-}"
 
-  if [[ -z "$_param" ]] || [[ "$_param" =~ ^- ]]
+  if [[ -z "$_maybe_param" ]] || [[ "$_maybe_param" =~ ^- ]]
   then
-    _die printf "Option requires a parameter: %s\n" "$_option"
+    _die printf "Option requires a parameter: %s\n" "$_maybe_param"
   fi
 }
 # getopts and getopts have inconsistent behavior, so using a simple home-brewed
@@ -393,7 +393,7 @@ _require_parameter() {
 while [ $# -gt 0 ]
 do
   _option="${1:-}"
-  _param="${2:-}"
+  _maybe_param="${2:-}"
   case "$_option" in
     -h|--help)
       _PRINT_HELP=1
@@ -405,13 +405,13 @@ do
       _OPTION_X=1
       ;;
     -o)
-      _SHORT_OPTION_WITH_PARAMETER="${_param}"
-      _require_parameter "$_option" "$_SHORT_OPTION_WITH_PARAMETER"
+      _require_parameter "$_option" "$_maybe_param"
+      _SHORT_OPTION_WITH_PARAMETER="${_maybe_param}"
        shift
       ;;
     --long-option-with-argument)
-      _LONG_OPTION_WITH_PARAMETER="${_param}"
-      _require_parameter "$_option" "$_LONG_OPTION_WITH_PARAMETER"
+      _require_parameter "$_option" "$_maybe_param"
+      _LONG_OPTION_WITH_PARAMETER="${_maybe_param}"
       shift
       ;;
     --endopts)
