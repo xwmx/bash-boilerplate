@@ -1,3 +1,18 @@
+#!/usr/bin/env bash
+# _          _
+# | |__   ___| |_ __   ___ _ __ ___
+# | '_ \ / _ \ | '_ \ / _ \ '__/ __|
+# | | | |  __/ | |_) |  __/ |  \__ \
+# |_| |_|\___|_| .__/ \___|_|  |___/
+#             |_|
+#
+# Helper functions.
+#
+# Bash Boilerplate: https://github.com/alphabetum/bash-boilerplate
+#
+# Copyright (c) 2016 William Melody • hi@williammelody.com
+###############################################################################
+
 # _join()
 #
 # Usage:
