@@ -13,6 +13,21 @@
 # Copyright (c) 2016 William Melody • hi@williammelody.com
 ###############################################################################
 
+# _command_exists()
+#
+# Usage:
+#   _command_exists <command-name>
+#
+# Returns:
+#   0  If a command with the given name is defined in the current environment.
+#   1  If not.
+#
+# Information on why `hash` is used here:
+# http://stackoverflow.com/a/677212
+_command_exists() {
+  hash "$1" 2>/dev/null
+}
+
 # _interactive_input()
 #
 # Usage:
