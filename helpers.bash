@@ -103,17 +103,17 @@ _join() {
 # More Information:
 #   http://stackoverflow.com/a/1116890
 _readlink() {
-  local target_path
-  local target_file
-  local final_directory
-  local final_path
-  local option
+  local _target_path
+  local _target_file
+  local _final_directory
+  local _final_path
+  local _option
 
-  for arg in "${@:-}"
+  for _arg in "${@:-}"
   do
-    case "${arg}" in
+    case "${_arg}" in
       -e|-f)
-        option="${arg}"
+        _option="${_arg}"
         ;;
       -*|--*)
         # do nothing
@@ -121,49 +121,49 @@ _readlink() {
         :
         ;;
       *)
-        if [[ -z "${target_path:-}" ]]
+        if [[ -z "${_target_path:-}" ]]
         then
-          target_path="${arg}"
+          _target_path="${_arg}"
         fi
         ;;
     esac
   done
 
-  if [[ -z "${option}" ]]
+  if [[ -z "${_option}" ]]
   then
     readlink "$@"
   else
-    if [[ -z "${target_path:-}" ]]
+    if [[ -z "${_target_path:-}" ]]
     then
       printf "_readlink: missing operand\n"
       return 1
     fi
 
-    cd "$(dirname "${target_path}")" || return 1
-    target_file="$(basename "${target_path}")"
+    cd "$(dirname "${_target_path}")" || return 1
+    _target_file="$(basename "${_target_path}")"
 
     # Iterate down a (possible) chain of symlinks
-    while [[ -L "${target_file}" ]]
+    while [[ -L "${_target_file}" ]]
     do
-      target_file="$(readlink "${target_file}")"
-      cd "$(dirname "${target_file}")" || return 1
-      target_file="$(basename "${target_file}")"
+      _target_file="$(readlink "${_target_file}")"
+      cd "$(dirname "${_target_file}")" || return 1
+      _target_file="$(basename "${_target_file}")"
     done
 
     # Compute the canonicalized name by finding the physical path
     # for the directory we're in and appending the target file.
-    final_directory="$(pwd -P)"
-    final_path="${final_directory}/${target_file}"
+    _final_directory="$(pwd -P)"
+    _final_path="${_final_directory}/${_target_file}"
 
-    if [[ "${option}" == "-f" ]]
+    if [[ "${_option}" == "-f" ]]
     then
-      printf "%s\n" "${final_path}"
+      printf "%s\n" "${_final_path}"
       return 0
-    elif [[ "${option}" == "-e" ]]
+    elif [[ "${_option}" == "-e" ]]
     then
-      if [[ -e "${final_path}" ]]
+      if [[ -e "${_final_path}" ]]
       then
-        printf "%s\n" "${final_path}"
+        printf "%s\n" "${_final_path}"
         return 0
       else
         return 1
