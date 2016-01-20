@@ -358,28 +358,28 @@ _USE_DEBUG=0
 
 # Initialize additional expected option variables.
 _OPTION_X=0
-_SHORT_OPTION_WITH_ARGUMENT=""
-_LONG_OPTION_WITH_ARGUMENT=""
+_SHORT_OPTION_WITH_PARAMETER=""
+_LONG_OPTION_WITH_PARAMETER=""
 
-# _require_argument()
+# _require_parameter()
 #
 # Usage:
-#  _require_argument "$opt" "$_value_variable"
+#  _require_parameter "$option" "$parameter"
 #
-# Checks if an value has been set to the expected variable and, if not, prints
-# and error message and exits with status 1.
-_require_argument() {
+# Checks if a parameter has been set to the expected variable and, if not,
+# prints and error message and exits with status 1.
+_require_parameter() {
   # Set local variables from arguments.
   #
   # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
   # the block of code, as defined by curly braces. It's easiest to just think
   # of them as local to a function.
-  local option="$1"
-  local value="$2"
+  local _option="${1:-}"
+  local _param="${2:-}"
 
-  if [[ -z "$value" ]]
+  if [[ -z "$_param" ]] || [[ "$_param" =~ ^- ]]
   then
-    _die printf "Option requires an argument: %s\n" "$option"
+    _die printf "Option requires a parameter: %s\n" "$_option"
   fi
 }
 # getopts and getopts have inconsistent behavior, so using a simple home-brewed
@@ -392,9 +392,9 @@ _require_argument() {
 #   http://stackoverflow.com/a/7948533
 while [ $# -gt 0 ]
 do
-  opt="$1"
-  shift
-  case "$opt" in
+  _option="${1:-}"
+  _param="${2:-}"
+  case "$_option" in
     -h|--help)
       _PRINT_HELP=1
       ;;
@@ -405,13 +405,13 @@ do
       _OPTION_X=1
       ;;
     -o)
-      _SHORT_OPTION_WITH_ARGUMENT="${1:-}"
-      _require_argument "$opt" "$_SHORT_OPTION_WITH_ARGUMENT"
+      _SHORT_OPTION_WITH_PARAMETER="${_param}"
+      _require_parameter "$_option" "$_SHORT_OPTION_WITH_PARAMETER"
        shift
       ;;
     --long-option-with-argument)
-      _LONG_OPTION_WITH_ARGUMENT="${1:-}"
-      _require_argument "$opt" "$_LONG_OPTION_WITH_ARGUMENT"
+      _LONG_OPTION_WITH_PARAMETER="${_param}"
+      _require_parameter "$_option" "$_LONG_OPTION_WITH_PARAMETER"
       shift
       ;;
     --endopts)
@@ -419,9 +419,10 @@ do
       break
       ;;
     -*)
-      _die printf "Unexpected option: %s\n" "$opt"
+      _die printf "Unexpected option: %s\n" "$_option"
       ;;
   esac
+  shift
 done
 
 ###############################################################################
@@ -437,13 +438,13 @@ _simple() {
   else
     printf "Perform a simple operation.\n"
   fi
-  if [[ -n "$_SHORT_OPTION_WITH_ARGUMENT" ]]
+  if [[ -n "$_SHORT_OPTION_WITH_PARAMETER" ]]
   then
-    printf "Short option value: %s\n" "$_SHORT_OPTION_WITH_ARGUMENT"
+    printf "Short option parameter: %s\n" "$_SHORT_OPTION_WITH_PARAMETER"
   fi
-  if [[ -n "$_LONG_OPTION_WITH_ARGUMENT" ]]
+  if [[ -n "$_LONG_OPTION_WITH_PARAMETER" ]]
   then
-    printf "Long option value: %s\n" "$_LONG_OPTION_WITH_ARGUMENT"
+    printf "Long option parameter: %s\n" "$_LONG_OPTION_WITH_PARAMETER"
   fi
 }
 
