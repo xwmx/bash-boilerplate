@@ -223,27 +223,20 @@ die() {
 # Help
 ###############################################################################
 
-# Set $_program_help
+# _print_help()
 #
-# The `read` form of assignment is used for a balance of ease of
-# implementation and simplicity. There is an alternative assignment form
-# that could be used here:
+# Usage:
+#   _print_help
 #
-# var="$(cat <<'EOM'
-# some message
-# EOM
-# )
-#
-# However, this form appears to require trailing space after backslashes to
-# preserve newlines, which is unexpected. Using `read` simply requires
-# escaping backslashes, which is more common.
-read -r -d '' "_program_help" <<EOM || true
-      _                 _
-  ___(_)_ __ ___  _ __ | | ___   _
- / __| | '_ \` _ \| '_ \| |/ _ \_| |_
- \__ \ | | | | | | |_) | |  __/_   _|
- |___/_|_| |_| |_| .__/|_|\___| |_|
-                 |_|
+# Print the program help information.
+_print_help() {
+  cat <<HEREDOC
+     _                 _
+ ___(_)_ __ ___  _ __ | | ___   _
+/ __| | '_ \` _ \| '_ \| |/ _ \_| |_
+\__ \ | | | | | | |_) | |  __/_   _|
+|___/_|_| |_| |_| .__/|_|\___| |_|
+                |_|
 
 Boilerplate for creating a simple bash script with some basic strictness
 checks and help features, and easy debug printing, and basic option handling.
@@ -254,15 +247,7 @@ Usage:
 
 Options:
   -h --help  Display this help information.
-EOM
-
-# _print_help()
-#
-# Usage: _print_help
-#
-# Print the program help information.
-_print_help() {
-  printf "%s\n" "$_program_help"
+HEREDOC
 }
 
 ###############################################################################
