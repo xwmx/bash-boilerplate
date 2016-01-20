@@ -43,8 +43,8 @@ _command_exists() {
 #   0  If the item is included in the list.
 #   1  If not.
 _contains() {
-  local test_list=(${*:2})
-  for _test_element in "${test_list[@]:-}"
+  local _test_list=(${*:2})
+  for _test_element in "${_test_list[@]:-}"
   do
     if [[ "$_test_element" == "$1" ]]
     then
