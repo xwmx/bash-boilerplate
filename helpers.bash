@@ -37,6 +37,9 @@ _command_exists() {
 # _contains()
 #
 # Usage:
+#   _contains <item> <list>
+#
+# Example:
 #   _contains "$item" "${list[*]}"
 #
 # Returns:
