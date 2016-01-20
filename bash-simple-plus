@@ -432,7 +432,7 @@ done
 _simple() {
   _debug printf ">> Performing operation...\n"
 
-  if (("$_OPTION_X"))
+  if ((_OPTION_X))
   then
     printf "Perform a simple operation with --option-x.\n"
   else
@@ -460,7 +460,7 @@ _simple() {
 # Description:
 #   Entry point for the program, handling basic option parsing and dispatching.
 _main() {
-  if (("$_PRINT_HELP"))
+  if ((_PRINT_HELP))
   then
     _print_help
   else
