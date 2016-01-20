@@ -13,6 +13,18 @@
 # Copyright (c) 2016 William Melody • hi@williammelody.com
 ###############################################################################
 
+# _interactive_input()
+#
+# Usage:
+#   _interactive_input
+#
+# Returns:
+#   0  If the current input is interactive (eg, a shell).
+#   1  If the current input is stdin / piped input.
+_interactive_input() {
+  [[ -t 0 ]]
+}
+
 # _join()
 #
 # Usage:
