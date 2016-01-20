@@ -71,6 +71,11 @@ Shell function examples and boilerplate. The functions in this file are
 intended to be included in the interactive shell, which can be done by
 defining them in a shell init file like `~/.bashrc`.
 
+### [helpers.bash](https://github.com/alphabetum/bash-boilerplate/blob/master/helpers.bash)
+
+Helper functions. These functions are primarily intended to be used within
+scripts, but can be adapted for use as shell functions.
+
 ## Notes
 
 Most of these tips are included in the boilerplate scripts, but I'm also
