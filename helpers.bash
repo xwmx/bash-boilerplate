@@ -8,6 +8,10 @@
 #
 # Helper functions.
 #
+# These functions are primarily intended to be used within scripts. Each name
+# starts with a leading underscore to indicate that it is an internal
+# function and avoid collisions with gloablly defined names.
+#
 # Bash Boilerplate: https://github.com/alphabetum/bash-boilerplate
 #
 # Copyright (c) 2016 William Melody • hi@williammelody.com
