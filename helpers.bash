@@ -176,3 +176,47 @@ _readlink() {
     fi
   fi
 }
+
+###############################################################################
+# _spinner()
+#
+# Usage:
+#   _spinner <pid>
+#
+# Description:
+#   Display an ascii spinner while <pid> is running.
+#
+# Example Usage:
+#   ```
+#   _spinner_example() {
+#     printf "Working..."
+#     (sleep 1) &
+#     _spinner $!
+#     printf "Done!\n"
+#   }
+#   (_spinner_example)
+#   ```
+#
+# More Information:
+#   http://fitnr.com/showing-a-bash-spinner.html
+_spinner() {
+  local _pid="${1:-}"
+  local _delay=0.75
+  local _spin_string='|/-\'
+
+  if [[ -z "${_pid}" ]]
+  then
+    printf "Usage: _spinner <pid>\n"
+    return 1
+  fi
+
+  while [[ "$(ps a | awk '{print $1}' | grep ${_pid})" ]]
+  do
+    local _temp="${_spin_string#?}"
+    printf " [%c]  " "$_spin_string"
+    _spin_string="$_temp${_spin_string%"$_temp"}"
+    sleep $_delay
+    printf "\b\b\b\b\b\b"
+  done
+  printf "    \b\b\b\b"
+}
