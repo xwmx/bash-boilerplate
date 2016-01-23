@@ -205,17 +205,17 @@ _simple() {
 # Description:
 #   Entry point for the program, handling basic option parsing and dispatching.
 _main() {
-  # Set a local arg1 variable to the first argument or, if there is no first
-  # argument, just a blank value.
+  # Set a local `$_arg1` variable to the first argument or, if there is no
+  # first argument, just a blank value.
   #
   # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
   # the block of code, as defined by curly braces. It's easiest to just think
   # of them as local to a function.
-  local arg1=${1:-}
+  local _arg1=${1:-}
 
   # Avoiding getops (or pattern equivalent) to avoid complexity when only one
   # program option is expected.
-  if [[ "$arg1" =~ ^-h|--help$  ]]
+  if [[ "$_arg1" =~ ^-h|--help$  ]]
   then
     _print_help
   else
