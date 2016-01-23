@@ -158,21 +158,14 @@ _ME=$(basename "$0")
 # Help
 ###############################################################################
 
-# Set $_program_help
+# _print_help()
 #
-# The `read` form of assignment is used for a balance of ease of
-# implementation and simplicity. There is an alternative assignment form
-# that could be used here:
+# Usage:
+#   _print_help
 #
-# var="$(cat <<'EOM'
-# some message
-# EOM
-# )
-#
-# However, this form appears to require trailing space after backslases to
-# preserve newlines, which is unexpected. Using `read` simply requires
-# escaping backslashes, which is more common.
-read -r -d '' "_program_help" <<EOM || true
+# Print the program help information.
+_print_help() {
+  cat <<HEREDOC
       _                 _
   ___(_)_ __ ___  _ __ | | ___
  / __| | '_ \` _ \| '_ \| |/ _ \\
@@ -189,15 +182,7 @@ Usage:
 
 Options:
   -h --help  Show this screen.
-EOM
-
-# _print_help()
-#
-# Usage: _print_help
-#
-# Print the program help information.
-_print_help() {
-  printf "%s\n" "$_program_help"
+HEREDOC
 }
 
 ###############################################################################
