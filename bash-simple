@@ -213,8 +213,7 @@ _main() {
   # of them as local to a function.
   local _arg1=${1:-}
 
-  # Avoiding getops (or pattern equivalent) to avoid complexity when only one
-  # program option is expected.
+  # Avoid complex option parsing when only one program option is expected.
   if [[ "$_arg1" =~ ^-h|--help$  ]]
   then
     _print_help
