@@ -390,12 +390,12 @@ do
       _OPTION_X=1
       ;;
     -o)
-      _require_parameter "$_option" "$_maybe_param"
+      _require_argument "$_option" "$_maybe_param"
       _SHORT_OPTION_WITH_PARAMETER="${_maybe_param}"
        shift
       ;;
     --long-option-with-argument)
-      _require_parameter "$_option" "$_maybe_param"
+      _require_argument "$_option" "$_maybe_param"
       _LONG_OPTION_WITH_PARAMETER="${_maybe_param}"
       shift
       ;;

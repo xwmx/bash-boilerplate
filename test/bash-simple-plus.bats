@@ -74,7 +74,7 @@ setup() {
 
 @test "\`bash-simple-plus -o\` with no value prints message." {
   run "$_COMMAND" -o
-  [[ "$output" =~ Option\ requires\ a\ parameter ]]
+  [[ "$output" == "❌  Option requires a argument: -o" ]]
 }
 
 @test "\`bash-simple-plus -o\` with value exits with status 0." {
@@ -95,7 +95,7 @@ setup() {
 
 @test "\`bash-simple-plus\` with long option and missing required value prints message." {
   run "$_COMMAND" --long-option-with-argument
-  [[ "$output" =~ Option\ requires\ a\ parameter ]]
+  [[ "$output" =~ "❌  Option requires a argument: --long-option-with-argument" ]]
 }
 
 @test "\`bash-simple-plus\` with option and required value exits with status 0." {
