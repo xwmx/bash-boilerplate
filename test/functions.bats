@@ -21,7 +21,7 @@ Description:
 HEREDOC
 )"
 
-@test "\`hello\` with no arguments exits with status 0." {
+@test "\`hello\` with no arguments returns status 0." {
   run hello
   [[ "$status" -eq 0 ]]
 }
@@ -31,7 +31,7 @@ HEREDOC
   [[ "$output" == "Hello." ]]
 }
 
-@test "\`hello -h\` exits with status 0." {
+@test "\`hello -h\` returns status 0." {
   run hello -h
   [[ "$status" -eq 0 ]]
 }
@@ -42,7 +42,7 @@ HEREDOC
   [[ "${output}" == "$_HELLO_HELP" ]]
 }
 
-@test "\`hello --help\` exits with status 0." {
+@test "\`hello --help\` returns status 0." {
   run hello
   [[ "$status" -eq 0 ]]
 }
@@ -73,7 +73,7 @@ Description:
 HEREDOC
 )"
 
-@test "\`hi\` with no arguments exits with status 0." {
+@test "\`hi\` with no arguments returns status 0." {
   run hi
   [[ "$status" -eq 0 ]]
 }
@@ -83,7 +83,7 @@ HEREDOC
   [[ "$output" == "Hi\!" ]]
 }
 
-@test "\`hi -h\` exits with status 0." {
+@test "\`hi -h\` returns status 0." {
   run hi -h
   [[ "$status" -eq 0 ]]
 }
@@ -94,7 +94,7 @@ HEREDOC
   [[ "${output}" == "$_HI_HELP" ]]
 }
 
-@test "\`hi --help\` exits with status 0." {
+@test "\`hi --help\` returns status 0." {
   run hi --help
   [[ "$status" -eq 0 ]]
 }
@@ -105,7 +105,7 @@ HEREDOC
   [[ "${output}" == "$_HI_HELP" ]]
 }
 
-@test "\`hi --all\` exits with status 0." {
+@test "\`hi --all\` returns status 0." {
   run hi --all
   [[ "$status" -eq 0 ]]
 }
