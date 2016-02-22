@@ -30,7 +30,7 @@
 # Information on why `hash` is used here:
 # http://stackoverflow.com/a/677212
 _command_exists() {
-  hash "$1" 2>/dev/null
+  hash "${1}" 2>/dev/null
 }
 
 ###############################################################################
@@ -49,7 +49,7 @@ _contains() {
   local _test_list=(${*:2})
   for _test_element in "${_test_list[@]:-}"
   do
-    if [[ "$_test_element" == "$1" ]]
+    if [[ "${_test_element}" == "${1}" ]]
     then
       return 0
     fi
@@ -84,9 +84,9 @@ _interactive_input() {
 # More Information:
 #   http://stackoverflow.com/a/17841619
 _join() {
-  local IFS="$1"
+  local IFS="${1}"
   shift
-  printf "%s\n" "$*"
+  printf "%s\n" "${*}"
 }
 
 ###############################################################################
@@ -134,7 +134,7 @@ _readlink() {
 
   if [[ -z "${_option}" ]]
   then
-    readlink "$@"
+    readlink "${@}"
   else
     if [[ -z "${_target_path:-}" ]]
     then
@@ -202,7 +202,7 @@ _readlink() {
 _spinner() {
   local _pid="${1:-}"
   local _delay=0.75
-  local _spin_string='|/-\'
+  local _spin_string="|/-\\"
 
   if [[ -z "${_pid}" ]]
   then
@@ -210,12 +210,12 @@ _spinner() {
     return 1
   fi
 
-  while [[ "$(ps a | awk '{print $1}' | grep ${_pid})" ]]
+  while ps a | awk '{print $1}' | grep -q "${_pid}"
   do
     local _temp="${_spin_string#?}"
-    printf " [%c]  " "$_spin_string"
-    _spin_string="$_temp${_spin_string%"$_temp"}"
-    sleep $_delay
+    printf " [%c]  " "${_spin_string}"
+    _spin_string="${_temp}${_spin_string%${_temp}}"
+    sleep ${_delay}
     printf "\b\b\b\b\b\b"
   done
   printf "    \b\b\b\b"

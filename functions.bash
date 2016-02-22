@@ -22,7 +22,7 @@
 ###############################################################################
 
 hello() {
-  if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+  if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]
   then
     cat <<HEREDOC
 Usage:
@@ -52,7 +52,7 @@ HEREDOC
 ###############################################################################
 
 hi() {
-  if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+  if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]
   then
     cat <<HEREDOC
 Usage:
@@ -67,7 +67,7 @@ Options:
 Description:
   Say hi.
 HEREDOC
-  elif [ "$1" = "--all" ]
+  elif [ "${1}" = "--all" ]
   then
     printf "Hi, everyone\!\n"
   else
@@ -93,7 +93,7 @@ HEREDOC
 # after the name `yes` is redefined.
 _YES_COMMAND="$(which yes)"
 yes() {
-  if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+  if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]
   then
     cat <<HEREDOC
 Usage:
@@ -109,10 +109,10 @@ Description:
   A wrapper for \`yes\`, which outputs <expletive> or, by default, 'y' forever.
   For more information, run \`man yes\`.
 HEREDOC
-  elif [ "$1" = "--quiet" ]
+  elif [ "${1}" = "--quiet" ]
   then
-    "$_YES_COMMAND" "$@" 1> /dev/null
+    "${_YES_COMMAND}" "${@}" 1> /dev/null
   else
-    "$_YES_COMMAND" "$@"
+    "${_YES_COMMAND}" "${@}"
   fi
 }
