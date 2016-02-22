@@ -97,7 +97,7 @@ yes() {
   then
     cat <<HEREDOC
 Usage:
-  yes [expletive]
+  yes [<expletive>]
   yes --quiet
   yes -h | --help
 
@@ -106,7 +106,7 @@ Options:
   -h --help  Display this usage information.
 
 Description:
-  A wrapper for \`yes\`, which outputs expletive, or, by default, "y", forever.
+  A wrapper for \`yes\`, which outputs <expletive> or, by default, 'y' forever.
   For more information, run \`man yes\`.
 HEREDOC
   elif [ "$1" = "--quiet" ]
