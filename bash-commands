@@ -372,7 +372,9 @@ unset _COMMAND_PARAMETERS[0]
 _debug printf "\${_CMD}: %s\n" "${_CMD}"
 _debug printf "\${_RAW_OPTIONS} (one per line):\n%s\n" "${_RAW_OPTIONS}"
 _debug printf "\${_COMMAND_ARGV[*]}: %s\n" "${_COMMAND_ARGV[*]}"
-_debug printf "\${_COMMAND_PARAMETERS[*]:-}: %s\n" "${_COMMAND_PARAMETERS[*]:-}"
+_debug printf \
+  "\${_COMMAND_PARAMETERS[*]:-}: %s\n" \
+  "${_COMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
 # Environment
