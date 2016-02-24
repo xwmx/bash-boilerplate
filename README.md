@@ -305,7 +305,9 @@ be difficult to read. This leads to noisier, longer code, but should be
 easier to maintain. As a result, some general design preferences:
 
 - Use leading underscores on internal variable and function names in order
-  to avoid name collisions.
+  to avoid name collisions. For unintentionally global variables defined
+  without `local`, such as those defined outside of a function or
+  automatically through a `for` loop, prefix with double underscores.
 - Always use braces when referencing variables, preferring `${NAME}` instead
   of `$NAME`. Braces are only required for variable references in some cases,
   but the cognitive overhead involved in keeping track of which cases require
@@ -313,7 +315,7 @@ easier to maintain. As a result, some general design preferences:
 - Prefer `printf` over `echo`. For more information, see:
   http://unix.stackexchange.com/a/65819
 - Prefer `$_explicit_variable_name` over names like `$var`.
-- Use the `#!/usr/bin/env bash` shebang in order to run the prefered
+- Use the `#!/usr/bin/env bash` shebang in order to run the preferred
   Bash version rather than hard-coding a bash executable path.
 - Prefer splitting statements across multiple lines rather than writing
   one-liners.
