@@ -409,12 +409,12 @@ _load_commands() {
   # $function_list array.
   local _function_list=($(declare -F))
 
-  for c in "${_function_list[@]}"
+  for __name in "${_function_list[@]}"
   do
     # Each element has the format `declare -f function_name`, so set the name
     # to only the 'function_name' part of the string.
     local _function_name
-    _function_name=$(printf "%s" "${c}" | awk '{ print $3 }')
+    _function_name=$(printf "%s" "${__name}" | awk '{ print $3 }')
 
     _debug printf \
       "_load_commands() \${_function_name}: %s\n" \
@@ -517,10 +517,10 @@ _command_exists() {
 #   1  If not.
 _contains() {
   local _test_list=(${*:2})
-  for _test_element in "${_test_list[@]:-}"
+  for __test_element in "${_test_list[@]:-}"
   do
-    _debug printf "_contains() \${_test_element}: %s\n" "${_test_element}"
-    if [[ "${_test_element}" == "${1}" ]]
+    _debug printf "_contains() \${__test_element}: %s\n" "${__test_element}"
+    if [[ "${__test_element}" == "${1}" ]]
     then
       _debug printf "_contains() match: %s\n" "${1}"
       return 0
@@ -845,12 +845,12 @@ example() {
   local _arguments=()
 
   # Parse command arguments.
-  for arg in "${_COMMAND_ARGV[@]:-}"
+  for __arg in "${_COMMAND_ARGV[@]:-}"
   do
-    case ${arg} in
+    case ${__arg} in
       --farewell) _greeting="Goodbye";;
-      -*) _die printf "Unexpected option: %s\n" "${arg}";;
-      *) _arguments+=(${arg});;
+      -*) _die printf "Unexpected option: %s\n" "${__arg}";;
+      *) _arguments+=(${__arg});;
     esac
   done
 

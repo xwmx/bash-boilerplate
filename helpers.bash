@@ -47,9 +47,9 @@ _command_exists() {
 #   1  If not.
 _contains() {
   local _test_list=(${*:2})
-  for _test_element in "${_test_list[@]:-}"
+  for __test_element in "${_test_list[@]:-}"
   do
-    if [[ "${_test_element}" == "${1}" ]]
+    if [[ "${__test_element}" == "${1}" ]]
     then
       return 0
     fi
@@ -112,11 +112,11 @@ _readlink() {
   local _final_path
   local _option
 
-  for _arg in "${@:-}"
+  for __arg in "${@:-}"
   do
-    case "${_arg}" in
+    case "${__arg}" in
       -e|-f)
-        _option="${_arg}"
+        _option="${__arg}"
         ;;
       -*|--*)
         # do nothing
@@ -126,7 +126,7 @@ _readlink() {
       *)
         if [[ -z "${_target_path:-}" ]]
         then
-          _target_path="${_arg}"
+          _target_path="${__arg}"
         fi
         ;;
     esac
