@@ -621,13 +621,16 @@ _piped_input() {
 # desc()
 #
 # Usage:
-#   desc command "description"
+#   desc <name> <description>
+#   desc <name> <<HEREDOC
+# <description>
+# HEREDOC
 #
-# Create a description for a specified command name. The command description
-# text can be passed as the second argument or as standard input.
+# Create a description for a specified command or function <name>. The
+# <description> text can be passed as the second argument or as standard input.
 #
-# To make the description text available to other functions, desc() assigns the
-# text to a variable with the format $_desc_function_name
+# To make the <description> text available to other functions, `desc()` assigns
+# the text to a variable with the format `$___desc_<name>`.
 #
 # NOTE:
 #
@@ -635,9 +638,9 @@ _piped_input() {
 # implementation and simplicity. There is an alternative assignment form
 # that could be used here:
 #
-# var="$(cat <<'EOM'
+# var="$(cat <<'HEREDOC'
 # some message
-# EOM
+# HEREDOC
 # )
 #
 # However, this form appears to require trailing space after backslases to
@@ -645,16 +648,18 @@ _piped_input() {
 # escaping backslashes, which is more common.
 desc() {
   set +e
-  [[ -z ${1} ]] && _die printf "desc: No command name specified.\n"
-  if [[ -n ${2:-} ]]
-  then
-    read -d '' "_desc_${1}" <<EOM
+  [[ -z "${1:-}" ]] && _die printf "desc(): No command name specified.\n"
+  if [[ -n "${2:-}" ]]
+  then # argument is present
+    read -r -d '' "___desc_${1}" <<HEREDOC
 ${2}
-EOM
-    _debug printf "desc() set with argument: _desc_%s\n" "${1}"
-  else
-    read -d '' "_desc_${1}"
-    _debug printf "desc() set with pipe: _desc_%s\n" "${1}"
+HEREDOC
+
+    _debug printf "desc() set with argument: \${__desc_%s}\n" "${1}"
+  else # no argument is present, so assume piped input
+    read -r -d '' "___desc_${1}"
+
+    _debug printf "desc() set with pipe: \${__desc_%s}\n" "${1}"
   fi
   set -e
 }
@@ -665,14 +670,15 @@ EOM
 #   _print_desc <command>
 #
 # Prints the description for a given command, provided the description has been
-# set using the desc() function.
+# set using the `desc()` function.
 _print_desc() {
-  local _var="_desc_${1}"
-  if [[ -n ${!_var:-} ]]
+  local _method_name="${1:-}"
+  local _desc_var="__desc_${_method_name}"
+  if [[ -n "${!_desc_var:-}" ]]
   then
-    printf "%s\n" "${!_var}"
+    printf "%s\n" "${!_desc_var}"
   else
-    printf "No additional information for \`%s\`\n" "${1}"
+    printf "No additional information for \`%s\`\n" "${_method_name}"
   fi
 }
 
