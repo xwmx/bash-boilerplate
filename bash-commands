@@ -29,6 +29,8 @@
 # be difficult to read. This leads to noisier, longer code, but should be
 # easier to maintain. As a result, some general design preferences:
 #
+# - Use leading underscores on internal variable and function names in order
+#   to avoid name collisions.
 # - Group related code into sections with large, easily scannable headers
 # - Prefer `printf` over `echo`. For more information, see:
 #   http://unix.stackexchange.com/a/65819
@@ -401,27 +403,29 @@ _load_commands() {
   # option, displays all of the functions with the format
   # `declare -f function_name`. These are then assigned as elements in the
   # $function_list array.
-  local function_list=($(declare -F))
+  local _function_list=($(declare -F))
 
-  for c in "${function_list[@]}"
+  for c in "${_function_list[@]}"
   do
     # Each element has the format `declare -f function_name`, so set the name
     # to only the 'function_name' part of the string.
-    local function_name
-    function_name=$(printf "%s" "${c}" | awk '{ print $3 }')
+    local _function_name
+    _function_name=$(printf "%s" "${c}" | awk '{ print $3 }')
 
-    _debug printf "_load_commands() \${function_name}: %s\n" "${function_name}"
+    _debug printf \
+      "_load_commands() \${_function_name}: %s\n" \
+      "${_function_name}"
 
     # Add the function name to the $_DEFINED_COMMANDS array unless it starts
     # with an underscore or is one of the desc(), debug(), or die() functions,
     # since these are treated as having 'private' visibility.
-    if ! ( [[ "${function_name}" =~ ^_(.*)  ]] || \
-           [[ "${function_name}" == "desc"  ]] || \
-           [[ "${function_name}" == "debug" ]] || \
-           [[ "${function_name}" == "die"   ]]
+    if ! ( [[ "${_function_name}" =~ ^_(.*)  ]] || \
+           [[ "${_function_name}" == "desc"  ]] || \
+           [[ "${_function_name}" == "debug" ]] || \
+           [[ "${_function_name}" == "die"   ]]
     )
     then
-      _DEFINED_COMMANDS+=("${function_name}")
+      _DEFINED_COMMANDS+=("${_function_name}")
     fi
   done
 
@@ -508,8 +512,8 @@ _command_exists() {
 #   0  If the item is included in the list.
 #   1  If not.
 _contains() {
-  local test_list=(${*:2})
-  for _test_element in "${test_list[@]:-}"
+  local _test_list=(${*:2})
+  for _test_element in "${_test_list[@]:-}"
   do
     _debug printf "_contains() \${_test_element}: %s\n" "${_test_element}"
     if [[ "${_test_element}" == "${1}" ]]
@@ -531,15 +535,15 @@ _contains() {
 #   The list or array of items joined into a string with elements divided by
 #   the optional separator if one is provided.
 _join() {
-  local separator
-  local target_array
-  local dirty
-  local clean
-  separator="${1}"
-  target_array=(${@:2})
-  dirty="$(printf "${separator}%s"  "${target_array[@]}")"
-  clean="${dirty:${#separator}}"
-  printf "%s" "${clean}"
+  local _separator
+  local _target_array
+  local _dirty
+  local _clean
+  _separator="${1}"
+  _target_array=(${@:2})
+  _dirty="$(printf "${_separator}%s"  "${_target_array[@]}")"
+  _clean="${_dirty:${#_separator}}"
+  printf "%s" "${_clean}"
 }
 
 # _command_argv_includes()
@@ -659,10 +663,10 @@ EOM
 # Prints the description for a given command, provided the description has been
 # set using the desc() function.
 _print_desc() {
-  local var="_desc_${1}"
-  if [[ -n ${!var:-} ]]
+  local _var="_desc_${1}"
+  if [[ -n ${!_var:-} ]]
   then
-    printf "%s\n" "${!var}"
+    printf "%s\n" "${!_var}"
   else
     printf "No additional information for \`%s\`\n" "${1}"
   fi
@@ -826,36 +830,36 @@ example() {
     "${_COMMAND_PARAMETERS[*]:-}"
 
   # Set default greeting.
-  local greeting="Hello"
+  local _greeting="Hello"
   # Initialize arguments array.
-  local arguments=()
+  local _arguments=()
 
   # Parse command arguments.
   for arg in "${_COMMAND_ARGV[@]:-}"
   do
     case ${arg} in
-      --farewell) greeting="Goodbye";;
+      --farewell) _greeting="Goodbye";;
       -*) _die printf "Unexpected option: %s\n" "${arg}";;
-      *) arguments+=(${arg});;
+      *) _arguments+=(${arg});;
     esac
   done
 
-  _debug printf "example() \${arguments[0]:-}: %s\n" "${arguments[0]:-}"
-  _debug printf "example() \${arguments[1]:-}: %s\n" "${arguments[1]:-}"
+  _debug printf "example() \${_arguments[0]:-}: %s\n" "${_arguments[0]:-}"
+  _debug printf "example() \${_arguments[1]:-}: %s\n" "${_arguments[1]:-}"
 
-  local name=${arguments[1]:-}
+  local _name=${_arguments[1]:-}
 
-  _debug printf "example() \${greeting}: %s\n" "${greeting}"
-  _debug printf "example() \${name}: %s\n" "${name}"
+  _debug printf "example() \${greeting}: %s\n" "${_greeting}"
+  _debug printf "example() \${name}: %s\n" "${_name}"
 
-  if [[ "${name}" == "Moon" ]]
+  if [[ "${_name}" == "Moon" ]]
   then
-    printf "%s, Luna!\n" "${greeting}"
-  elif [[ -n "${name}" ]]
+    printf "%s, Luna!\n" "${_greeting}"
+  elif [[ -n "${_name}" ]]
   then
-    printf "%s, %s!\n" "${greeting}" "${name}"
+    printf "%s, %s!\n" "${_greeting}" "${_name}"
   else
-    printf "%s, World!\n" "${greeting}"
+    printf "%s, World!\n" "${_greeting}"
   fi
 }
 

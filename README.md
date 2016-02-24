@@ -304,6 +304,8 @@ Explicitness and clarity are generally preferable, especially since bash can
 be difficult to read. This leads to noisier, longer code, but should be
 easier to maintain. As a result, some general design preferences:
 
+- Use leading underscores on internal variable and function names in order
+  to avoid name collisions.
 - Group related code into sections with large, easily scannable headers
 - Prefer `printf` over `echo`. For more information, see:
   http://unix.stackexchange.com/a/65819
