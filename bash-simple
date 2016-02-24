@@ -141,9 +141,9 @@ set -o pipefail
 #
 # Supress ShellCheck unused variable warning:
 # shellcheck disable=SC2034
-DEFAULT_IFS="$IFS"
+DEFAULT_IFS="${IFS}"
 SAFER_IFS=$'\n\t'
-IFS="$SAFER_IFS"
+IFS="${SAFER_IFS}"
 
 ###############################################################################
 # Environment
@@ -152,7 +152,7 @@ IFS="$SAFER_IFS"
 # $_ME
 #
 # Set to the program's basename.
-_ME=$(basename "$0")
+_ME=$(basename "${0}")
 
 ###############################################################################
 # Help
@@ -177,8 +177,8 @@ Boilerplate for creating a simple bash script with some basic strictness
 checks and help features.
 
 Usage:
-  $_ME [<arguments>]
-  $_ME -h | --help
+  ${_ME} [<arguments>]
+  ${_ME} -h | --help
 
 Options:
   -h --help  Show this screen.
@@ -214,13 +214,13 @@ _main() {
   local _arg1=${1:-}
 
   # Avoid complex option parsing when only one program option is expected.
-  if [[ "$_arg1" =~ ^-h|--help$  ]]
+  if [[ "${_arg1}" =~ ^-h|--help$  ]]
   then
     _print_help
   else
-    _simple "$@"
+    _simple "${@}"
   fi
 }
 
 # Call `_main` after everything has been defined.
-_main "$@"
+_main "${@}"

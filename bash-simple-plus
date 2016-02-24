@@ -141,9 +141,9 @@ set -o pipefail
 #
 # Supress ShellCheck unused variable warning:
 # shellcheck disable=SC2034
-DEFAULT_IFS="$IFS"
+DEFAULT_IFS="${IFS}"
 SAFER_IFS=$'\n\t'
-IFS="$SAFER_IFS"
+IFS="${SAFER_IFS}"
 
 ###############################################################################
 # Environment
@@ -152,7 +152,7 @@ IFS="$SAFER_IFS"
 # $_ME
 #
 # Set to the program's basename.
-_ME=$(basename "$0")
+_ME=$(basename "${0}")
 
 ###############################################################################
 # Debug
@@ -173,7 +173,7 @@ _debug() {
     __DEBUG_COUNTER=$((__DEBUG_COUNTER+1))
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  %s " "${__DEBUG_COUNTER}"
-    "$@"
+    "${@}"
     printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
   fi
 }
@@ -186,7 +186,7 @@ _debug() {
 #
 # This is a shortcut for the _debug() function that simply echos the message.
 debug() {
-  _debug echo "$@"
+  _debug echo "${@}"
 }
 
 ###############################################################################
@@ -204,7 +204,7 @@ debug() {
 _die() {
   # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
   printf "❌  "
-  "$@" 1>&2
+  "${@}" 1>&2
   exit 1
 }
 # die()
@@ -216,7 +216,7 @@ _die() {
 #
 # This is a shortcut for the _die() function that simply echos the message.
 die() {
-  _die echo "$@"
+  _die echo "${@}"
 }
 
 ###############################################################################
@@ -242,8 +242,8 @@ Boilerplate for creating a simple bash script with some basic strictness
 checks and help features, and easy debug printing, and basic option handling.
 
 Usage:
-  $_ME [--options] [<arguments>]
-  $_ME -h | --help
+  ${_ME} [--options] [<arguments>]
+  ${_ME} -h | --help
 
 Options:
   -h --help  Display this help information.
@@ -290,9 +290,9 @@ optstring=xo:h
 # argument to the option, such as wget -qO-)
 unset options
 # while the number of arguments is greater than 0
-while (($#))
+while ((${#}))
 do
-  case $1 in
+  case ${1} in
     # if option is of type -ab
     -[!-]?*)
       # loop over each character starting with the second
@@ -301,11 +301,11 @@ do
         # extract 1 character from position 'i'
         c=${1:i:1}
         # add current char to options
-        options+=("-$c")
+        options+=("-${c}")
 
         # if option takes a required argument, and it's not the last char
         # make the rest of the string its argument
-        if [[ $optstring = *"$c:"* && ${1:i+1} ]]
+        if [[ ${optstring} = *"${c}:"* && ${1:i+1} ]]
         then
           options+=("${1:i+1}")
           break
@@ -320,12 +320,12 @@ do
     --)
       options+=(--endopts)
       shift
-      options+=("$@")
+      options+=("${@}")
       break
       ;;
     # otherwise, nothing special
     *)
-      options+=("$1")
+      options+=("${1}")
       ;;
   esac
 
@@ -362,9 +362,9 @@ _require_argument() {
   local _option="${1:-}"
   local _argument="${2:-}"
 
-  if [[ -z "$_argument" ]] || [[ "$_argument" =~ ^- ]]
+  if [[ -z "${_argument}" ]] || [[ "${_argument}" =~ ^- ]]
   then
-    _die printf "Option requires a argument: %s\n" "$_option"
+    _die printf "Option requires a argument: %s\n" "${_option}"
   fi
 }
 # getopts and getopts have inconsistent behavior, so using a simple home-brewed
@@ -375,11 +375,11 @@ _require_argument() {
 #   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
 #   http://stackoverflow.com/a/14203146
 #   http://stackoverflow.com/a/7948533
-while [ $# -gt 0 ]
+while [ ${#} -gt 0 ]
 do
   _option="${1:-}"
   _maybe_param="${2:-}"
-  case "$_option" in
+  case "${_option}" in
     -h|--help)
       _PRINT_HELP=1
       ;;
@@ -390,12 +390,12 @@ do
       _OPTION_X=1
       ;;
     -o)
-      _require_argument "$_option" "$_maybe_param"
+      _require_argument "${_option}" "${_maybe_param}"
       _SHORT_OPTION_WITH_PARAMETER="${_maybe_param}"
        shift
       ;;
     --long-option-with-argument)
-      _require_argument "$_option" "$_maybe_param"
+      _require_argument "${_option}" "${_maybe_param}"
       _LONG_OPTION_WITH_PARAMETER="${_maybe_param}"
       shift
       ;;
@@ -404,7 +404,7 @@ do
       break
       ;;
     -*)
-      _die printf "Unexpected option: %s\n" "$_option"
+      _die printf "Unexpected option: %s\n" "${_option}"
       ;;
   esac
   shift
@@ -423,13 +423,13 @@ _simple() {
   else
     printf "Perform a simple operation.\n"
   fi
-  if [[ -n "$_SHORT_OPTION_WITH_PARAMETER" ]]
+  if [[ -n "${_SHORT_OPTION_WITH_PARAMETER}" ]]
   then
-    printf "Short option parameter: %s\n" "$_SHORT_OPTION_WITH_PARAMETER"
+    printf "Short option parameter: %s\n" "${_SHORT_OPTION_WITH_PARAMETER}"
   fi
-  if [[ -n "$_LONG_OPTION_WITH_PARAMETER" ]]
+  if [[ -n "${_LONG_OPTION_WITH_PARAMETER}" ]]
   then
-    printf "Long option parameter: %s\n" "$_LONG_OPTION_WITH_PARAMETER"
+    printf "Long option parameter: %s\n" "${_LONG_OPTION_WITH_PARAMETER}"
   fi
 }
 
@@ -449,9 +449,9 @@ _main() {
   then
     _print_help
   else
-    _simple "$@"
+    _simple "${@}"
   fi
 }
 
 # Call `_main` after everything has been defined.
-_main "$@"
+_main "${@}"

@@ -9,12 +9,12 @@ load ../helpers
 
 @test "\`_command_exists\` with valid command name returns status 0." {
   run _command_exists 'cat'
-  [[ "$status" -eq 0 ]]
+  [[ "${status}" -eq 0 ]]
 }
 
 @test "\`_command_exists\` with invalid command name returns status 1." {
   run _command_exists 'not-a-valid-command-name'
-  [[ "$status" -eq 1 ]]
+  [[ "${status}" -eq 1 ]]
 }
 
 ###############################################################################
@@ -24,13 +24,13 @@ load ../helpers
 @test "\`_contains\` with valid list element returns status 0." {
   _list=(one two three)
   run _contains "one" "${_list[@]}"
-  [[ "$status" -eq 0 ]]
+  [[ "${status}" -eq 0 ]]
 }
 
 @test "\`_contains\` with invalid list element returns status 1." {
   _list=(one two three)
   run _contains "four" "${_list[@]}"
-  [[ "$status" -eq 1 ]]
+  [[ "${status}" -eq 1 ]]
 }
 
 ###############################################################################
@@ -39,12 +39,12 @@ load ../helpers
 
 @test "\`_interactive_input\` with argument input returns 0." {
   skip "TODO: determine how to test."
-  [[ "$status" -eq 0 ]]
+  [[ "${status}" -eq 0 ]]
 }
 
 @test "\`_interactive_input\` with invalid list element exits with status 1." {
   skip "TODO: determine how to test."
-  [[ "$status" -eq 1 ]]
+  [[ "${status}" -eq 1 ]]
 }
 
 ###############################################################################
@@ -53,12 +53,12 @@ load ../helpers
 
 @test "\`_join\` with valid arguments returns 0." {
   run _join ',' one two three
-  [[ "$status" -eq 0 ]]
+  [[ "${status}" -eq 0 ]]
 }
 
 @test "\`_join\` with valid arguments joins the elements." {
   run _join ',' one two three
-  [[ "$output" == "one,two,three" ]]
+  [[ "${output}" == "one,two,three" ]]
 }
 
 ###############################################################################
