@@ -688,7 +688,7 @@ _print_desc() {
 
 # Version #####################################################################
 
-desc "version" <<EOM
+desc "version" <<HEREDOC
 Usage:
   ${_ME} ( version | --version )
 
@@ -696,24 +696,24 @@ Description:
   Display the current program version.
 
   To save you the trouble, the current version is ${_VERSION}
-EOM
+HEREDOC
 version() {
   printf "%s\n" "${_VERSION}"
 }
 
 # Help ########################################################################
 
-desc "help" <<EOM
+desc "help" <<HEREDOC
 Usage:
   ${_ME} help [<command>]
 
 Description:
   Display help information for ${_ME} or a specified command.
-EOM
+HEREDOC
 help() {
   if [[ ${#_COMMAND_ARGV[@]} = 1 ]]
   then
-    cat <<EOM
+    cat <<HEREDOC
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
 _/ ___\/  _ \ /     \ /     \\\\__  \  /    \  / __ |/  ___/
@@ -738,7 +738,7 @@ Help:
   ${_ME} help [<command>]
 
 $(commands)
-EOM
+HEREDOC
   else
     _print_desc "${1}"
   fi
@@ -746,7 +746,7 @@ EOM
 
 # Command List ################################################################
 
-desc "commands" <<EOM
+desc "commands" <<HEREDOC
 Usage:
   ${_ME} commands [--raw]
 
@@ -755,7 +755,7 @@ Options:
 
 Description:
   Display the list of available commands.
-EOM
+HEREDOC
 commands() {
   if _command_argv_includes "--raw"
   then
@@ -776,7 +776,7 @@ commands() {
 # example() { : }   - The command called by the user.
 #
 #
-# desc example <<EOM
+# desc example <<HEREDOC
 #   Usage:
 #     $_ME example
 #
@@ -786,7 +786,7 @@ commands() {
 #     For usage formatting conventions see:
 #     - http://docopt.org/
 #     - http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
-# EOM
+# HEREDOC
 # example() {
 #   printf "Hello, World!\n"
 # }
@@ -797,7 +797,7 @@ commands() {
 
 # --------------------------------------------------------------------- example
 
-desc "example" <<EOM
+desc "example" <<HEREDOC
 Usage:
   ${_ME} example [<name>] [--farewell]
 
@@ -806,7 +806,7 @@ Options:
 
 Description:
   Print "Hello, World!"
-EOM
+HEREDOC
 example() {
   # These debug statements demonstrate the different behaviors of the
   # positional parameters, the special variables, and the two generated
