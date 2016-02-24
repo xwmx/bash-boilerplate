@@ -673,7 +673,7 @@ HEREDOC
 # set using the `desc()` function.
 _print_desc() {
   local _method_name="${1:-}"
-  local _desc_var="__desc_${_method_name}"
+  local _desc_var="___desc_${_method_name}"
   if [[ -n "${!_desc_var:-}" ]]
   then
     printf "%s\n" "${!_desc_var}"
