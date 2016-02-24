@@ -316,7 +316,7 @@ easier to maintain. As a result, some general design preferences:
   http://unix.stackexchange.com/a/65819
 - Prefer `$_explicit_variable_name` over names like `$var`.
 - Use the `#!/usr/bin/env bash` shebang in order to run the preferred
-  Bash version rather than hard-coding a bash executable path.
+  Bash version rather than hard-coding a `bash` executable path.
 - Prefer splitting statements across multiple lines rather than writing
   one-liners.
 - Group related code into sections with large, easily scannable headers.
