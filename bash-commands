@@ -236,7 +236,7 @@ die() {
 ###############################################################################
 
 # Get raw options for any commands that expect them.
-_RAW_OPTIONS="${*}"
+_RAW_OPTIONS="${*:-}"
 
 # Steps:
 #
