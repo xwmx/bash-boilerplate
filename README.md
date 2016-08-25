@@ -342,6 +342,7 @@ easier to maintain. As a result, some general design preferences:
 - [Bash Pitfalls (mywiki.wooledge.org)
 ](http://mywiki.wooledge.org/BashPitfalls)
 - [Rich’s sh (POSIX shell) tricks (etalabs.net)](http://www.etalabs.net/sh_tricks.htm)
+- [Writing Robust Bash Shell Scripts (davidpashley.com)](http://www.davidpashley.com/articles/writing-robust-shell-scripts/)
 
 ### Related Projects
 
