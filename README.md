@@ -219,6 +219,7 @@ Solution 1. `set +e` / `set -e` again:
 ```bash
 set +e
 read -rd '' variable <<HEREDOC
+Example text.
 HEREDOC
 set -e
 ```
@@ -227,6 +228,7 @@ Solution 2. `<<HEREDOC || true`:
 
 ```bash
 read -rd '' variable <<HEREDOC || true
+Example text.
 HEREDOC
 ```
 
