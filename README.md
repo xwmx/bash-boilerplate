@@ -210,8 +210,8 @@ Exit immediately if a pipeline returns non-zero.
 NOTE: this has issues. When using `read -rd ''` with a heredoc, the exit
 status is non-zero, even though there isn't an error, and this setting
 then causes the script to exit. `read -rd ''` is synonymous to `read -d $'\0'`,
-which means read until it finds a NUL byte, but it reaches the EOF (end of
-heredoc) without finding one and exits with a `1` status. Therefore, when
+which means read until it finds a NUL byte, but it reaches the end of the
+heredoc without finding one and exits with a `1` status. Therefore, when
 reading from heredocs with `set -e`, there are three potential solutions:
 
 Solution 1. `set +e` / `set -e` again:
