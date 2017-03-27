@@ -218,16 +218,16 @@ Solution 1. `set +e` / `set -e` again:
 
 ```bash
 set +e
-read -rd '' variable <<EOF
-EOF
+read -rd '' variable <<HEREDOC
+HEREDOC
 set -e
 ```
 
-Solution 2. `<<EOF || true`:
+Solution 2. `<<HEREDOC || true`:
 
 ```bash
-read -rd '' variable <<EOF || true
-EOF
+read -rd '' variable <<HEREDOC || true
+HEREDOC
 ```
 
 Solution 3. Don't use `set -e` or `set -o errexit` at all.
