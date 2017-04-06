@@ -345,6 +345,7 @@ easier to maintain. As a result, some general design preferences:
 ](http://mywiki.wooledge.org/BashPitfalls)
 - [Rich’s sh (POSIX shell) tricks (etalabs.net)](http://www.etalabs.net/sh_tricks.htm)
 - [Writing Robust Bash Shell Scripts (davidpashley.com)](http://www.davidpashley.com/articles/writing-robust-shell-scripts/)
+- [Bash Strict Mode (github.com/tests-always-included/wick)](https://github.com/tests-always-included/wick/blob/master/doc/bash-strict-mode.md)
 
 ### Related Projects
 
