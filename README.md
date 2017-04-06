@@ -323,8 +323,8 @@ easier to maintain. As a result, some general design preferences:
   one-liners.
 - Group related code into sections with large, easily scannable headers.
 - Describe behavior in comments as much as possible, assuming the reader is
-  a programmer familiar with the shell, but not experienced writing shell
-  scripts.
+  a programmer familiar with the shell, but not necessarily experienced writing
+  shell scripts.
 
 ### Resources
 
