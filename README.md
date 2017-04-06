@@ -352,9 +352,8 @@ easier to maintain. As a result, some general design preferences:
 - [e36freak/templates](https://github.com/e36freak/templates)
 - [connermcd/bash-boilerplate](https://github.com/connermcd/bash-boilerplate)
 - [chrisopedia/bash-boilerplate](https://github.com/chrisopedia/bash-boilerplate)
-- [alphabetum/starters](https://github.com/alphabetum/starters)
-- [alphabetum/bask](https://github.com/alphabetum/bask)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
+- [alphabetum/starters](https://github.com/alphabetum/starters)
 
 ### Examples
 
