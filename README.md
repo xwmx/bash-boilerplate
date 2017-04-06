@@ -354,7 +354,6 @@ easier to maintain. As a result, some general design preferences:
 - [connermcd/bash-boilerplate](https://github.com/connermcd/bash-boilerplate)
 - [chrisopedia/bash-boilerplate](https://github.com/chrisopedia/bash-boilerplate)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
-- [alphabetum/starters](https://github.com/alphabetum/starters)
 - [kvz/bash3boilerplate](https://github.com/kvz/bash3boilerplate)
 
 ### Examples
