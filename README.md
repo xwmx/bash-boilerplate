@@ -356,6 +356,19 @@ easier to maintain. As a result, some general design preferences:
 - [alphabetum/bask](https://github.com/alphabetum/bask)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
 
+### Examples
+
+Scripts based on this project.
+
+- [accounts](https://github.com/alphabetum/accounts)
+- [airport](https://github.com/alphabetum/airport)
+- [bask](https://github.com/alphabetum/bask)
+- [bindle](https://github.com/alphabetum/bindle)
+- [hosts](https://github.com/alphabetum/hosts)
+- [pb](https://github.com/alphabetum/pb)
+- [search.sh](https://github.com/alphabetum/search.sh)
+- [vbox](https://github.com/alphabetum/vbox)
+
 ---
 
 Copyright (c) 2015 William Melody • hi@williammelody.com
