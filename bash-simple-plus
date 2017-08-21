@@ -457,9 +457,9 @@ _main() {
   then
     _print_help
   else
-    _simple "${@}"
+    _simple "$@"
   fi
 }
 
 # Call `_main` after everything has been defined.
-_main "${@:-}"
+_main "$@"
