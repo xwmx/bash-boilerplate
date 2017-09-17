@@ -368,7 +368,7 @@ done
 # `_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")`) because under bash 3.2 the
 # resulting slice is treated as a quoted string and doesn't easily get coaxed
 # into a new array.
-_COMMAND_PARAMETERS=(${_COMMAND_ARGV[*]})
+IFS=" " read -r -a _COMMAND_PARAMETERS <<< "${_COMMAND_ARGV[*]}"
 unset "_COMMAND_PARAMETERS[0]"
 
 _debug printf "\${_CMD}: %s\n" "${_CMD}"
@@ -411,7 +411,7 @@ _load_commands() {
   # option, displays all of the functions with the format
   # `declare -f function_name`. These are then assigned as elements in the
   # $function_list array.
-  local _function_list=($(declare -F))
+  IFS=" " read -r -a local _function_list <<< "$(declare -F)"
 
   for __name in "${_function_list[@]}"
   do
@@ -520,7 +520,7 @@ _command_exists() {
 #   0  If the item is included in the list.
 #   1  If not.
 _contains() {
-  local _test_list=(${*:2})
+  IFS=" " read -r -a local _test_list <<< "${*:2}"
   for __test_element in "${_test_list[@]:-}"
   do
     _debug printf "_contains() \${__test_element}: %s\n" "${__test_element}"
@@ -548,7 +548,7 @@ _join() {
   local _dirty
   local _clean
   _separator="${1}"
-  _target_array=(${@:2})
+  IFS=" " read -r -a _target_array <<< "${@:2}"
   _dirty="$(printf "${_separator}%s"  "${_target_array[@]}")"
   _clean="${_dirty:${#_separator}}"
   printf "%s" "${_clean}"
@@ -869,7 +869,7 @@ example() {
     case ${__arg} in
       --farewell) _greeting="Goodbye";;
       -*) _die printf "Unexpected option: %s\n" "${__arg}";;
-      *) _arguments+=(${__arg});;
+      *) IFS=" " read -r -a _arguments <<< "${__arg}";;
     esac
   done
 
