@@ -365,6 +365,7 @@ Scripts based on this project.
 - [bask](https://github.com/alphabetum/bask)
 - [bindle](https://github.com/alphabetum/bindle)
 - [hosts](https://github.com/alphabetum/hosts)
+- [notes](https://github.com/alphabetum/notes)
 - [pb](https://github.com/alphabetum/pb)
 - [search.sh](https://github.com/alphabetum/search.sh)
 - [vbox](https://github.com/alphabetum/vbox)
