@@ -541,22 +541,19 @@ _contains() {
 # _join()
 #
 # Usage:
-#   _join "," a b c
-#   _join "${an_array[@]}"
+#   _join <separator> <array>
 #
-# Returns:
-#   The list or array of items joined into a string with elements divided by
-#   the optional separator if one is provided.
+# Examples:
+#   _join , a "b c" d     => a,b c,d
+#   _join / var local tmp => var/local/tmp
+#   _join , "${FOO[@]}"   => a,b,c
+#
+# More Information:
+#   http://stackoverflow.com/a/17841619
 _join() {
-  local _separator
-  local _target_array
-  local _dirty
-  local _clean
-  _separator="${1}"
-  _target_array=(${@:2})
-  _dirty="$(printf "${_separator}%s"  "${_target_array[@]}")"
-  _clean="${_dirty:${#_separator}}"
-  printf "%s" "${_clean}"
+  local IFS="${1}"
+  shift
+  printf "%s\\n" "${*}"
 }
 
 # _command_argv_includes()
