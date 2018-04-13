@@ -21,15 +21,32 @@ load ../helpers
 # _contains()
 ###############################################################################
 
-@test "\`_contains\` with valid list element returns status 0." {
-  _list=(one two three)
+@test "\`_contains\` with valid first list element returns status 0." {
+  _list=(one two three four)
   run _contains "one" "${_list[@]}"
   [[ "${status}" -eq 0 ]]
 }
 
+@test "\`_contains\` with valid list element returns status 0." {
+  _list=(one two three four)
+  run _contains "three" "${_list[@]}"
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`_contains\` with valid element and newlines returns status 0." {
+  _list=(
+one
+two
+three
+four
+)
+  run _contains "three" "${_list[@]}"
+  [[ "${status}" -eq 0 ]]
+}
+
 @test "\`_contains\` with invalid list element returns status 1." {
-  _list=(one two three)
-  run _contains "four" "${_list[@]}"
+  _list=(one two three four)
+  run _contains "five" "${_list[@]}"
   [[ "${status}" -eq 1 ]]
 }
 
