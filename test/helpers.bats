@@ -73,9 +73,26 @@ four
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`_join\` with valid arguments joins the elements." {
+@test "\`_join\` with valid arguments joins the elements with a comma." {
   run _join ',' one two three
   [[ "${output}" == "one,two,three" ]]
+}
+
+@test "\`_join\` with valid arguments joins the elements with a '!'." {
+  run _join "!" one two three
+  _compare "one!two!three" "${output}"
+  [[ "${output}" == "one!two!three" ]]
+}
+
+@test "\`_join\` with newline array joins the elements with a '•'." {
+  _array=(
+one
+two
+three
+)
+  run _join "•" "${_array[@]}"
+  _compare "one•two•three" "${output}"
+  [[ "${output}" == "one•two•three" ]]
 }
 
 ###############################################################################
