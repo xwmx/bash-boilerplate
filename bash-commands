@@ -399,7 +399,8 @@ _load_commands() {
   # option, displays all of the functions with the format
   # `declare -f function_name`. These are then assigned as elements in the
   # $function_list array.
-  IFS=" " read -r -a local _function_list <<< "$(declare -F)"
+  local _function_list
+  IFS=" " read -r -a _function_list <<< "$(declare -F)"
 
   for __name in "${_function_list[@]}"
   do
