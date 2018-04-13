@@ -47,7 +47,7 @@ _command_exists() {
 #   1  If not.
 _contains() {
   local _test_list
-  IFS=" " read -r -a _test_list <<< "${*:2}"
+  _test_list=(${*:2})
   for __test_element in "${_test_list[@]:-}"
   do
     if [[ "${__test_element}" == "${1}" ]]
