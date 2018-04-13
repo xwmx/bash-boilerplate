@@ -119,7 +119,7 @@ _readlink() {
       -e|-f)
         _option="${__arg}"
         ;;
-      -*|--*)
+      -*)
         # do nothing
         # ':' is bash no-op
         :
