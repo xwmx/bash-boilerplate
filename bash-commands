@@ -173,7 +173,7 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 # _debug()
 #
 # Usage:
-#   _debug printf "Debug info. Variable: %s\n" "$0"
+#   _debug printf "Debug info. Variable: %s\\n" "$0"
 #
 # A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
@@ -186,7 +186,7 @@ _debug() {
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  %s " "${__DEBUG_COUNTER}"
     "${@}"
-    printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
+    printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\\n"
   fi
 }
 # debug()
@@ -208,7 +208,7 @@ debug() {
 # _die()
 #
 # Usage:
-#   _die printf "Error message. Variable: %s\n" "$0"
+#   _die printf "Error message. Variable: %s\\n" "$0"
 #
 # A simple function for exiting with an error after executing the specified
 # command. The command is expected to print a message and should typically
@@ -371,11 +371,11 @@ done
 IFS=" " read -r -a _COMMAND_PARAMETERS <<< "${_COMMAND_ARGV[*]}"
 unset "_COMMAND_PARAMETERS[0]"
 
-_debug printf "\${_CMD}: %s\n" "${_CMD}"
-_debug printf "\${_RAW_OPTIONS} (one per line):\n%s\n" "${_RAW_OPTIONS}"
-_debug printf "\${_COMMAND_ARGV[*]}: %s\n" "${_COMMAND_ARGV[*]}"
+_debug printf "\${_CMD}: %s\\n" "${_CMD}"
+_debug printf "\${_RAW_OPTIONS} (one per line):\\n%s\\n" "${_RAW_OPTIONS}"
+_debug printf "\${_COMMAND_ARGV[*]}: %s\\n" "${_COMMAND_ARGV[*]}"
 _debug printf \
-  "\${_COMMAND_PARAMETERS[*]:-}: %s\n" \
+  "\${_COMMAND_PARAMETERS[*]:-}: %s\\n" \
   "${_COMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
@@ -387,7 +387,7 @@ _debug printf \
 # Set to the program's basename.
 _ME=$(basename "${0}")
 
-_debug printf "\${_ME}: %s\n" "${_ME}"
+_debug printf "\${_ME}: %s\\n" "${_ME}"
 
 ###############################################################################
 # Load Commands
@@ -404,8 +404,8 @@ _DEFINED_COMMANDS=()
 # Loads all of the commands sourced in the environment.
 _load_commands() {
 
-  _debug printf "_load_commands(): entering...\n"
-  _debug printf "_load_commands() declare -F:\n%s\n" "$(declare -F)"
+  _debug printf "_load_commands(): entering...\\n"
+  _debug printf "_load_commands() declare -F:\\n%s\\n" "$(declare -F)"
 
   # declare is a bash built-in shell function that, when called with the '-F'
   # option, displays all of the functions with the format
@@ -421,7 +421,7 @@ _load_commands() {
     _function_name=$(printf "%s" "${__name}" | awk '{ print $3 }')
 
     _debug printf \
-      "_load_commands() \${_function_name}: %s\n" \
+      "_load_commands() \${_function_name}: %s\\n" \
       "${_function_name}"
 
     # Add the function name to the $_DEFINED_COMMANDS array unless it starts
@@ -438,7 +438,7 @@ _load_commands() {
   done
 
   _debug printf \
-    "commands() \${_DEFINED_COMMANDS[*]:-}:\n%s\n" \
+    "commands() \${_DEFINED_COMMANDS[*]:-}:\\n%s\\n" \
     "${_DEFINED_COMMANDS[*]:-}"
 }
 
@@ -455,8 +455,8 @@ _load_commands() {
 #
 # NOTE: must be called at end of program after all commands have been defined.
 _main() {
-  _debug printf "main(): entering...\n"
-  _debug printf "main() \${_CMD} (upon entering): %s\n" "${_CMD}"
+  _debug printf "main(): entering...\\n"
+  _debug printf "main() \${_CMD} (upon entering): %s\\n" "${_CMD}"
 
   # If $_CMD is blank, then set to `$DEFAULT_COMMAND`
   if [[ -z "${_CMD}" ]]
@@ -473,7 +473,7 @@ _main() {
     # Pass all comment arguments to the program except for the first ($0).
     ${_CMD} "${_COMMAND_PARAMETERS[@]:-}"
   else
-    _die printf "Unknown command: %s\n" "${_CMD}"
+    _die printf "Unknown command: %s\\n" "${_CMD}"
   fi
 }
 
@@ -524,10 +524,10 @@ _contains() {
   IFS=" " read -r -a _test_list <<< "${*:2}"
   for __test_element in "${_test_list[@]:-}"
   do
-    _debug printf "_contains() \${__test_element}: %s\n" "${__test_element}"
+    _debug printf "_contains() \${__test_element}: %s\\n" "${__test_element}"
     if [[ "${__test_element}" == "${1}" ]]
     then
-      _debug printf "_contains() match: %s\n" "${1}"
+      _debug printf "_contains() match: %s\\n" "${1}"
       return 0
     fi
   done
@@ -670,20 +670,20 @@ _piped_input() {
 # escaping backslashes, which is more common.
 desc() {
   set +e
-  [[ -z "${1:-}" ]] && _die printf "desc(): No command name specified.\n"
+  [[ -z "${1:-}" ]] && _die printf "desc(): No command name specified.\\n"
 
   if [[ "${1}" == "--get" ]]
   then # get ------------------------------------------------------------------
-    [[ -z "${2:-}" ]] && _die printf "desc(): No command name specified.\n"
+    [[ -z "${2:-}" ]] && _die printf "desc(): No command name specified.\\n"
 
     local _name="${2:-}"
     local _desc_var="___desc_${_name}"
 
     if [[ -n "${!_desc_var:-}" ]]
     then
-      printf "%s\n" "${!_desc_var}"
+      printf "%s\\n" "${!_desc_var}"
     else
-      printf "No additional information for \`%s\`\n" "${_name}"
+      printf "No additional information for \`%s\`\\n" "${_name}"
     fi
   else # set ------------------------------------------------------------------
     if [[ -n "${2:-}" ]]
@@ -692,11 +692,11 @@ desc() {
 ${2}
 HEREDOC
 
-      _debug printf "desc() set with argument: \${___desc_%s}\n" "${1}"
+      _debug printf "desc() set with argument: \${___desc_%s}\\n" "${1}"
     else # no argument is present, so assume piped input
       read -r -d '' "___desc_${1}"
 
-      _debug printf "desc() set with pipe: \${___desc_%s}\n" "${1}"
+      _debug printf "desc() set with pipe: \${___desc_%s}\\n" "${1}"
     fi
   fi
   set -e
@@ -718,7 +718,7 @@ Description:
   To save you the trouble, the current version is ${_VERSION}
 HEREDOC
 version() {
-  printf "%s\n" "${_VERSION}"
+  printf "%s\\n" "${_VERSION}"
 }
 
 # Help ########################################################################
@@ -779,10 +779,10 @@ HEREDOC
 commands() {
   if _command_argv_includes "--raw"
   then
-    printf "%s\n" "${_DEFINED_COMMANDS[@]}"
+    printf "%s\\n" "${_DEFINED_COMMANDS[@]}"
   else
-    printf "Available commands:\n"
-    printf "  %s\n" "${_DEFINED_COMMANDS[@]}"
+    printf "Available commands:\\n"
+    printf "  %s\\n" "${_DEFINED_COMMANDS[@]}"
   fi
 }
 
@@ -808,7 +808,7 @@ commands() {
 #     - http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
 # HEREDOC
 # example() {
-#   printf "Hello, World!\n"
+#   printf "Hello, World!\\n"
 # }
 #
 ###############################################################################
@@ -837,26 +837,26 @@ example() {
   # $0, $1, $2 do include it, like the $_COMMAND_ARGV array.
   #
   # Individual elements 0, 1, and 2 of each:
-  _debug printf "example() \${0:-}: %s\n" "${0:-}"
-  _debug printf "example() \${_COMMAND_ARGV[0]:-}: %s\n" "${_COMMAND_ARGV[0]:-}"
+  _debug printf "example() \${0:-}: %s\\n" "${0:-}"
+  _debug printf "example() \${_COMMAND_ARGV[0]:-}: %s\\n" "${_COMMAND_ARGV[0]:-}"
   _debug \
-    printf "example() \${_COMMAND_PARAMETERS[0]:-}: %s\n" \
+    printf "example() \${_COMMAND_PARAMETERS[0]:-}: %s\\n" \
     "${_COMMAND_PARAMETERS[0]:-}"
-  _debug printf "example() \${1:-}: %s\n" "${1:-}"
-  _debug printf "example() \${_COMMAND_ARGV[1]:-}: %s\n" "${_COMMAND_ARGV[1]:-}"
+  _debug printf "example() \${1:-}: %s\\n" "${1:-}"
+  _debug printf "example() \${_COMMAND_ARGV[1]:-}: %s\\n" "${_COMMAND_ARGV[1]:-}"
   _debug \
-    printf "example() \${_COMMAND_PARAMETERS[1]:-}: %s\n" \
+    printf "example() \${_COMMAND_PARAMETERS[1]:-}: %s\\n" \
     "${_COMMAND_PARAMETERS[1]:-}"
-  _debug printf "example() \${2:-}: %s\n" "${2:-}"
-  _debug printf "example() \${_COMMAND_ARGV[2]:-}: %s\n" "${_COMMAND_ARGV[2]:-}"
+  _debug printf "example() \${2:-}: %s\\n" "${2:-}"
+  _debug printf "example() \${_COMMAND_ARGV[2]:-}: %s\\n" "${_COMMAND_ARGV[2]:-}"
   _debug \
-    printf "example() \${_COMMAND_PARAMETERS[2]:-}: %s\n" \
+    printf "example() \${_COMMAND_PARAMETERS[2]:-}: %s\\n" \
     "${_COMMAND_PARAMETERS[2]:-}"
   # Each expanded to string:
-  _debug printf "example() \${*:-}: %s\n" "${*:-}"
-  _debug printf "example() \${_COMMAND_ARGV[*]:-}: %s\n" "${_COMMAND_ARGV[*]:-}"
+  _debug printf "example() \${*:-}: %s\\n" "${*:-}"
+  _debug printf "example() \${_COMMAND_ARGV[*]:-}: %s\\n" "${_COMMAND_ARGV[*]:-}"
   _debug \
-    printf "example() \${_COMMAND_PARAMETERS[*]:-}: %s\n" \
+    printf "example() \${_COMMAND_PARAMETERS[*]:-}: %s\\n" \
     "${_COMMAND_PARAMETERS[*]:-}"
 
   # Set default greeting.
@@ -869,27 +869,27 @@ example() {
   do
     case ${__arg} in
       --farewell) _greeting="Goodbye";;
-      -*) _die printf "Unexpected option: %s\n" "${__arg}";;
+      -*) _die printf "Unexpected option: %s\\n" "${__arg}";;
       *) IFS=" " read -r -a _arguments <<< "${__arg}";;
     esac
   done
 
-  _debug printf "example() \${_arguments[0]:-}: %s\n" "${_arguments[0]:-}"
-  _debug printf "example() \${_arguments[1]:-}: %s\n" "${_arguments[1]:-}"
+  _debug printf "example() \${_arguments[0]:-}: %s\\n" "${_arguments[0]:-}"
+  _debug printf "example() \${_arguments[1]:-}: %s\\n" "${_arguments[1]:-}"
 
   local _name=${_arguments[1]:-}
 
-  _debug printf "example() \${greeting}: %s\n" "${_greeting}"
-  _debug printf "example() \${name}: %s\n" "${_name}"
+  _debug printf "example() \${greeting}: %s\\n" "${_greeting}"
+  _debug printf "example() \${name}: %s\\n" "${_name}"
 
   if [[ "${_name}" == "Moon" ]]
   then
-    printf "%s, Luna!\n" "${_greeting}"
+    printf "%s, Luna!\\n" "${_greeting}"
   elif [[ -n "${_name}" ]]
   then
-    printf "%s, %s!\n" "${_greeting}" "${_name}"
+    printf "%s, %s!\\n" "${_greeting}" "${_name}"
   else
-    printf "%s, World!\n" "${_greeting}"
+    printf "%s, World!\\n" "${_greeting}"
   fi
 }
 
