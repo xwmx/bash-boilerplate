@@ -128,6 +128,15 @@ set -o nounset
 # Short form: set -e
 set -o errexit
 
+# Print a helpful message if a pipeline with non-zero exit code causes the
+# script to exit as described above.
+trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+
+# Allow the above trap be inherited by all functions in the script.
+#
+# Short form: set -E
+set -o errtrace
+
 # Return value of a pipeline is the value of the last (rightmost) command to
 # exit with a non-zero status, or zero if all commands in the pipeline exit
 # successfully.
@@ -664,7 +673,6 @@ _piped_input() {
 # preserve newlines, which is unexpected. Using `read` simply requires
 # escaping backslashes, which is more common.
 desc() {
-  set +e
   _debug printf "desc() \${*}: %s\\n" "$@"
   [[ -z "${1:-}" ]] && _die printf "desc(): No command name specified.\\n"
 
@@ -690,12 +698,13 @@ HEREDOC
 
       _debug printf "desc() set with argument: \${___desc_%s}\\n" "${1}"
     else # no argument is present, so assume piped input
-      read -r -d '' "___desc_${1}"
+      # `read` exits with non-zero status when a delimeter is not found, so
+      # avoid errors by ending statement with `|| true`.
+      read -r -d '' "___desc_${1}" || true
 
       _debug printf "desc() set with pipe: \${___desc_%s}\\n" "${1}"
     fi
   fi
-  set -e
 }
 
 ###############################################################################
