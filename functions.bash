@@ -38,7 +38,7 @@ HEREDOC
     return 0
   fi
 
-  printf "Hello.\n"
+  printf "Hello.\\n"
 }
 
 ###############################################################################
@@ -69,9 +69,9 @@ Description:
 HEREDOC
   elif [ "${1}" = "--all" ]
   then
-    printf "Hi, everyone\!\n"
+    printf "Hi, everyone!\\n"
   else
-    printf "Hi\!\n"
+    printf "Hi!\\n"
   fi
 }
 

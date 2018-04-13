@@ -80,7 +80,7 @@ HEREDOC
 
 @test "\`hi\` with no arguments prints a string." {
   run hi
-  [[ "${output}" == "Hi\!" ]]
+  [[ "${output}" == "Hi!" ]]
 }
 
 @test "\`hi -h\` returns status 0." {
@@ -112,6 +112,6 @@ HEREDOC
 
 @test "\`hi --all\` prints a string." {
   run hi --all
-  _compare "Hi, everyone\!" "${output}"
-  [[ "${output}" == "Hi, everyone\!" ]]
+  _compare "Hi, everyone!" "${output}"
+  [[ "${output}" == "Hi, everyone!" ]]
 }
