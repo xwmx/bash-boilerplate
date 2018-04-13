@@ -182,7 +182,7 @@ _debug() {
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  %s " "${__DEBUG_COUNTER}"
     "${@}"
-    printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
+    printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\\n"
   fi
 }
 # debug()
@@ -241,9 +241,9 @@ _print_help() {
   cat <<HEREDOC
      _                 _
  ___(_)_ __ ___  _ __ | | ___   _
-/ __| | '_ \` _ \| '_ \| |/ _ \_| |_
-\__ \ | | | | | | |_) | |  __/_   _|
-|___/_|_| |_| |_| .__/|_|\___| |_|
+/ __| | '_ \` _ \\| '_ \\| |/ _ \\_| |_
+\\__ \\ | | | | | | |_) | |  __/_   _|
+|___/_|_| |_| |_| .__/|_|\\___| |_|
                 |_|
 
 Boilerplate for creating a simple bash script with some basic strictness
@@ -372,7 +372,7 @@ _require_argument() {
 
   if [[ -z "${_argument}" ]] || [[ "${_argument}" =~ ^- ]]
   then
-    _die printf "Option requires a argument: %s\n" "${_option}"
+    _die printf "Option requires a argument: %s\\n" "${_option}"
   fi
 }
 # getopts and getopts have inconsistent behavior, so using a simple home-brewed
@@ -412,7 +412,7 @@ do
       break
       ;;
     -*)
-      _die printf "Unexpected option: %s\n" "${__option}"
+      _die printf "Unexpected option: %s\\n" "${__option}"
       ;;
   esac
   shift
@@ -423,21 +423,21 @@ done
 ###############################################################################
 
 _simple() {
-  _debug printf ">> Performing operation...\n"
+  _debug printf ">> Performing operation...\\n"
 
   if ((_OPTION_X))
   then
-    printf "Perform a simple operation with --option-x.\n"
+    printf "Perform a simple operation with --option-x.\\n"
   else
-    printf "Perform a simple operation.\n"
+    printf "Perform a simple operation.\\n"
   fi
   if [[ -n "${_SHORT_OPTION_WITH_PARAMETER}" ]]
   then
-    printf "Short option parameter: %s\n" "${_SHORT_OPTION_WITH_PARAMETER}"
+    printf "Short option parameter: %s\\n" "${_SHORT_OPTION_WITH_PARAMETER}"
   fi
   if [[ -n "${_LONG_OPTION_WITH_PARAMETER}" ]]
   then
-    printf "Long option parameter: %s\n" "${_LONG_OPTION_WITH_PARAMETER}"
+    printf "Long option parameter: %s\\n" "${_LONG_OPTION_WITH_PARAMETER}"
   fi
 }
 
