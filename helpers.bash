@@ -87,7 +87,7 @@ _interactive_input() {
 _join() {
   local IFS="${1}"
   shift
-  printf "%s\n" "${*}"
+  printf "%s\\n" "${*}"
 }
 
 ###############################################################################
@@ -139,7 +139,7 @@ _readlink() {
   else
     if [[ -z "${_target_path:-}" ]]
     then
-      printf "_readlink: missing operand\n"
+      printf "_readlink: missing operand\\n"
       return 1
     fi
 
@@ -161,13 +161,13 @@ _readlink() {
 
     if [[ "${_option}" == "-f" ]]
     then
-      printf "%s\n" "${_final_path}"
+      printf "%s\\n" "${_final_path}"
       return 0
     elif [[ "${_option}" == "-e" ]]
     then
       if [[ -e "${_final_path}" ]]
       then
-        printf "%s\n" "${_final_path}"
+        printf "%s\\n" "${_final_path}"
         return 0
       else
         return 1
@@ -207,7 +207,7 @@ _spinner() {
 
   if [[ -z "${_pid}" ]]
   then
-    printf "Usage: _spinner <pid>\n"
+    printf "Usage: _spinner <pid>\\n"
     return 1
   fi
 
@@ -217,7 +217,7 @@ _spinner() {
     printf " [%c]  " "${_spin_string}"
     _spin_string="${_temp}${_spin_string%${_temp}}"
     sleep ${_delay}
-    printf "\b\b\b\b\b\b"
+    printf "\\b\\b\\b\\b\\b\\b"
   done
-  printf "    \b\b\b\b"
+  printf "    \\b\\b\\b\\b"
 }
