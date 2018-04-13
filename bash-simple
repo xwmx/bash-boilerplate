@@ -136,6 +136,7 @@ set -o errexit
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 # Allow the above trap be inherited by all functions in the script.
+#
 # Short form: set -E
 set -o errtrace
 
