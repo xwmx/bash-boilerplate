@@ -208,7 +208,7 @@ set -o nounset
 
 Exit immediately if a pipeline returns non-zero.
 
-This is super useful to avoiding scary errors, but there are some
+This is super useful for avoiding scary errors, but there are some
 things to watch out for. When using `read -rd ''` with a heredoc, the
 exit status is non-zero, even though there isn't an error, and this
 setting then causes the script to exit. `read -rd ''` is synonymous
