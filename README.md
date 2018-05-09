@@ -1,7 +1,8 @@
 Bash Boilerplate
 ================
 
-A collection of example bash scripts that can be used as starting points.
+A collection of example bash scripts that can be used as starting points
+for your own scripts.
 
 I also use these scripts to record and document various common approaches
 and conventions that I've learned and encountered while working with bash.
@@ -207,12 +208,14 @@ set -o nounset
 
 Exit immediately if a pipeline returns non-zero.
 
-NOTE: this has issues. When using `read -rd ''` with a heredoc, the exit
-status is non-zero, even though there isn't an error, and this setting
-then causes the script to exit. `read -rd ''` is synonymous to `read -d $'\0'`,
-which means read until it finds a NUL byte, but it reaches the end of the
-heredoc without finding one and exits with a `1` status. Therefore, when
-reading from heredocs with `set -e`, there are three potential solutions:
+This is super useful to avoiding scary errors, but there are some
+things to watch out for. When using `read -rd ''` with a heredoc, the
+exit status is non-zero, even though there isn't an error, and this
+setting then causes the script to exit. `read -rd ''` is synonymous
+to `read -d $'\0'`, which means read until it finds a NUL byte, but
+it reaches the end of the heredoc without finding one and exits with
+a `1` status. Therefore, when reading from heredocs with `set -e`,
+there are three potential solutions:
 
 Solution 1. `set +e` / `set -e` again:
 
