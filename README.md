@@ -2,26 +2,9 @@ Bash Boilerplate
 ================
 
 A collection of example bash scripts that can be used to easily create
-command line programs.
-
-I also use these scripts to record and document various common approaches
-and conventions that I've learned and encountered while working with bash.
-To this end, each script contains a lot of comments attempting to describe
-the functionality and syntax as much as possible.
-
-In many cases there are debug statements or example code that demonstrate
-functionality or reveal the state of the program at a certain point. These
-should generally be removed when customizing the scripts, while retaining
-the parts that still apply. Especially in the case of the
-`bash-commands` script, it's probably a good idea to play around with
-the different features before diving into customization.
+safe and useful command line programs.
 
 ## Scripts
-
-There are multiple boilerplate scripts included, each with different
-amounts of complexity. Since these are boilerplate scripts, it's easiest
-just to start with the simplest structure for the task rather than using
-a more complex one and removing a bunch of things that aren't needed.
 
 ### [bash-simple](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple)
 
@@ -78,9 +61,6 @@ Helper functions. These functions are primarily intended to be used within
 scripts, but can be adapted for use as shell functions.
 
 ## Notes
-
-Most of these tips are included in the boilerplate scripts, but I'm also
-adding them here for easy reference.
 
 ### ShellCheck
 
@@ -285,21 +265,6 @@ IFS=$'\n\t'
 For some background, see
 [Filenames and Pathnames in Shell: How to do it Correctly (dwheeler.com)
 ](http://www.dwheeler.com/essays/filenames-in-shell.html)
-
-##### `$DEFAULT_IFS` and `$SAFER_IFS`
-
-`$DEFAULT_IFS` contains the default `$IFS` value in case it's needed, such as
-when expanding an array and you want to separate elements by spaces.
-`$SAFER_IFS` contains the preferred settings for the program, and setting it
-separately makes it easier to switch between the two if needed.
-
-##### Usage
-
-```bash
-DEFAULT_IFS="$IFS"
-SAFER_IFS=$'\n\t'
-IFS="$SAFER_IFS"
-```
 
 ---
 
