@@ -1,8 +1,8 @@
 Bash Boilerplate
 ================
 
-A collection of example bash scripts that can be used to easily create
-safe and useful command line programs.
+A collection of example Bash starter scripts for easily creating safe and useful
+command line programs.
 
 ## Scripts
 
