@@ -1,8 +1,8 @@
 Bash Boilerplate
 ================
 
-A collection of example bash scripts that can be used as starting points
-for your own scripts.
+A collection of example bash scripts that can be used to easily create
+command line programs.
 
 I also use these scripts to record and document various common approaches
 and conventions that I've learned and encountered while working with bash.
