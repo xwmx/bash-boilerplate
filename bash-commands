@@ -733,8 +733,10 @@ Description:
   Display help information for ${_ME} or a specified command.
 HEREDOC
 help() {
-  if [[ ${#_COMMAND_ARGV[@]} = 1 ]]
+  if [[ "${1:-}" ]]
   then
+    desc --get "${1}"
+  else
     cat <<HEREDOC
                                                 .___
   ____  ____   _____   _____ _____    ____    __| _/______
@@ -761,8 +763,6 @@ Help:
 
 $(commands)
 HEREDOC
-  else
-    desc --get "${1}"
   fi
 }
 
