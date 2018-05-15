@@ -257,88 +257,22 @@ HEREDOC
 
 ###############################################################################
 # Options
+#
+# NOTE: The `getops` builtin command only parses short options and BSD `getopt`
+# does not support long arguments (GNU `getopt` does), so the most portable
+# and clear way to parse options is often to just use a `while` loop.
+#
+# For a pure bash `getopt` function, try pure-getopt:
+#   https://github.com/agriffis/pure-getopt
+#
+# More info:
+#   http://wiki.bash-hackers.org/scripting/posparams
+#   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
+#   http://stackoverflow.com/a/14203146
+#   http://stackoverflow.com/a/7948533
+#   https://stackoverflow.com/a/12026302
+#   https://stackoverflow.com/a/402410
 ###############################################################################
-
-# Steps:
-#
-# 1. set expected short options in `optstring` at beginning of the "Normalize
-#    Options" section,
-# 2. parse options in while loop in the "Parse Options" section.
-
-# Normalize Options ###########################################################
-
-# Source:
-#   https://github.com/e36freak/templates/blob/master/options
-
-# The first loop, even though it uses 'optstring', will NOT check if an
-# option that takes a required argument has the argument provided. That must
-# be done within the second loop and case statement, yourself. Its purpose
-# is solely to determine that -oARG is split into -o ARG, and not -o -A -R -G.
-
-# Set short options -----------------------------------------------------------
-
-# option string, for short options.
-#
-# Very much like getopts, expected short options should be appended to the
-# string here. Any option followed by a ':' takes a required argument.
-#
-# In this example, `-x` and `-h` are regular short options, while `o` is
-# assumed to have an argument and will be split if joined with the string,
-# meaning `-oARG` would be split to `-o ARG`.
-optstring=xo:h
-
-# Normalize -------------------------------------------------------------------
-
-# iterate over options, breaking -ab into -a -b and --foo=bar into --foo bar
-# also turns -- into --endopts to avoid issues with things like '-o-', the '-'
-# should not indicate the end of options, but be an invalid option (or the
-# argument to the option, such as wget -qO-)
-unset options
-# while the number of arguments is greater than 0
-while ((${#}))
-do
-  case ${1} in
-    # if option is of type -ab
-    -[!-]?*)
-      # loop over each character starting with the second
-      for ((i=1; i<${#1}; i++))
-      do
-        # extract 1 character from position 'i'
-        c=${1:i:1}
-        # add current char to options
-        options+=("-${c}")
-
-        # if option takes a required argument, and it's not the last char
-        # make the rest of the string its argument
-        if [[ ${optstring} = *"${c}:"* && ${1:i+1} ]]
-        then
-          options+=("${1:i+1}")
-          break
-        fi
-      done
-      ;;
-    # if option is of type --foo=bar, split on first '='
-    --?*=*)
-      options+=("${1%%=*}" "${1#*=}")
-      ;;
-    # end of options, stop breaking them up
-    --)
-      options+=(--endopts)
-      shift
-      options+=("${@}")
-      break
-      ;;
-    # otherwise, nothing special
-    *)
-      options+=("${1}")
-      ;;
-  esac
-
-  shift
-done
-# set new positional parameters to altered options. Set default to blank.
-set -- "${options[@]:-}"
-unset options
 
 # Parse Options ###############################################################
 
@@ -372,15 +306,8 @@ _require_argument() {
     _die printf "Option requires a argument: %s\\n" "${_option}"
   fi
 }
-# getopts and getopts have inconsistent behavior, so using a simple home-brewed
-# while loop. This isn't perfectly compliant with POSIX, but it's close enough
-# and this appears to be a widely used approach.
-#
-# More info:
-#   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
-#   http://stackoverflow.com/a/14203146
-#   http://stackoverflow.com/a/7948533
-while [ ${#} -gt 0 ]
+
+while [[ ${#} -gt 0 ]]
 do
   __option="${1:-}"
   __maybe_param="${2:-}"

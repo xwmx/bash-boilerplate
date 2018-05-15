@@ -28,7 +28,7 @@ help features, easy debug printing. Useful for regular scripts.
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
 - `die` command with error message printing and exiting,
-- Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing.
+- Option parsing.
 
 ### [bash-commands](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-commands)
 
@@ -42,7 +42,7 @@ tasks.
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
 - `die` command with error message printing and exiting,
-- Option normalization (eg, `-ab -c` -> `-a -b -c`) and option parsing,
+- Option parsing,
 - Automatic arbitrary command loading,
 - An nice, clean pattern for specifying per-command help,
 - Built-in commands for help, version, and command listing,
