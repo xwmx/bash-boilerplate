@@ -116,3 +116,26 @@ HEREDOC
     "${_YES_COMMAND}" "${@}"
   fi
 }
+
+###############################################################################
+# Anonymous Function / Immediately-invoked function expression (IIFE)
+#
+# A simple anonymous throway function pattern that leverages common conventions
+# from JavaScript and other languages. An underscore (`_`) function name
+# indicates an anonymous function, which is then immediately invoked after
+# the definition.
+#
+# Anonymous functions can be useful for shell initialization functions that are
+# intended to be executed only once.
+#
+# Source (credit to https://stackoverflow.com/users/10559/jwfearn):
+#   https://stackoverflow.com/a/24538676
+#
+# More Information:
+#   https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
+###############################################################################
+
+_() {
+  printf "Hello World.\\n"
+} && _ "$@"
+unset -f _
