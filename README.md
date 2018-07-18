@@ -4,6 +4,11 @@ Bash Boilerplate
 A collection of Bash starter scripts for easily creating safe and useful
 command line programs.
 
+Bash Boilerplate is great for making standalone, portable, single-file command line
+programs as well as functions in shell initialization files files. For a framework
+approach that's useful for task and build files, try [Bask](https://github.com/alphabetum/bask),
+a pure Bash mini-framework for command-centric Bash scripts.
+
 ## Scripts
 
 ### [bash-simple](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple)
