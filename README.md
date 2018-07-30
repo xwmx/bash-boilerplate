@@ -329,6 +329,7 @@ easier to maintain. As a result, some general design preferences:
 - [chrisopedia/bash-boilerplate](https://github.com/chrisopedia/bash-boilerplate)
 - [ShaneKilkelly/manuel](https://github.com/ShaneKilkelly/manuel)
 - [kvz/bash3boilerplate](https://github.com/kvz/bash3boilerplate)
+- [ralish/bash-script-template](https://github.com/ralish/bash-script-template)
 
 ### Examples
 
