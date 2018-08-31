@@ -86,7 +86,7 @@ issues where corner cases can cause delayed failures.
 It can be used with Vim via
 [Syntastic](https://github.com/scrooloose/syntastic), Emacs via
 [Flycheck](https://github.com/flycheck/flycheck), Sublime Text 3 via
-[SublimeLinter](http://sublimelinter.readthedocs.org/en/latest/), and Atom via
+[SublimeLinter](http://sublimelinter.readthedocs.org/en/latest/), VS Code via [vscode-shellcheck](https://github.com/timonwong/vscode-shellcheck), and Atom via
 [linter](https://atom.io/packages/linter),
 [atom-lint](https://atom.io/packages/atom-lint),
 or [linter-shellcheck](https://atom.io/packages/linter-shellcheck).
