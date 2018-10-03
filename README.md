@@ -129,9 +129,23 @@ Treat unset variables and parameters other than the special parameters `@` or
 error message will be written to the standard error, and a non-interactive
 shell will exit.
 
+##### Usage
+
+Short form:
+
+```bash
+set -u
+```
+
+Long form:
+
+```bash
+set -o nounset
+```
+
 ##### Parameter Expansion
 
-This requires using parameter expansion to test for unset variables.
+Parameter expansion can be used to test for unset variables when using `set -o nounset`.
 
 http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion
 
@@ -173,27 +187,29 @@ With an error message:
 ${1:?'error message'}  # exit with 'error message' if variable is unbound
 ```
 
-##### Usage
-
-Short form:
-
-```bash
-set -u
-```
-
-Long form:
-
-```bash
-set -o nounset
-```
-
 ---
 
 #### `set -o errexit` / `set -e`
 
 Exit immediately if a pipeline returns non-zero.
 
-This is super useful for avoiding scary errors, but there are some
+##### Usage
+
+Short form:
+
+```bash
+set -e
+```
+
+Long form:
+
+```bash
+set -o errexit
+```
+
+##### Using `set -o errexit` with `read -rd ''`
+
+`set -o errexit` is super useful for avoiding scary errors, but there are some
 things to watch out for. When using `read -rd ''` with a heredoc, the
 exit status is non-zero, even though there isn't an error, and this
 setting then causes the script to exit. `read -rd ''` is synonymous
@@ -226,20 +242,6 @@ More information:
 
 ['builtin "read -d" behaves differently after "set -e"' (lists.gnu.org)
 ](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
-
-##### Usage
-
-Short form:
-
-```bash
-set -e
-```
-
-Long form:
-
-```bash
-set -o errexit
-```
 
 ---
 
