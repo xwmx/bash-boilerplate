@@ -212,7 +212,7 @@ set -o errexit
 `set -o errexit` is super useful for avoiding scary errors, but there are some
 things to watch out for. When using `read -rd ''` with a heredoc, the
 exit status is non-zero, even though there isn't an error, and this
-setting then causes the script to exit. `read -rd ''` is synonymous
+setting then causes the script to exit. `read -rd ''` is equivalent
 to `read -d $'\0'`, which means read until it finds a NUL byte, but
 it reaches the end of the heredoc without finding one and exits with
 a `1` status. Therefore, when reading from heredocs with `set -e`,
