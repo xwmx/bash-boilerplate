@@ -1,7 +1,9 @@
 #!/usr/bin/env bats
 
 load test_helper
-load ../functions
+# NOTE: Redirect output to /dev/null to avoid errors from the anonymous
+# function pattern during `bats` runs.
+load ../functions > /dev/null 2>&1
 
 ###############################################################################
 # hello()
