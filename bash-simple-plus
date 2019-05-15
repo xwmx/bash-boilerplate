@@ -303,7 +303,7 @@ _require_argument() {
 
   if [[ -z "${_argument}" ]] || [[ "${_argument}" =~ ^- ]]
   then
-    _die printf "Option requires a argument: %s\\n" "${_option}"
+    _die printf "Option requires an argument: %s\\n" "${_option}"
   fi
 }
 
