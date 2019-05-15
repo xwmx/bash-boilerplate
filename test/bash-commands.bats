@@ -159,7 +159,7 @@ HEREDOC
 @test "\`bash-commands version\` prints a version number." {
   run "${_COMMAND}" version
   printf "'%s'" "${output}"
-  echo "${output}" | grep -q '\d\+\.\d\+\.\d\+'
+  echo "${output}" | grep -q '[0-9]\+\.[0-9]\+\.[0-9]\+'
 }
 
 @test "\`bash-commands --version\` returns with 0 status." {
@@ -170,5 +170,5 @@ HEREDOC
 @test "\`bash-commands --version\` prints a version number." {
   run "${_COMMAND}" --version
   printf "'%s'" "${output}"
-  echo "${output}" | grep -q '\d\+\.\d\+\.\d\+'
+  echo "${output}" | grep -q '[0-9]\+\.[0-9]\+\.[0-9]\+'
 }
