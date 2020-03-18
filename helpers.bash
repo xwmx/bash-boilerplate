@@ -12,7 +12,7 @@
 # starts with a leading underscore to indicate that it is an internal
 # function and avoid collisions with gloablly defined names.
 #
-# Bash Boilerplate: https://github.com/alphabetum/bash-boilerplate
+# Bash Boilerplate: https://github.com/xwmx/bash-boilerplate
 #
 # Copyright (c) 2016 William Melody • hi@williammelody.com
 ###############################################################################

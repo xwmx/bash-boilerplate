@@ -10,7 +10,7 @@
 # The functions here are intended to be included in the interactive shell,
 # which is done by defining them in a shell init file like `~/.bashrc`.
 #
-# Bash Boilerplate: https://github.com/alphabetum/bash-boilerplate
+# Bash Boilerplate: https://github.com/xwmx/bash-boilerplate
 #
 # Copyright (c) 2016 William Melody • hi@williammelody.com
 

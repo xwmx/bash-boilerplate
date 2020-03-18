@@ -6,12 +6,12 @@ command line programs.
 
 Bash Boilerplate is great for making standalone, portable, single-file command line
 programs as well as shell initialization functions. For a framework
-approach that's useful for task and build files, try [Bask](https://github.com/alphabetum/bask),
+approach that's useful for task and build files, try [Bask](https://github.com/xwmx/bask),
 a pure Bash mini-framework for command-centric Bash scripts.
 
 ## Scripts
 
-### [bash-simple](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple)
+### [bash-simple](https://github.com/xwmx/bash-boilerplate/blob/master/bash-simple)
 
 A simple bash script with some basic strictness checks and help features.
 Useful for simple programs that don't have many features and don't take
@@ -22,7 +22,7 @@ options other than help.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`.
 
-### [bash-simple-plus](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-simple-plus)
+### [bash-simple-plus](https://github.com/xwmx/bash-boilerplate/blob/master/bash-simple-plus)
 
 A simple bash script with some basic strictness checks, option parsing,
 help features, easy debug printing. Useful for regular scripts.
@@ -35,7 +35,7 @@ help features, easy debug printing. Useful for regular scripts.
 - `die` command with error message printing and exiting,
 - Option parsing.
 
-### [bash-commands](https://github.com/alphabetum/bash-boilerplate/blob/master/bash-commands)
+### [bash-commands](https://github.com/xwmx/bash-boilerplate/blob/master/bash-commands)
 
 An example of a bash program with commands. This contains lots of features
 and should be usable for creating bash programs that do multiple related
@@ -54,13 +54,13 @@ tasks.
 - Conventions for distinguishing between functions and program commands,
 - Useful utility functions.
 
-### [functions.bash](https://github.com/alphabetum/bash-boilerplate/blob/master/functions.bash)
+### [functions.bash](https://github.com/xwmx/bash-boilerplate/blob/master/functions.bash)
 
 Shell function examples and boilerplate. The functions in this file are
 intended to be included in the interactive shell, which can be done by
 defining them in a shell init file like `~/.bashrc`.
 
-### [helpers.bash](https://github.com/alphabetum/bash-boilerplate/blob/master/helpers.bash)
+### [helpers.bash](https://github.com/xwmx/bash-boilerplate/blob/master/helpers.bash)
 
 Helper functions. These functions are primarily intended to be used within
 scripts, but can be adapted for use as shell functions.
@@ -113,7 +113,7 @@ already included in the boilerplate scripts):
 ```bash
 # Bash 'Strict Mode'
 # http://redsymbol.net/articles/unofficial-bash-strict-mode
-# https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
+# https://github.com/xwmx/bash-boilerplate#bash-strict-mode
 set -o nounset
 set -o errexit
 set -o pipefail
@@ -337,15 +337,15 @@ easier to maintain. As a result, some general design preferences:
 
 Scripts based on this project.
 
-- [accounts](https://github.com/alphabetum/accounts)
-- [airport](https://github.com/alphabetum/airport)
-- [bask](https://github.com/alphabetum/bask)
-- [bindle](https://github.com/alphabetum/bindle)
-- [hosts](https://github.com/alphabetum/hosts)
-- [notes](https://github.com/alphabetum/notes)
-- [pb](https://github.com/alphabetum/pb)
-- [search.sh](https://github.com/alphabetum/search.sh)
-- [vbox](https://github.com/alphabetum/vbox)
+- [accounts](https://github.com/xwmx/accounts)
+- [airport](https://github.com/xwmx/airport)
+- [bask](https://github.com/xwmx/bask)
+- [bindle](https://github.com/xwmx/bindle)
+- [hosts](https://github.com/xwmx/hosts)
+- [notes](https://github.com/xwmx/notes)
+- [pb](https://github.com/xwmx/pb)
+- [search.sh](https://github.com/xwmx/search.sh)
+- [vbox](https://github.com/xwmx/vbox)
 
 ---
 
