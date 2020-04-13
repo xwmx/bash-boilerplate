@@ -369,7 +369,8 @@ _load_commands() {
     if ! { [[ "${_function_name}" =~ ^_(.*)  ]] || \
            [[ "${_function_name}" == "desc"  ]] || \
            [[ "${_function_name}" == "debug" ]] || \
-           [[ "${_function_name}" == "die"   ]]
+           [[ "${_function_name}" == "die"   ]] || \
+           [[ "${_function_name}" == "shell_session_update" ]]
     }
     then
       _DEFINED_COMMANDS+=("${_function_name}")
