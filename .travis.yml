@@ -1,0 +1,18 @@
+
+jobs:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:duggan/bats'
+          packages:
+            - bats
+      dist: bionic
+      language: minimal
+    - os: osx
+      before_install:
+        - brew install bats-core
+      osx_image: xcode11.3
+
+script: bats test
