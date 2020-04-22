@@ -340,7 +340,7 @@ easier to maintain. As a result, some general design preferences:
 Scripts based on this project.
 
 - [airport](https://github.com/xwmx/airport)
-  - A command line terminal tool for Wi-Fi on macOS.
+  - A command line tool for Wi-Fi on macOS.
 - [bask](https://github.com/xwmx/bask)
   - A pure Bash mini-framework for command-centric Bash scripts.
 - [bindle](https://github.com/xwmx/bindle)
