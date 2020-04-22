@@ -347,7 +347,7 @@ Scripts based on this project.
   - A configuration and dotfile management tool for your personal unix-like computer.
 - [hosts](https://github.com/xwmx/hosts)
   - Command line hosts file editor in a single portable script.
-- [❯notes](https://github.com/xwmx/notes)
+- [❯ notes](https://github.com/xwmx/notes)
   - CLI note-taking, bookmarking, and archiving with encryption, search, Git-backed versioning and syncing, format conversion, and more in a single portable script.
 - [notes-app-cli](https://github.com/xwmx/notes-app-cli)
   - A command line interface for Notes.app on macOS.
