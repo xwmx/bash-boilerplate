@@ -37,24 +37,26 @@ _command_exists() {
 # _contains()
 #
 # Usage:
-#   _contains <item> <list>
-#
-# Example:
-#   _contains "$item" "${list[*]}"
+#   _contains "${item}" "${list[@]}"
 #
 # Returns:
 #   0  If the item is included in the list.
 #   1  If not.
 _contains() {
-  local _test_list
-  IFS=" " read -r -a _test_list <<< "${@:2}"
-  for __test_element in "${_test_list[@]:-}"
+  local _query="${1:-}"
+  shift
+
+  if [[ -z "${_query}"  ]] ||
+     [[ -z "${*:-}"     ]]
+  then
+    return 1
+  fi
+
+  for __element in "${@}"
   do
-    if [[ "${__test_element}" == "${1}" ]]
-    then
-      return 0
-    fi
+    [[ "${__element}" == "${_query}" ]] && return 0
   done
+
   return 1
 }
 
