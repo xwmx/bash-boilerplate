@@ -410,7 +410,7 @@ _main() {
   _load_commands
 
   # If the command is defined, run it, otherwise return an error.
-  if _contains "${_CMD}" "${_DEFINED_COMMANDS[*]:-}"
+  if _contains "${_CMD}" "${_DEFINED_COMMANDS[@]:-}"
   then
     # Pass all comment arguments to the program except for the first ($0).
     ${_CMD} "${_COMMAND_PARAMETERS[@]:-}"
@@ -456,41 +456,47 @@ _command_exists() {
 # _contains()
 #
 # Usage:
-#   _contains "$item" "${list[*]}"
+#   _contains "${item}" "${list[@]}"
 #
 # Returns:
 #   0  If the item is included in the list.
 #   1  If not.
 _contains() {
-  local _test_list=(${*:2})
-  for __test_element in "${_test_list[@]:-}"
+  local _query="${1:-}"
+  shift
+
+  if [[ -z "${_query}"  ]] ||
+     [[ -z "${*:-}"     ]]
+  then
+    return 1
+  fi
+
+  for __element in "${@}"
   do
-    _debug printf "_contains() \${__test_element}: %s\\n" "${__test_element}"
-    if [[ "${__test_element}" == "${1}" ]]
-    then
-      _debug printf "_contains() match: %s\\n" "${1}"
-      return 0
-    fi
+    [[ "${__element}" == "${_query}" ]] && return 0
   done
+
   return 1
 }
 
 # _join()
 #
 # Usage:
-#   _join <separator> <array>
+#   _join "," a b c
+#   _join "${an_array[@]}"
 #
-# Examples:
-#   _join , a "b c" d     => a,b c,d
-#   _join / var local tmp => var/local/tmp
-#   _join , "${FOO[@]}"   => a,b,c
+# Returns:
+#   The list or array of items joined into a string with elements divided by
+#   the optional separator if one is provided.
 #
-# More Information:
-#   http://stackoverflow.com/a/17841619
+# More information:
+#   https://stackoverflow.com/a/17841619
 _join() {
-  local IFS="${1}"
+  local _delimiter="${1}"
   shift
-  printf "%s\\n" "${*}"
+  printf "%s" "${1}"
+  shift
+  printf "%s" "${@/#/${_delimiter}}" | tr -d '[:space:]'
 }
 
 # _command_argv_includes()
@@ -506,7 +512,7 @@ _join() {
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
 _command_argv_includes() {
-  _contains "${1}" "${_COMMAND_ARGV[*]}"
+  _contains "${1}" "${_COMMAND_ARGV[@]}"
 }
 
 # _blank()
