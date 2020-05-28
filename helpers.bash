@@ -77,19 +77,21 @@ _interactive_input() {
 # _join()
 #
 # Usage:
-#   _join <separator> <array>
+#   _join "," a b c
+#   _join "${an_array[@]}"
 #
-# Examples:
-#   _join , a "b c" d     => a,b c,d
-#   _join / var local tmp => var/local/tmp
-#   _join , "${FOO[@]}"   => a,b,c
+# Returns:
+#   The list or array of items joined into a string with elements divided by
+#   the optional separator if one is provided.
 #
-# More Information:
-#   http://stackoverflow.com/a/17841619
+# More information:
+#   https://stackoverflow.com/a/17841619
 _join() {
-  local IFS="${1}"
+  local _delimiter="${1}"
   shift
-  printf "%s\\n" "${*}"
+  printf "%s" "${1}"
+  shift
+  printf "%s" "${@/#/${_delimiter}}" | tr -d '[:space:]'
 }
 
 ###############################################################################
