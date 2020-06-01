@@ -325,10 +325,8 @@ _debug printf \
 
 # $_ME
 #
-# Set to the program's basename.
-_ME=$(basename "${0}")
-
-_debug printf "\${_ME}: %s\\n" "${_ME}"
+# This program's basename.
+_ME="$(basename "${0}")"
 
 ###############################################################################
 # Load Commands

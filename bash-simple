@@ -156,8 +156,8 @@ IFS=$'\n\t'
 
 # $_ME
 #
-# Set to the program's basename.
-_ME=$(basename "${0}")
+# This program's basename.
+_ME="$(basename "${0}")"
 
 ###############################################################################
 # Help
