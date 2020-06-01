@@ -19,7 +19,7 @@ Options:
   -h --help  Display this usage information.
 
 Description:
-  Say hello.
+  Say 'hello'.
 HEREDOC
 )"
 
@@ -67,11 +67,11 @@ Usage:
   hi -h | --help
 
 Options:
-  --all      Say "hi" to everyone.
+  --all      Say 'hi' to everyone.
   -h --help  Display this usage information.
 
 Description:
-  Say hi.
+  Say 'hi'.
 HEREDOC
 )"
 
@@ -130,11 +130,11 @@ Usage:
   hey -h | --help
 
 Options:
-  --all      Say "hey" to everyone.
+  --all      Say 'hey' to everyone.
   -h --help  Display this usage information.
 
 Description:
-  Say hey.
+  Say 'hey'.
 HEREDOC
 )"
 
@@ -194,12 +194,12 @@ Usage:
   sup (-t | --to) <name>
 
 Options:
-  --all                   Say "sup" to everyone.
+  --all                   Say 'sup' to everyone.
   -h --help               Display this usage information.
-  -t <name> --to <name>
+  -t <name> --to <name>   Say 'sup' to <name>.
 
 Description:
-  Say sup.
+  Say 'sup'.
 HEREDOC
 )"
 
