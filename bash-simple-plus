@@ -131,10 +131,6 @@ set -o nounset
 # Short form: set -e
 set -o errexit
 
-# Print a helpful message if a pipeline with non-zero exit code causes the
-# script to exit as described above.
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
-
 # Allow the above trap be inherited by all functions in the script.
 #
 # Short form: set -E
@@ -292,36 +288,35 @@ _USE_DEBUG=0
 
 # Initialize additional expected option variables.
 _OPTION_X=0
-_SHORT_OPTION_WITH_PARAMETER=""
-_LONG_OPTION_WITH_PARAMETER=""
+_SHORT_OPTION=
+_LONG_OPTION=
 
-# _require_argument()
+# __option_get_value()
 #
 # Usage:
-#   _require_argument <option> <argument>
+#   __option_get_value <option> <value>
 #
-# If <argument> is blank or another option, print an error message and  exit
-# with status 1.
-_require_argument() {
-  # Set local variables from arguments.
-  #
-  # NOTE: 'local' is a non-POSIX bash feature and keeps the variable local to
-  # the block of code, as defined by curly braces. It's easiest to just think
-  # of them as local to a function.
-  local _option="${1:-}"
-  local _argument="${2:-}"
+# Description:
+#  Given a flag (e.g., -e | --example) return the value or exit 1 if value
+#  is blank or appears to be another option.
+__option_get_value() {
+  local __arg="${1:-}"
+  local __val="${2:-}"
 
-  if [[ -z "${_argument}" ]] || [[ "${_argument}" =~ ^- ]]
+  if [[ -n "${__val:-}" ]] && [[ ! "${__val:-}" =~ ^- ]]
   then
-    _exit_1 printf "Option requires an argument: %s\\n" "${_option}"
+    printf "%s\\n" "${__val}"
+  else
+    _exit_1 printf "%s requires a valid argument.\\n" "${__arg}"
   fi
 }
 
-while [[ ${#} -gt 0 ]]
+while ((${#}))
 do
-  __option="${1:-}"
-  __maybe_param="${2:-}"
-  case "${__option}" in
+  __arg="${1:-}"
+  __val="${2:-}"
+
+  case "${__arg}" in
     -h|--help)
       _PRINT_HELP=1
       ;;
@@ -332,13 +327,11 @@ do
       _OPTION_X=1
       ;;
     -o)
-      _require_argument "${__option}" "${__maybe_param}"
-      _SHORT_OPTION_WITH_PARAMETER="${__maybe_param}"
-       shift
+      _SHORT_OPTION="$(__option_get_value "${__arg}" "${__val:-}")"
+      shift
       ;;
-    --long-option-with-argument)
-      _require_argument "${__option}" "${__maybe_param}"
-      _LONG_OPTION_WITH_PARAMETER="${__maybe_param}"
+    --long-option)
+      _LONG_OPTION="$(__option_get_value "${__arg}" "${__val:-}")"
       shift
       ;;
     --endopts)
@@ -346,7 +339,7 @@ do
       break
       ;;
     -*)
-      _exit_1 printf "Unexpected option: %s\\n" "${__option}"
+      _exit_1 printf "Unexpected option: %s\\n" "${__arg}"
       ;;
   esac
   shift
@@ -365,13 +358,13 @@ _simple() {
   else
     printf "Perform a simple operation.\\n"
   fi
-  if [[ -n "${_SHORT_OPTION_WITH_PARAMETER}" ]]
+  if [[ -n "${_SHORT_OPTION}" ]]
   then
-    printf "Short option parameter: %s\\n" "${_SHORT_OPTION_WITH_PARAMETER}"
+    printf "Short option value: %s\\n" "${_SHORT_OPTION}"
   fi
-  if [[ -n "${_LONG_OPTION_WITH_PARAMETER}" ]]
+  if [[ -n "${_LONG_OPTION}" ]]
   then
-    printf "Long option parameter: %s\\n" "${_LONG_OPTION_WITH_PARAMETER}"
+    printf "Long option value: %s\\n" "${_LONG_OPTION}"
   fi
 }
 

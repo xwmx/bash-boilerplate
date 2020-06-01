@@ -74,7 +74,8 @@ setup() {
 
 @test "\`bash-simple-plus -o\` with no value prints message." {
   run "${_COMMAND}" -o
-  [[ "${output}" == "$(tput setaf 1)!$(tput sgr0) Option requires an argument: -o" ]]
+  printf "\${output}: '%s'\\n" "${output}"
+  [[ "${output}" == "$(tput setaf 1)!$(tput sgr0) -o requires a valid argument." ]]
 }
 
 @test "\`bash-simple-plus -o\` with value exits with status 0." {
@@ -85,26 +86,27 @@ setup() {
 @test "\`bash-simple-plus -o\` with value prints optional message." {
   run "${_COMMAND}" -o 'short option value'
   [[ "${lines[0]}" == "Perform a simple operation." ]]
-  [[ "${lines[1]}" == "Short option parameter: short option value" ]]
+  [[ "${lines[1]}" == "Short option value: short option value" ]]
 }
 
-@test "\`bash-simple-plus\` with long opt and missing required value exits with status 1." {
-  run "${_COMMAND}" --long-option-with-argument
+@test "\`bash-simple-plus --long-option\` with missing value exits with status 1." {
+  run "${_COMMAND}" --long-option
   [[ "${status}" -eq 1 ]]
 }
 
-@test "\`bash-simple-plus\` with long option and missing required value prints message." {
-  run "${_COMMAND}" --long-option-with-argument
-  [[ "${output}" =~ "$(tput setaf 1)!$(tput sgr0) Option requires an argument: --long-option-with-argument" ]]
+@test "\`bash-simple-plus --long-option\` with missing value prints message." {
+  run "${_COMMAND}" --long-option
+  printf "\${output}: '%s'\\n" "${output}"
+  [[ "${output}" == "$(tput setaf 1)!$(tput sgr0) --long-option requires a valid argument." ]]
 }
 
-@test "\`bash-simple-plus\` with option and required value exits with status 0." {
-  run "${_COMMAND}" --long-option-with-argument 'long option value'
+@test "\`bash-simple-plus --long-option\` with required value exits with status 0." {
+  run "${_COMMAND}" --long-option 'long option value'
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`bash-simple-plus\` with option and required value prints optional message." {
-  run "${_COMMAND}" --long-option-with-argument 'long option value'
+@test "\`bash-simple-plus --long-option\` with required value prints optional message." {
+  run "${_COMMAND}" --long-option 'long option value'
   [[ "${lines[0]}" == "Perform a simple operation." ]]
-  [[ "${lines[1]}" == "Long option parameter: long option value" ]]
+  [[ "${lines[1]}" == "Long option value: long option value" ]]
 }
