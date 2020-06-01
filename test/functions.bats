@@ -117,3 +117,66 @@ HEREDOC
   _compare "Hi, everyone!" "${output}"
   [[ "${output}" == "Hi, everyone!" ]]
 }
+
+###############################################################################
+# hey()
+###############################################################################
+
+_HEY_HELP="$(
+    cat <<HEREDOC
+Usage:
+  hey
+  hey --all
+  hey -h | --help
+
+Options:
+  --all      Say "hey" to everyone.
+  -h --help  Display this usage information.
+
+Description:
+  Say hey.
+HEREDOC
+)"
+
+@test "\`hey\` with no arguments returns status 0." {
+  run hey
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`hey\` with no arguments prints a string." {
+  run hey
+  [[ "${output}" == "Hey!" ]]
+}
+
+@test "\`hey -h\` returns status 0." {
+  run hey -h
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`hey -h\` prints help." {
+  run hey -h
+  _compare "${_HEY_HELP}" "${output}"
+  [[ "${output}" == "${_HEY_HELP}" ]]
+}
+
+@test "\`hey --help\` returns status 0." {
+  run hey --help
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`hey --help\` prints help." {
+  run hey --help
+  _compare "${_HEY_HELP}" "${output}"
+  [[ "${output}" == "${_HEY_HELP}" ]]
+}
+
+@test "\`hey --all\` returns status 0." {
+  run hey --all
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`hey --all\` prints a string." {
+  run hey --all
+  _compare "Hey, everyone!" "${output}"
+  [[ "${output}" == "Hey, everyone!" ]]
+}

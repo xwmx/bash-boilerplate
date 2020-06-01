@@ -76,6 +76,57 @@ HEREDOC
 }
 
 ###############################################################################
+# Shell function with help / usage and option flags and option parsing.
+#
+# This function provides an example of a simple shell function with help /
+# usage information that is displayed with either the `-h` or `--help` flag.
+# This example also shows how to do basic option parsing in a function.
+###############################################################################
+
+hey() {
+  local _all=0
+  local _arguments=()
+  local _help=0
+
+  for __arg in "${@:-}"
+  do
+    case "${__arg}" in
+      --all)
+        _all=1
+        ;;
+      -h|--help)
+        _help=1
+        ;;
+      *)
+        _arguments+=("${__arg}")
+        ;;
+    esac
+  done
+
+  if ((_help))
+  then
+    cat <<HEREDOC
+Usage:
+  hey
+  hey --all
+  hey -h | --help
+
+Options:
+  --all      Say "hey" to everyone.
+  -h --help  Display this usage information.
+
+Description:
+  Say hey.
+HEREDOC
+  elif ((_all))
+  then
+    printf "Hey, everyone!\\n"
+  else
+    printf "Hey!\\n"
+  fi
+}
+
+###############################################################################
 # Simple wrapper with help / usage and option flags.
 #
 # This wrapper function provides an example of a simple wrapper for an
