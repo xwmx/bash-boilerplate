@@ -342,6 +342,7 @@ do
       _exit_1 printf "Unexpected option: %s\\n" "${__arg}"
       ;;
   esac
+
   shift
 done
 
