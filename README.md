@@ -34,7 +34,7 @@ help features, easy debug printing. Useful for regular scripts.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
-- `die` command with error message printing and exiting,
+- `_exit_1` and `_return_1` commands with error message printing and exiting,
 - Option parsing.
 
 ### [bash-commands](https://github.com/xwmx/bash-boilerplate/blob/master/bash-commands)
@@ -48,7 +48,7 @@ tasks.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
-- `die` command with error message printing and exiting,
+- `_exit_1` and `_return_1` commands with error message printing and exiting,
 - Option parsing,
 - Automatic arbitrary command loading,
 - An nice, clean pattern for specifying per-command help,
