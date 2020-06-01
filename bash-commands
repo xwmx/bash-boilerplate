@@ -201,33 +201,41 @@ debug() {
 }
 
 ###############################################################################
-# Die
+# Error Messaging
 ###############################################################################
 
-# _die()
+# _exit_1()
 #
 # Usage:
-#   _die printf "Error message. Variable: %s\\n" "$0"
+#   _exit_1 <command>
 #
-# A simple function for exiting with an error after executing the specified
-# command. The command is expected to print a message and should typically
-# be either `echo`, `printf`, or `cat`.
-_die() {
-  # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
-  printf "❌  "
-  "${@}" 1>&2
+# Description:
+#   Exit with status 1 after executing the specified command with output
+#   redirected to standard error. The command is expected to print a message
+#   and should typically be either `echo`, `printf`, or `cat`.
+_exit_1() {
+  {
+    printf "%s " "$(tput setaf 1)!$(tput sgr0)"
+    "${@}"
+  } 1>&2
   exit 1
 }
-# die()
+
+# _return_1()
 #
 # Usage:
-#   die "Error message. Variable: $0"
+#   _return_1 <command>
 #
-# Exit with an error and print the specified message.
-#
-# This is a shortcut for the _die() function that simply echos the message.
-die() {
-  _die echo "${@}"
+# Description:
+#   Return with status 1 after executing the specified command with output
+#   redirected to standard error. The command is expected to print a message
+#   and should typically be either `echo`, `printf`, or `cat`.
+_return_1() {
+  {
+    printf "%s " "$(tput setaf 1)!$(tput sgr0)"
+    "${@}"
+  } 1>&2
+  return 1
 }
 
 ###############################################################################
@@ -415,7 +423,7 @@ _main() {
     # Pass all comment arguments to the program except for the first ($0).
     ${_CMD} "${_COMMAND_PARAMETERS[@]:-}"
   else
-    _die printf "Unknown command: %s\\n" "${_CMD}"
+    _exit_1 printf "Unknown command: %s\\n" "${_CMD}"
   fi
 }
 
@@ -614,11 +622,11 @@ _piped_input() {
 # escaping backslashes, which is more common.
 desc() {
   _debug printf "desc() \${*}: %s\\n" "$@"
-  [[ -z "${1:-}" ]] && _die printf "desc(): No command name specified.\\n"
+  [[ -z "${1:-}" ]] && _exit_1 printf "desc(): No command name specified.\\n"
 
   if [[ "${1}" == "--get" ]]
   then # get ------------------------------------------------------------------
-    [[ -z "${2:-}" ]] && _die printf "desc(): No command name specified.\\n"
+    [[ -z "${2:-}" ]] && _exit_1 printf "desc(): No command name specified.\\n"
 
     local _name="${2:-}"
     local _desc_var="___desc_${_name}"
@@ -814,7 +822,7 @@ example() {
   do
     case ${__arg} in
       --farewell) _greeting="Goodbye";;
-      -*) _die printf "Unexpected option: %s\\n" "${__arg}";;
+      -*) _exit_1 printf "Unexpected option: %s\\n" "${__arg}";;
       *) _arguments+=("${__arg}");;
     esac
   done
