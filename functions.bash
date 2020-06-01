@@ -135,8 +135,8 @@ HEREDOC
 ###############################################################################
 
 sup() {
-  # Usage: __option_get_value <option> <value>
-  __option_get_value() {
+  # Usage: __get_option_value <option> <value>
+  __get_option_value() {
     local __arg="${1:-}"
     local __val="${2:-}"
 
@@ -166,7 +166,7 @@ sup() {
         _help=1
         ;;
       -t|--to)
-        _to="$(__option_get_value "${__arg}" "${__val:-}")"
+        _to="$(__get_option_value "${__arg}" "${__val:-}")"
         shift
         ;;
       *)

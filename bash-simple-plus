@@ -291,15 +291,15 @@ _OPTION_X=0
 _SHORT_OPTION=
 _LONG_OPTION=
 
-# __option_get_value()
+# __get_option_value()
 #
 # Usage:
-#   __option_get_value <option> <value>
+#   __get_option_value <option> <value>
 #
 # Description:
 #  Given a flag (e.g., -e | --example) return the value or exit 1 if value
 #  is blank or appears to be another option.
-__option_get_value() {
+__get_option_value() {
   local __arg="${1:-}"
   local __val="${2:-}"
 
@@ -327,11 +327,11 @@ do
       _OPTION_X=1
       ;;
     -o)
-      _SHORT_OPTION="$(__option_get_value "${__arg}" "${__val:-}")"
+      _SHORT_OPTION="$(__get_option_value "${__arg}" "${__val:-}")"
       shift
       ;;
     --long-option)
-      _LONG_OPTION="$(__option_get_value "${__arg}" "${__val:-}")"
+      _LONG_OPTION="$(__get_option_value "${__arg}" "${__val:-}")"
       shift
       ;;
     --endopts)
