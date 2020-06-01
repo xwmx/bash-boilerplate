@@ -180,3 +180,90 @@ HEREDOC
   _compare "Hey, everyone!" "${output}"
   [[ "${output}" == "Hey, everyone!" ]]
 }
+
+###############################################################################
+# sup()
+###############################################################################
+
+_SUP_HELP="$(
+    cat <<HEREDOC
+Usage:
+  sup
+  sup --all
+  sup -h | --help
+  sup (-t | --to) <name>
+
+Options:
+  --all                   Say "sup" to everyone.
+  -h --help               Display this usage information.
+  -t <name> --to <name>
+
+Description:
+  Say sup.
+HEREDOC
+)"
+
+@test "\`sup\` with no arguments returns status 0." {
+  run sup
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`sup\` with no arguments prints a string." {
+  run sup
+  [[ "${output}" == "Sup!" ]]
+}
+
+@test "\`sup -h\` returns status 0." {
+  run sup -h
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`sup -h\` prints help." {
+  run sup -h
+  _compare "${_SUP_HELP}" "${output}"
+  [[ "${output}" == "${_SUP_HELP}" ]]
+}
+
+@test "\`sup --help\` returns status 0." {
+  run sup --help
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`sup --help\` prints help." {
+  run sup --help
+  _compare "${_SUP_HELP}" "${output}"
+  [[ "${output}" == "${_SUP_HELP}" ]]
+}
+
+@test "\`sup --all\` returns status 0." {
+  run sup --all
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`sup --all\` prints a string." {
+  run sup --all
+  _compare "Sup, everyone!" "${output}"
+  [[ "${output}" == "Sup, everyone!" ]]
+}
+
+@test "\`sup --to Jack\` returns status 0." {
+  run sup --to Jack
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`sup --to Jack\` prints a string." {
+  run sup --to Jack
+  _compare "Sup, Jack!" "${output}"
+  [[ "${output}" == "Sup, Jack!" ]]
+}
+
+@test "\`sup -t Jack\` returns status 0." {
+  run sup -t Jack
+  [[ "${status}" -eq 0 ]]
+}
+
+@test "\`sup -t Jack\` prints a string." {
+  run sup -t Jack
+  _compare "Sup, Jack!" "${output}"
+  [[ "${output}" == "Sup, Jack!" ]]
+}

@@ -127,6 +127,85 @@ HEREDOC
 }
 
 ###############################################################################
+# Shell function with parsing for options with values.
+#
+# This function provides an example of a simple shell function with help /
+# usage information that is displayed with either the `-h` or `--help` flag.
+# This example also shows how to do option parsing with values in a function.
+###############################################################################
+
+sup() {
+  # Usage: __option_get_value <option> <value>
+  __option_get_value() {
+    local __arg="${1:-}"
+    local __val="${2:-}"
+
+    if [[ -n "${__val:-}" ]] && [[ ! "${__val:-}" =~ ^- ]]
+    then
+      printf "%s\\n" "${__val}"
+    else
+      _exit_1 printf "%s requires a valid argument.\\n" "${__arg}"
+    fi
+  }
+
+  local _all=0
+  local _arguments=()
+  local _help=0
+  local _to=
+
+  while ((${#}))
+  do
+    local __arg="${1:-}"
+    local __val="${2:-}"
+
+    case "${__arg}" in
+      -a|--all)
+        _all=1
+        ;;
+      -h|--help)
+        _help=1
+        ;;
+      -t|--to)
+        _to="$(__option_get_value "${__arg}" "${__val:-}")"
+        shift
+        ;;
+      *)
+        _arguments+=("${__arg}")
+        ;;
+    esac
+
+    shift
+  done
+
+  if ((_help))
+  then
+    cat <<HEREDOC
+Usage:
+  sup
+  sup --all
+  sup -h | --help
+  sup (-t | --to) <name>
+
+Options:
+  --all                   Say "sup" to everyone.
+  -h --help               Display this usage information.
+  -t <name> --to <name>
+
+Description:
+  Say sup.
+HEREDOC
+  elif ((_all))
+  then
+    printf "Sup, everyone!\\n"
+  elif [[ -n "${_to:-}" ]]
+  then
+    printf "Sup, %s!\\n" "${_to:-}"
+  else
+    printf "Sup!\\n"
+  fi
+}
+
+###############################################################################
 # Simple wrapper with help / usage and option flags.
 #
 # This wrapper function provides an example of a simple wrapper for an
