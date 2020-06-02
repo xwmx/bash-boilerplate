@@ -144,7 +144,10 @@ sup() {
     then
       printf "%s\\n" "${__val}"
     else
-      _exit_1 printf "%s requires a valid argument.\\n" "${__arg}"
+      printf "%s %s requires a valid argument.\\n" \
+        "${__arg}" \
+        "$(tput setaf 1)!$(tput sgr0)"
+      return 1
     fi
   }
 
@@ -166,7 +169,12 @@ sup() {
         _help=1
         ;;
       -t|--to)
-        _to="$(__get_option_value "${__arg}" "${__val:-}")"
+        if ! _to="$(__get_option_value "${__arg}" "${__val:-}")"
+        then
+          printf "%s\\n" "${_to}"
+          return 1
+        fi
+
         shift
         ;;
       *)

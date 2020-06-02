@@ -257,6 +257,17 @@ HEREDOC
   [[ "${output}" == "Sup, Jack!" ]]
 }
 
+@test "\`sup --to\` without value returns status 1." {
+  run sup --to
+  [[ "${status}" -eq 1 ]]
+}
+
+@test "\`sup --to\` without value prints an error message." {
+  run sup --to
+  printf "\${output}: %s" "${output}"
+  [[ "${output}" =~ requires\ a\ valid\ argument ]]
+}
+
 @test "\`sup -t Jack\` returns status 0." {
   run sup -t Jack
   [[ "${status}" -eq 0 ]]
