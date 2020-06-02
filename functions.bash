@@ -145,8 +145,8 @@ sup() {
       printf "%s\\n" "${__val}"
     else
       printf "%s %s requires a valid argument.\\n" \
-        "${__arg}" \
-        "$(tput setaf 1)!$(tput sgr0)"
+        "$(tput setaf 1)!$(tput sgr0)" \
+        "${__arg}"
       return 1
     fi
   }
