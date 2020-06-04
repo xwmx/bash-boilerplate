@@ -343,7 +343,7 @@ Scripts based on this project.
 - [bask](https://github.com/xwmx/bask) - A pure Bash mini-framework for command-centric Bash scripts.
 - [bindle](https://github.com/xwmx/bindle) - A configuration and dotfile management tool for your personal unix-like computer.
 - [hosts](https://github.com/xwmx/hosts) - Command line hosts file editor in a single portable script.
-- [❯ notes](https://github.com/xwmx/notes) - CLI note-taking, bookmarking, and archiving with encryption, search, Git-backed versioning and syncing, format conversion, and more in a single portable script.
+- [❯ nb](https://github.com/xwmx/nb) - CLI note-taking, bookmarking, and archiving with encryption, advanced search, Git-backed versioning and syncing, Pandoc-backed conversion, and more in a single portable script.
 - [notes-app-cli](https://github.com/xwmx/notes-app-cli) - A command line interface for Notes.app on macOS.
 - [pb](https://github.com/xwmx/pb) - A tiny wrapper combining pbcopy & pbpaste in a single command.
 - [search.sh](https://github.com/xwmx/search.sh) - A command line search multi-tool.
