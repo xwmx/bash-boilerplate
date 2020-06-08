@@ -82,7 +82,7 @@ _contains() {
 #   # Download to outfile with error handling.
 #   if ! _download_from "https://example.com/example.pdf" /path/to/example.pdf
 #   then
-#     printf "Download error."
+#     printf "Download error.\\n"
 #     exit 1
 #   fi
 _download_from() {
