@@ -391,10 +391,11 @@ _load_commands() {
     # Add the function name to the $_DEFINED_COMMANDS array unless it starts
     # with an underscore or is one of the desc(), debug(), or die() functions,
     # since these are treated as having 'private' visibility.
-    if ! { [[ "${_function_name}" =~ ^_(.*)  ]] || \
-           [[ "${_function_name}" == "desc"  ]] || \
-           [[ "${_function_name}" == "debug" ]] || \
-           [[ "${_function_name}" == "die"   ]] || \
+    if ! { [[ "${_function_name}" =~ ^_(.*)                 ]] || \
+           [[ "${_function_name}" == "bats_readlinkf"       ]] || \
+           [[ "${_function_name}" == "desc"                 ]] || \
+           [[ "${_function_name}" == "debug"                ]] || \
+           [[ "${_function_name}" == "die"                  ]] || \
            [[ "${_function_name}" == "shell_session_update" ]]
     }
     then
