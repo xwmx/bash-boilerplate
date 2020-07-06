@@ -134,7 +134,7 @@ HEREDOC
 # This example also shows how to do option parsing with values in a function.
 ###############################################################################
 
-sup() {
+yo() {
   # Usage: __get_option_value <option> <value>
   __get_option_value() {
     local __arg="${1:-}"
@@ -189,27 +189,27 @@ sup() {
   then
     cat <<HEREDOC
 Usage:
-  sup
-  sup --all
-  sup -h | --help
-  sup (-t | --to) <name>
+  yo
+  yo --all
+  yo -h | --help
+  yo (-t | --to) <name>
 
 Options:
-  --all                   Say 'sup' to everyone.
+  --all                   Say 'yo' to everyone.
   -h --help               Display this usage information.
-  -t <name> --to <name>   Say 'sup' to <name>.
+  -t <name> --to <name>   Say 'yo' to <name>.
 
 Description:
-  Say 'sup'.
+  Say 'yo'.
 HEREDOC
   elif ((_all))
   then
-    printf "Sup, everyone!\\n"
+    printf "Yo, everyone!\\n"
   elif [[ -n "${_to:-}" ]]
   then
-    printf "Sup, %s!\\n" "${_to:-}"
+    printf "Yo, %s!\\n" "${_to:-}"
   else
-    printf "Sup!\\n"
+    printf "Yo!\\n"
   fi
 }
 

@@ -182,99 +182,99 @@ HEREDOC
 }
 
 ###############################################################################
-# sup()
+# yo()
 ###############################################################################
 
-_SUP_HELP="$(
+_YO_HELP="$(
     cat <<HEREDOC
 Usage:
-  sup
-  sup --all
-  sup -h | --help
-  sup (-t | --to) <name>
+  yo
+  yo --all
+  yo -h | --help
+  yo (-t | --to) <name>
 
 Options:
-  --all                   Say 'sup' to everyone.
+  --all                   Say 'yo' to everyone.
   -h --help               Display this usage information.
-  -t <name> --to <name>   Say 'sup' to <name>.
+  -t <name> --to <name>   Say 'yo' to <name>.
 
 Description:
-  Say 'sup'.
+  Say 'yo'.
 HEREDOC
 )"
 
-@test "\`sup\` with no arguments returns status 0." {
-  run sup
+@test "\`yo\` with no arguments returns status 0." {
+  run yo
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`sup\` with no arguments prints a string." {
-  run sup
-  [[ "${output}" == "Sup!" ]]
+@test "\`yo\` with no arguments prints a string." {
+  run yo
+  [[ "${output}" == "Yo!" ]]
 }
 
-@test "\`sup -h\` returns status 0." {
-  run sup -h
+@test "\`yo -h\` returns status 0." {
+  run yo -h
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`sup -h\` prints help." {
-  run sup -h
-  _compare "${_SUP_HELP}" "${output}"
-  [[ "${output}" == "${_SUP_HELP}" ]]
+@test "\`yo -h\` prints help." {
+  run yo -h
+  _compare "${_YO_HELP}" "${output}"
+  [[ "${output}" == "${_YO_HELP}" ]]
 }
 
-@test "\`sup --help\` returns status 0." {
-  run sup --help
+@test "\`yo --help\` returns status 0." {
+  run yo --help
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`sup --help\` prints help." {
-  run sup --help
-  _compare "${_SUP_HELP}" "${output}"
-  [[ "${output}" == "${_SUP_HELP}" ]]
+@test "\`yo --help\` prints help." {
+  run yo --help
+  _compare "${_YO_HELP}" "${output}"
+  [[ "${output}" == "${_YO_HELP}" ]]
 }
 
-@test "\`sup --all\` returns status 0." {
-  run sup --all
+@test "\`yo --all\` returns status 0." {
+  run yo --all
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`sup --all\` prints a string." {
-  run sup --all
-  _compare "Sup, everyone!" "${output}"
-  [[ "${output}" == "Sup, everyone!" ]]
+@test "\`yo --all\` prints a string." {
+  run yo --all
+  _compare "Yo, everyone!" "${output}"
+  [[ "${output}" == "Yo, everyone!" ]]
 }
 
-@test "\`sup --to Jack\` returns status 0." {
-  run sup --to Jack
+@test "\`yo --to Jack\` returns status 0." {
+  run yo --to Jack
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`sup --to Jack\` prints a string." {
-  run sup --to Jack
-  _compare "Sup, Jack!" "${output}"
-  [[ "${output}" == "Sup, Jack!" ]]
+@test "\`yo --to Jack\` prints a string." {
+  run yo --to Jack
+  _compare "Yo, Jack!" "${output}"
+  [[ "${output}" == "Yo, Jack!" ]]
 }
 
-@test "\`sup --to\` without value returns status 1." {
-  run sup --to
+@test "\`yo --to\` without value returns status 1." {
+  run yo --to
   [[ "${status}" -eq 1 ]]
 }
 
-@test "\`sup --to\` without value prints an error message." {
-  run sup --to
+@test "\`yo --to\` without value prints an error message." {
+  run yo --to
   printf "\${output}: %s" "${output}"
   [[ "${output}" =~ requires\ a\ valid\ argument ]]
 }
 
-@test "\`sup -t Jack\` returns status 0." {
-  run sup -t Jack
+@test "\`yo -t Jack\` returns status 0." {
+  run yo -t Jack
   [[ "${status}" -eq 0 ]]
 }
 
-@test "\`sup -t Jack\` prints a string." {
-  run sup -t Jack
-  _compare "Sup, Jack!" "${output}"
-  [[ "${output}" == "Sup, Jack!" ]]
+@test "\`yo -t Jack\` prints a string." {
+  run yo -t Jack
+  _compare "Yo, Jack!" "${output}"
+  [[ "${output}" == "Yo, Jack!" ]]
 }
