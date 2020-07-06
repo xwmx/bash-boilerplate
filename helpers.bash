@@ -88,6 +88,7 @@ _contains() {
 _download_from() {
   local _downloaded=0
   local _target_path="${2:-}"
+  local _timeout=15
   local _url="${1:-}"
 
   if [[ -z "${_url}" ]] ||
@@ -100,22 +101,43 @@ _download_from() {
   then
     if hash "curl" 2>/dev/null
     then
-      curl -s -L "${_url}" -o "${_target_path}" &&
-        _downloaded=1
+      curl                              \
+        --silent                        \
+        --location                      \
+        --connect-timeout "${_timeout}" \
+        "${_url}"                       \
+        --output "${_target_path}"      &&
+          _downloaded=1
     elif hash "wget" 2>/dev/null
     then
-      wget --quiet -O "${_target_path}" "${_url}" 2>/dev/null &&
-        _downloaded=1
+      wget                              \
+        --quiet                         \
+        --connect-timeout="${_timeout}" \
+        --dns-timeout="${_timeout}"     \
+        -O "${_target_path}"            \
+        "${_url}"                       \
+        2>/dev/null                     &&
+          _downloaded=1
     fi
   else
     if hash "curl" 2>/dev/null
     then
-      curl -s -L "${_url}" &&
-        _downloaded=1
+      curl                              \
+        --silent                        \
+        --location                      \
+        --connect-timeout "${_timeout}" \
+        "${_url}"                       &&
+          _downloaded=1
     elif hash "wget" 2>/dev/null
     then
-      wget --quiet -O - "${_url}" 2>/dev/null &&
-        _downloaded=1
+      wget                              \
+        --quiet                         \
+        --connect-timeout="${_timeout}" \
+        --dns-timeout="${_timeout}"     \
+        -O -                            \
+        "${_url}"                       \
+        2>/dev/null                     &&
+          _downloaded=1
     fi
   fi
 
