@@ -21,13 +21,13 @@
 # usage information that is displayed with either the `-h` or `--help` flag.
 ###############################################################################
 
-hello() {
+one() {
   if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]
   then
     cat <<HEREDOC
 Usage:
-  hello
-  hello -h | --help
+  one
+  one -h | --help
 
 Options:
   -h --help  Display this usage information.
@@ -51,27 +51,27 @@ HEREDOC
 # to be in the first position.
 ###############################################################################
 
-hi() {
+two() {
   if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]
   then
     cat <<HEREDOC
 Usage:
-  hi
-  hi --all
-  hi -h | --help
+  two
+  two --all
+  two -h | --help
 
 Options:
-  --all      Say 'hi' to everyone.
+  --all      Say 'hello' to everyone.
   -h --help  Display this usage information.
 
 Description:
-  Say 'hi'.
+  Say 'hello'.
 HEREDOC
   elif [ "${1}" = "--all" ]
   then
-    printf "Hi, everyone!\\n"
+    printf "Hello, everyone!\\n"
   else
-    printf "Hi!\\n"
+    printf "Hello!\\n"
   fi
 }
 
@@ -83,7 +83,7 @@ HEREDOC
 # This example also shows how to do basic option parsing in a function.
 ###############################################################################
 
-hey() {
+three() {
   local _all=0
   local _arguments=()
   local _help=0
@@ -107,22 +107,22 @@ hey() {
   then
     cat <<HEREDOC
 Usage:
-  hey
-  hey --all
-  hey -h | --help
+  three
+  three --all
+  three -h | --help
 
 Options:
-  --all      Say 'hey' to everyone.
+  --all      Say 'hello' to everyone.
   -h --help  Display this usage information.
 
 Description:
-  Say 'hey'.
+  Say 'hello'.
 HEREDOC
   elif ((_all))
   then
-    printf "Hey, everyone!\\n"
+    printf "Hello, everyone!\\n"
   else
-    printf "Hey!\\n"
+    printf "Hello!\\n"
   fi
 }
 
@@ -134,7 +134,7 @@ HEREDOC
 # This example also shows how to do option parsing with values in a function.
 ###############################################################################
 
-yo() {
+four() {
   # Usage: __get_option_value <option> <value>
   __get_option_value() {
     local __arg="${1:-}"
@@ -189,27 +189,27 @@ yo() {
   then
     cat <<HEREDOC
 Usage:
-  yo
-  yo --all
-  yo -h | --help
-  yo (-t | --to) <name>
+  four
+  four --all
+  four -h | --help
+  four (-t | --to) <name>
 
 Options:
-  --all                   Say 'yo' to everyone.
+  --all                   Say 'hello' to everyone.
   -h --help               Display this usage information.
-  -t <name> --to <name>   Say 'yo' to <name>.
+  -t <name> --to <name>   Say 'hello' to <name>.
 
 Description:
-  Say 'yo'.
+  Say 'hello'.
 HEREDOC
   elif ((_all))
   then
-    printf "Yo, everyone!\\n"
+    printf "Hello, everyone!\\n"
   elif [[ -n "${_to:-}" ]]
   then
-    printf "Yo, %s!\\n" "${_to:-}"
+    printf "Hello, %s!\\n" "${_to:-}"
   else
-    printf "Yo!\\n"
+    printf "Hello!\\n"
   fi
 }
 
