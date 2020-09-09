@@ -23,8 +23,9 @@
 # Usage:
 #   _command_exists <name>
 #
-# Returns:
-#   0 (success, true) If a command <name> is defined in the current environment.
+# Exit / Error Status:
+#   0 (success, true) If a command with <name> is defined in the current
+#                     environment.
 #   1 (error,  false) If not.
 #
 # Information on why `hash` is used here:
@@ -39,7 +40,7 @@ _command_exists() {
 # Usage:
 #   _contains <query> <list-item>...
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the item is included in the list.
 #   1 (error,  false)  If not.
 #
@@ -74,7 +75,7 @@ _contains() {
 #   present. Uses `curl` if available, falling back to `wget`. Messages from
 #   `curl` and `wget` are suppressed.
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the download is successful.
 #   1 (error,  false)  If there was an error.
 #
@@ -156,7 +157,7 @@ _download_from() {
 # Usage:
 #   _interactive_input
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the current input is interactive (eg, a shell).
 #   1 (error,  false)  If the current input is stdin / piped input.
 _interactive_input() {

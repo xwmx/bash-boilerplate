@@ -462,7 +462,7 @@ _function_exists() {
 # Usage:
 #   _command_exists <name>
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true) If a command <name> is defined in the current environment.
 #   1 (error,  false) If not.
 #
@@ -477,7 +477,7 @@ _command_exists() {
 # Usage:
 #   _contains <query> <list-item>...
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the item is included in the list.
 #   1 (error,  false)  If not.
 #
@@ -528,7 +528,7 @@ _join() {
 # Usage:
 #   _command_argv_includes <argument>
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the argument is included in `$_COMMAND_ARGV`, the
 #                      program's command argument list.
 #   1 (error,  false)  If not.
@@ -545,7 +545,7 @@ _command_argv_includes() {
 # Usage:
 #   _blank <argument>
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If <argument> is not present or null.
 #   1 (error,  false)  If <argument> is present and not null.
 _blank() {
@@ -557,7 +557,7 @@ _blank() {
 # Usage:
 #   _present <argument>
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If <argument> is present and not null.
 #   1 (error,  false)  If <argument> is not present or null.
 _present() {
@@ -569,7 +569,7 @@ _present() {
 # Usage:
 #   _interactive_input
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the current input is interactive (eg, a shell).
 #   1 (error,  false)  If the current input is stdin / piped input.
 _interactive_input() {
@@ -581,7 +581,7 @@ _interactive_input() {
 # Usage:
 #   _piped_input
 #
-# Returns:
+# Exit / Error Status:
 #   0 (success, true)  If the current input is stdin / piped input.
 #   1 (error,  false)  If the current input is interactive (eg, a shell).
 _piped_input() {
