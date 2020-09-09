@@ -353,53 +353,33 @@ _DEFINED_COMMANDS=()
 # Description:
 #   Load all of the commands sourced in the environment.
 _load_commands() {
-
-  _debug printf "_load_commands(): entering...\\n"
-  _debug printf "_load_commands() declare -F:\\n%s\\n" "$(declare -F)"
-
   # declare is a bash built-in shell function that, when called with the '-F'
   # option, displays all of the functions with the format
   # `declare -f function_name`. These are then assigned as elements in the
   # $function_list array.
-  local _function_list
-  _function_list=($(declare -F))
-
-  _debug printf \
-    "_load_commands() \${_function_list[@]}: %s\\n" \
-    "${_function_list[@]}"
+  local _function_list=
+  while IFS='' read -r __line
+  do
+    _function_list+=("${__line}")
+  done < <(declare -F)
 
   for __name in "${_function_list[@]}"
   do
-    _debug printf \
-      "_load_commands() \${__name}: %s\\n" \
-      "${__name}"
     # Each element has the format `declare -f function_name`, so set the name
     # to only the 'function_name' part of the string.
     local _function_name
     _function_name=$(printf "%s" "${__name}" | awk '{ print $3 }')
 
-    _debug printf \
-      "_load_commands() \${_function_name}: %s\\n" \
-      "${_function_name}"
-
-    # Add the function name to the $_DEFINED_COMMANDS array unless it starts
-    # with an underscore or is one of the desc(), debug(), or die() functions,
-    # since these are treated as having 'private' visibility.
-    if ! { [[ "${_function_name}" =~ ^_(.*)                 ]] || \
-           [[ "${_function_name}" == "bats_readlinkf"       ]] || \
-           [[ "${_function_name}" == "desc"                 ]] || \
-           [[ "${_function_name}" == "debug"                ]] || \
-           [[ "${_function_name}" == "die"                  ]] || \
+    if ! { [[ -z "${_function_name:-}"                      ]] ||
+           [[ "${_function_name}" =~ ^_(.*)                 ]] ||
+           [[ "${_function_name}" == "bats_readlinkf"       ]] ||
+           [[ "${_function_name}" == "desc"                 ]] ||
            [[ "${_function_name}" == "shell_session_update" ]]
     }
     then
       _DEFINED_COMMANDS+=("${_function_name}")
     fi
   done
-
-  _debug printf \
-    "commands() \${_DEFINED_COMMANDS[*]:-}:\\n%s\\n" \
-    "${_DEFINED_COMMANDS[*]:-}"
 }
 
 ###############################################################################
@@ -521,23 +501,6 @@ _join() {
   printf "%s" "${1}"
   shift
   printf "%s" "${@/#/${_delimiter}}" | tr -d '[:space:]'
-}
-
-# _command_argv_includes()
-#
-# Usage:
-#   _command_argv_includes <argument>
-#
-# Exit / Error Status:
-#   0 (success, true)  If the argument is included in `$_COMMAND_ARGV`, the
-#                      program's command argument list.
-#   1 (error,  false)  If not.
-#
-# Description:
-#   This is a shortcut for simple cases where a command wants to check for the
-#   presence of options quickly without parsing the options again.
-_command_argv_includes() {
-  _contains "${1}" "${_COMMAND_ARGV[@]}"
 }
 
 # _blank()
@@ -747,7 +710,7 @@ Description:
   Display the list of available commands.
 HEREDOC
 commands() {
-  if _command_argv_includes "--raw"
+  if [[ "${1:-}" == "--raw" ]]
   then
     printf "%s\\n" "${_DEFINED_COMMANDS[@]}"
   else
@@ -798,59 +761,30 @@ Description:
   Print "Hello, World!"
 HEREDOC
 example() {
-  # These debug statements demonstrate the different behaviors of the
-  # positional parameters, the special variables, and the two generated
-  # command argument arrays.
-  #
-  # Note in particular that $@ and $* omit the script name like the
-  # $_COMMAND_PARAMETERS array does, whereas the positional parameter variables
-  # $0, $1, $2 do include it, like the $_COMMAND_ARGV array.
-  #
-  # Individual elements 0, 1, and 2 of each:
-  _debug printf "example() \${0:-}: %s\\n" "${0:-}"
-  _debug printf "example() \${_COMMAND_ARGV[0]:-}: %s\\n" "${_COMMAND_ARGV[0]:-}"
-  _debug \
-    printf "example() \${_COMMAND_PARAMETERS[0]:-}: %s\\n" \
-    "${_COMMAND_PARAMETERS[0]:-}"
-  _debug printf "example() \${1:-}: %s\\n" "${1:-}"
-  _debug printf "example() \${_COMMAND_ARGV[1]:-}: %s\\n" "${_COMMAND_ARGV[1]:-}"
-  _debug \
-    printf "example() \${_COMMAND_PARAMETERS[1]:-}: %s\\n" \
-    "${_COMMAND_PARAMETERS[1]:-}"
-  _debug printf "example() \${2:-}: %s\\n" "${2:-}"
-  _debug printf "example() \${_COMMAND_ARGV[2]:-}: %s\\n" "${_COMMAND_ARGV[2]:-}"
-  _debug \
-    printf "example() \${_COMMAND_PARAMETERS[2]:-}: %s\\n" \
-    "${_COMMAND_PARAMETERS[2]:-}"
-  # Each expanded to string:
-  _debug printf "example() \${*:-}: %s\\n" "${*:-}"
-  _debug printf "example() \${_COMMAND_ARGV[*]:-}: %s\\n" "${_COMMAND_ARGV[*]:-}"
-  _debug \
-    printf "example() \${_COMMAND_PARAMETERS[*]:-}: %s\\n" \
-    "${_COMMAND_PARAMETERS[*]:-}"
-
-  # Set default greeting.
-  local _greeting="Hello"
-  # Initialize arguments array.
   local _arguments=()
+  local _greeting="Hello"
+  local _name=
 
-  # Parse command arguments.
-  for __arg in "${_COMMAND_ARGV[@]:-}"
+  for __arg in "${@:-}"
   do
     case ${__arg} in
-      --farewell) _greeting="Goodbye";;
-      -*) _exit_1 printf "Unexpected option: %s\\n" "${__arg}";;
-      *) _arguments+=("${__arg}");;
+      --farewell)
+        _greeting="Goodbye"
+        ;;
+      -*)
+        _exit_1 printf "Unexpected option: %s\\n" "${__arg}"
+        ;;
+      *)
+        if _blank "${_name}"
+        then
+          _name="${__arg}"
+        else
+          _arguments+=("${__arg}")
+        fi
+        ;;
     esac
   done
 
-  _debug printf "example() \${_arguments[0]:-}: %s\\n" "${_arguments[0]:-}"
-  _debug printf "example() \${_arguments[1]:-}: %s\\n" "${_arguments[1]:-}"
-
-  local _name=${_arguments[1]:-}
-
-  _debug printf "example() \${greeting}: %s\\n" "${_greeting}"
-  _debug printf "example() \${name}: %s\\n" "${_name}"
 
   if [[ "${_name}" == "Moon" ]]
   then
