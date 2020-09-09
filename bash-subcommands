@@ -254,111 +254,6 @@ _warn() {
 }
 
 ###############################################################################
-# Options
-#
-# NOTE: The `getops` builtin command only parses short options and BSD `getopt`
-# does not support long arguments (GNU `getopt` does), so the most portable
-# and clear way to parse options is often to just use a `while` loop.
-#
-# For a pure bash `getopt` function, try pure-getopt:
-#   https://github.com/agriffis/pure-getopt
-#
-# More info:
-#   http://wiki.bash-hackers.org/scripting/posparams
-#   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
-#   http://stackoverflow.com/a/14203146
-#   http://stackoverflow.com/a/7948533
-#   https://stackoverflow.com/a/12026302
-#   https://stackoverflow.com/a/402410
-###############################################################################
-
-# Parse Options ###############################################################
-
-_SUBCOMMAND=""
-_SUBCOMMAND_ARGUMENTS=()
-_USE_DEBUG=0
-
-while ((${#}))
-do
-  __opt="${1}"
-
-  shift
-
-  case "${__opt}" in
-    -h|--help)
-      _SUBCOMMAND="help"
-      ;;
-    --version)
-      _SUBCOMMAND="version"
-      ;;
-    --debug)
-      _USE_DEBUG=1
-      ;;
-    *)
-      # The first non-option argument is assumed to be the subcommand name.
-      # All subsequent arguments are added to $_SUBCOMMAND_ARGUMENTS.
-      if [[ -n "${_SUBCOMMAND}" ]]
-      then
-        _SUBCOMMAND_ARGUMENTS+=("${__opt}")
-      else
-        _SUBCOMMAND="${__opt}"
-      fi
-      ;;
-  esac
-done
-
-###############################################################################
-# Main
-###############################################################################
-
-# Declare the $_DEFINED_SUBCOMMANDS array.
-_DEFINED_SUBCOMMANDS=()
-
-# _main()
-#
-# Usage:
-#   _main
-#
-# Description:
-#   The primary function for starting the program.
-#
-#   NOTE: must be called at end of program after all subcommands are defined.
-_main() {
-  # If $_SUBCOMMAND is blank, then set to `$DEFAULT_SUBCOMMAND`
-  if [[ -z "${_SUBCOMMAND}" ]]
-  then
-    _SUBCOMMAND="${DEFAULT_SUBCOMMAND}"
-  fi
-
-  for __name in $(declare -F)
-  do
-    # Each element has the format `declare -f function_name`, so set the name
-    # to only the 'function_name' part of the string.
-    local _function_name
-    _function_name=$(printf "%s" "${__name}" | awk '{ print $3 }')
-
-    if ! { [[ -z "${_function_name:-}"                      ]] ||
-           [[ "${_function_name}" =~ ^_(.*)                 ]] ||
-           [[ "${_function_name}" == "bats_readlinkf"       ]] ||
-           [[ "${_function_name}" == "desc"                 ]] ||
-           [[ "${_function_name}" == "shell_session_update" ]]
-    }
-    then
-      _DEFINED_SUBCOMMANDS+=("${_function_name}")
-    fi
-  done
-
-  # If the subcommand is defined, run it, otherwise return an error.
-  if _contains "${_SUBCOMMAND}" "${_DEFINED_SUBCOMMANDS[@]:-}"
-  then
-    # Pass all comment arguments to the program except for the first ($0).
-    ${_SUBCOMMAND} "${_SUBCOMMAND_ARGUMENTS[@]:-}"
-  else
-    _exit_1 printf "Unknown subcommand: %s\\n" "${_SUBCOMMAND}"
-  fi
-}
-
-###############################################################################
 # Utility Functions
 ###############################################################################
 
@@ -576,6 +471,111 @@ HEREDOC
 
       _debug printf "desc() set with pipe: \${___desc_%s}\\n" "${1}"
     fi
+  fi
+}
+
+###############################################################################
+# Options
+#
+# NOTE: The `getops` builtin command only parses short options and BSD `getopt`
+# does not support long arguments (GNU `getopt` does), so the most portable
+# and clear way to parse options is often to just use a `while` loop.
+#
+# For a pure bash `getopt` function, try pure-getopt:
+#   https://github.com/agriffis/pure-getopt
+#
+# More info:
+#   http://wiki.bash-hackers.org/scripting/posparams
+#   http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
+#   http://stackoverflow.com/a/14203146
+#   http://stackoverflow.com/a/7948533
+#   https://stackoverflow.com/a/12026302
+#   https://stackoverflow.com/a/402410
+###############################################################################
+
+# Parse Options ###############################################################
+
+_SUBCOMMAND=""
+_SUBCOMMAND_ARGUMENTS=()
+_USE_DEBUG=0
+
+while ((${#}))
+do
+  __opt="${1}"
+
+  shift
+
+  case "${__opt}" in
+    -h|--help)
+      _SUBCOMMAND="help"
+      ;;
+    --version)
+      _SUBCOMMAND="version"
+      ;;
+    --debug)
+      _USE_DEBUG=1
+      ;;
+    *)
+      # The first non-option argument is assumed to be the subcommand name.
+      # All subsequent arguments are added to $_SUBCOMMAND_ARGUMENTS.
+      if [[ -n "${_SUBCOMMAND}" ]]
+      then
+        _SUBCOMMAND_ARGUMENTS+=("${__opt}")
+      else
+        _SUBCOMMAND="${__opt}"
+      fi
+      ;;
+  esac
+done
+
+###############################################################################
+# Main
+###############################################################################
+
+# Declare the $_DEFINED_SUBCOMMANDS array.
+_DEFINED_SUBCOMMANDS=()
+
+# _main()
+#
+# Usage:
+#   _main
+#
+# Description:
+#   The primary function for starting the program.
+#
+#   NOTE: must be called at end of program after all subcommands are defined.
+_main() {
+  # If $_SUBCOMMAND is blank, then set to `$DEFAULT_SUBCOMMAND`
+  if [[ -z "${_SUBCOMMAND}" ]]
+  then
+    _SUBCOMMAND="${DEFAULT_SUBCOMMAND}"
+  fi
+
+  for __name in $(declare -F)
+  do
+    # Each element has the format `declare -f function_name`, so set the name
+    # to only the 'function_name' part of the string.
+    local _function_name
+    _function_name=$(printf "%s" "${__name}" | awk '{ print $3 }')
+
+    if ! { [[ -z "${_function_name:-}"                      ]] ||
+           [[ "${_function_name}" =~ ^_(.*)                 ]] ||
+           [[ "${_function_name}" == "bats_readlinkf"       ]] ||
+           [[ "${_function_name}" == "desc"                 ]] ||
+           [[ "${_function_name}" == "shell_session_update" ]]
+    }
+    then
+      _DEFINED_SUBCOMMANDS+=("${_function_name}")
+    fi
+  done
+
+  # If the subcommand is defined, run it, otherwise return an error.
+  if _contains "${_SUBCOMMAND}" "${_DEFINED_SUBCOMMANDS[@]:-}"
+  then
+    # Pass all comment arguments to the program except for the first ($0).
+    ${_SUBCOMMAND} "${_SUBCOMMAND_ARGUMENTS[@]:-}"
+  else
+    _exit_1 printf "Unknown subcommand: %s\\n" "${_SUBCOMMAND}"
   fi
 }
 
