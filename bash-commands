@@ -169,11 +169,15 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 # _debug()
 #
 # Usage:
-#   _debug printf "Debug info. Variable: %s\\n" "$0"
+#   _debug <command> <options>...
 #
-# A simple function for executing a specified command if the `$_USE_DEBUG`
-# variable has been set. The command is expected to print a message and
-# should typically be either `echo`, `printf`, or `cat`.
+# Description:
+#   A simple function for executing a specified command if the `$_USE_DEBUG`
+#   variable has been set. The command is expected to print a message and
+#   should typically be either `echo`, `printf`, or `cat`.
+#
+# Example:
+#   _debug printf "Debug info. Variable: %s\\n" "$0"
 __DEBUG_COUNTER=0
 _debug() {
   if ((${_USE_DEBUG:-0}))
@@ -186,18 +190,6 @@ _debug() {
       printf "―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\\n"
     } 1>&2
   fi
-}
-
-# debug()
-#
-# Usage:
-#   debug "Debug info. Variable: $0"
-#
-# Print the specified message if the `$_USE_DEBUG` variable has been set.
-#
-# This is a shortcut for the _debug() function that simply echos the message.
-debug() {
-  _debug echo "${@}"
 }
 
 ###############################################################################
@@ -358,7 +350,8 @@ _DEFINED_COMMANDS=()
 # Usage:
 #   _load_commands
 #
-# Loads all of the commands sourced in the environment.
+# Description:
+#   Load all of the commands sourced in the environment.
 _load_commands() {
 
   _debug printf "_load_commands(): entering...\\n"
@@ -418,9 +411,10 @@ _load_commands() {
 # Usage:
 #   _main
 #
-# The primary function for starting the program.
+# Description:
+#   The primary function for starting the program.
 #
-# NOTE: must be called at end of program after all commands have been defined.
+#   NOTE: must be called at end of program after all commands are defined.
 _main() {
   _debug printf "main(): entering...\\n"
   _debug printf "main() \${_CMD} (upon entering): %s\\n" "${_CMD}"
@@ -451,11 +445,11 @@ _main() {
 # _function_exists()
 #
 # Usage:
-#   _function_exists "possible_function_name"
+#   _function_exists <name>
 #
-# Returns:
-#   0  If a function with the given name is defined in the current environment.
-#   1  If not.
+# Exit / Error Status:
+#   0 (success, true) If function <name> is defined in the current environment.
+#   1 (error,  false) If not.
 #
 # Other implementations, some with better performance:
 # http://stackoverflow.com/q/85880
@@ -466,11 +460,11 @@ _function_exists() {
 # _command_exists()
 #
 # Usage:
-#   _command_exists "possible_command_name"
+#   _command_exists <name>
 #
 # Returns:
-#   0  If a command with the given name is defined in the current environment.
-#   1  If not.
+#   0 (success, true) If a command <name> is defined in the current environment.
+#   1 (error,  false) If not.
 #
 # Information on why `hash` is used here:
 # http://stackoverflow.com/a/677212
@@ -481,11 +475,14 @@ _command_exists() {
 # _contains()
 #
 # Usage:
-#   _contains "${item}" "${list[@]}"
+#   _contains <query> <list-item>...
 #
 # Returns:
-#   0  If the item is included in the list.
-#   1  If not.
+#   0 (success, true)  If the item is included in the list.
+#   1 (error,  false)  If not.
+#
+# Examples:
+#   _contains "${_query}" "${_list[@}"
 _contains() {
   local _query="${1:-}"
   shift
@@ -507,12 +504,14 @@ _contains() {
 # _join()
 #
 # Usage:
-#   _join "," a b c
-#   _join "${an_array[@]}"
+#   _join <delimiter> <list-item>...
 #
-# Returns:
-#   The list or array of items joined into a string with elements divided by
-#   the optional separator if one is provided.
+# Description:
+#   Print a string containing all <list-item> arguments separated by
+#   <delimeter>.
+#
+# Example:
+#   _join "${_delimeter}" "${_list[@]}"
 #
 # More information:
 #   https://stackoverflow.com/a/17841619
@@ -527,15 +526,16 @@ _join() {
 # _command_argv_includes()
 #
 # Usage:
-#   _command_argv_includes "an_argument"
+#   _command_argv_includes <argument>
 #
 # Returns:
-#   0  If the argument is included in `$_COMMAND_ARGV`, the program's command
-#      argument list.
-#   1  If not.
+#   0 (success, true)  If the argument is included in `$_COMMAND_ARGV`, the
+#                      program's command argument list.
+#   1 (error,  false)  If not.
 #
-# This is a shortcut for simple cases where a command wants to check for the
-# presence of options quickly without parsing the options again.
+# Description:
+#   This is a shortcut for simple cases where a command wants to check for the
+#   presence of options quickly without parsing the options again.
 _command_argv_includes() {
   _contains "${1}" "${_COMMAND_ARGV[@]}"
 }
@@ -543,11 +543,11 @@ _command_argv_includes() {
 # _blank()
 #
 # Usage:
-#   _blank "$an_argument"
+#   _blank <argument>
 #
 # Returns:
-#   0  If the argument is not present or null.
-#   1  If the argument is present and not null.
+#   0 (success, true)  If <argument> is not present or null.
+#   1 (error,  false)  If <argument> is present and not null.
 _blank() {
   [[ -z "${1:-}" ]]
 }
@@ -555,11 +555,11 @@ _blank() {
 # _present()
 #
 # Usage:
-#   _present "$an_argument"
+#   _present <argument>
 #
 # Returns:
-#   0  If the argument is present and not null.
-#   1  If the argument is not present or null.
+#   0 (success, true)  If <argument> is present and not null.
+#   1 (error,  false)  If <argument> is not present or null.
 _present() {
   [[ -n "${1:-}" ]]
 }
@@ -570,8 +570,8 @@ _present() {
 #   _interactive_input
 #
 # Returns:
-#   0  If the current input is interactive (eg, a shell).
-#   1  If the current input is stdin / piped input.
+#   0 (success, true)  If the current input is interactive (eg, a shell).
+#   1 (error,  false)  If the current input is stdin / piped input.
 _interactive_input() {
   [[ -t 0 ]]
 }
@@ -582,8 +582,8 @@ _interactive_input() {
 #   _piped_input
 #
 # Returns:
-#   0  If the current input is stdin / piped input.
-#   1  If the current input is interactive (eg, a shell).
+#   0 (success, true)  If the current input is stdin / piped input.
+#   1 (error,  false)  If the current input is interactive (eg, a shell).
 _piped_input() {
   ! _interactive_input
 }

@@ -21,11 +21,11 @@
 # _command_exists()
 #
 # Usage:
-#   _command_exists <command-name>
+#   _command_exists <name>
 #
 # Returns:
-#   0  If a command with the given name is defined in the current environment.
-#   1  If not.
+#   0 (success, true) If a command <name> is defined in the current environment.
+#   1 (error,  false) If not.
 #
 # Information on why `hash` is used here:
 # http://stackoverflow.com/a/677212
@@ -37,11 +37,14 @@ _command_exists() {
 # _contains()
 #
 # Usage:
-#   _contains "${item}" "${list[@]}"
+#   _contains <query> <list-item>...
 #
 # Returns:
-#   0  If the item is included in the list.
-#   1  If not.
+#   0 (success, true)  If the item is included in the list.
+#   1 (error,  false)  If not.
+#
+# Examples:
+#   _contains "${_query}" "${_list[@}"
 _contains() {
   local _query="${1:-}"
   shift
@@ -72,8 +75,8 @@ _contains() {
 #   `curl` and `wget` are suppressed.
 #
 # Returns:
-#   0  If the download is successful.
-#   1  If there was an error.
+#   0 (success, true)  If the download is successful.
+#   1 (error,  false)  If there was an error.
 #
 # Examples:
 #   # Download and stream to standard output.
@@ -154,8 +157,8 @@ _download_from() {
 #   _interactive_input
 #
 # Returns:
-#   0  If the current input is interactive (eg, a shell).
-#   1  If the current input is stdin / piped input.
+#   0 (success, true)  If the current input is interactive (eg, a shell).
+#   1 (error,  false)  If the current input is stdin / piped input.
 _interactive_input() {
   [[ -t 0 ]]
 }
@@ -164,12 +167,14 @@ _interactive_input() {
 # _join()
 #
 # Usage:
-#   _join "," a b c
-#   _join "${an_array[@]}"
+#   _join <delimiter> <list-item>...
 #
-# Returns:
-#   The list or array of items joined into a string with elements divided by
-#   the optional separator if one is provided.
+# Description:
+#   Print a string containing all <list-item> arguments separated by
+#   <delimeter>.
+#
+# Example:
+#   _join "${_delimeter}" "${_list[@]}"
 #
 # More information:
 #   https://stackoverflow.com/a/17841619
@@ -191,9 +196,10 @@ _join() {
 #   -f  All but the last component must exist.
 #   -e  All components must exist.
 #
-# Wrapper for `readlink` that provides portable versions of GNU `readlink -f`
-# and `readlink -e`, which canonicalize by following every symlink in every
-# component of the given name recursively.
+# Description:
+#   Wrapper for `readlink` that provides portable versions of GNU `readlink -f`
+#   and `readlink -e`, which canonicalize by following every symlink in every
+#   component of the given name recursively.
 #
 # More Information:
 #   http://stackoverflow.com/a/1116890

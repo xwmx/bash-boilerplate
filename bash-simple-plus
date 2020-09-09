@@ -161,11 +161,15 @@ _ME="$(basename "${0}")"
 # _debug()
 #
 # Usage:
-#   _debug printf "Debug info. Variable: %s\n" "$0"
+#   _debug <command> <options>...
 #
-# A simple function for executing a specified command if the `$_USE_DEBUG`
-# variable has been set. The command is expected to print a message and
-# should typically be either `echo`, `printf`, or `cat`.
+# Description:
+#   A simple function for executing a specified command if the `$_USE_DEBUG`
+#   variable has been set. The command is expected to print a message and
+#   should typically be either `echo`, `printf`, or `cat`.
+#
+# Example:
+#   _debug printf "Debug info. Variable: %s\\n" "$0"
 __DEBUG_COUNTER=0
 _debug() {
   if ((${_USE_DEBUG:-0}))
@@ -178,18 +182,6 @@ _debug() {
       printf "―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\\n"
     } 1>&2
   fi
-}
-
-# debug()
-#
-# Usage:
-#   debug "Debug info. Variable: $0"
-#
-# Print the specified message if the `$_USE_DEBUG` variable has been set.
-#
-# This is a shortcut for the _debug() function that simply echos the message.
-debug() {
-  _debug echo "${@}"
 }
 
 ###############################################################################
@@ -255,7 +247,8 @@ _warn() {
 # Usage:
 #   _print_help
 #
-# Print the program help information.
+# Description:
+#   Print the program help information.
 _print_help() {
   cat <<HEREDOC
      _                 _
