@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
-#                                                 .___
-#   ____  ____   _____   _____ _____    ____    __| _/______
-# _/ ___\/  _ \ /     \ /     \\__  \  /    \  / __ |/  ___/
-# \  \__(  <_> )  Y Y  \  Y Y  \/ __ \|   |  \/ /_/ |\___ \
-#  \___  >____/|__|_|  /__|_|  (____  /___|  /\____ /____  >
-#      \/            \/      \/     \/     \/      \/    \/
+#            _                                                   _
+#  ___ _   _| |__   ___ ___  _ __ ___  _ __ ___   __ _ _ __   __| |___
+# / __| | | | '_ \ / __/ _ \| '_ ` _ \| '_ ` _ \ / _` | '_ \ / _` / __|
+# \__ \ |_| | |_) | (_| (_) | | | | | | | | | | | (_| | | | | (_| \__ \
+# |___/\__,_|_.__/ \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|___/
 #
-# Boilerplate for creating a bash program with commands.
+#
+# Boilerplate for creating a bash program with subcommands.
 #
 # Depends on:
 #  list
@@ -156,11 +156,12 @@ IFS=$'\n\t'
 # semantic versioning specification: http://semver.org
 _VERSION="0.1.0-alpha"
 
-# $DEFAULT_COMMAND
+# $DEFAULT_SUBCOMMAND
 #
-# The command to be run by default, when no command name is specified. If the
-# environment has an existing $DEFAULT_COMMAND set, then that value is used.
-DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
+# The subcommand to be run by default, when no subcommand name is specified.
+# If the environment has an existing $DEFAULT_SUBCOMMAND set, then that value
+# is used.
+DEFAULT_SUBCOMMAND="${DEFAULT_SUBCOMMAND:-help}"
 
 ###############################################################################
 # Debug
@@ -265,18 +266,18 @@ _warn() {
 #   https://stackoverflow.com/a/402410
 ###############################################################################
 
-# Get raw options for any commands that expect them.
+# Get raw options for any subcommands that expect them.
 _RAW_OPTIONS="${*:-}"
 
 # Parse Options ###############################################################
 
-# Initialize $_COMMAND_ARGV array
+# Initialize $_SUBCOMMAND_ARGV array
 #
 # This array contains all of the arguments that get passed along to each
-# command. This is essentially the same as the program arguments, minus those
-# that have been filtered out in the program option parsing loop. This array
-# is initialized with $0, which is the program's name.
-_COMMAND_ARGV=("${0}")
+# subcommand. This is essentially the same as the program arguments, minus
+# those that have been filtered out in the program option parsing loop. This
+# array is initialized with $0, which is the program's name.
+_SUBCOMMAND_ARGV=("${0}")
 # Initialize $_CMD and `$_USE_DEBUG`, which can continue to be blank depending
 # on what the program needs.
 _CMD=""
@@ -299,11 +300,11 @@ do
       _USE_DEBUG=1
       ;;
     *)
-      # The first non-option argument is assumed to be the command name.
-      # All subsequent arguments are added to $_COMMAND_ARGV.
+      # The first non-option argument is assumed to be the subcommand name.
+      # All subsequent arguments are added to $_SUBCOMMAND_ARGV.
       if [[ -n "${_CMD}" ]]
       then
-        _COMMAND_ARGV+=("${__opt}")
+        _SUBCOMMAND_ARGV+=("${__opt}")
       else
         _CMD="${__opt}"
       fi
@@ -311,23 +312,24 @@ do
   esac
 done
 
-# Set $_COMMAND_PARAMETERS to $_COMMAND_ARGV, minus the initial element, $0. This
-# provides an array that is equivalent to $* and $@ within each command
-# function, though the array is zero-indexed, which could lead to confusion.
+# Set $_SUBCOMMAND_PARAMETERS to $_SUBCOMMAND_ARGV, minus the initial element,
+# $0. This provides an array that is equivalent to $* and $@ within each
+# subcommand function, though the array is zero-indexed, which could lead to
+# confusion.
 #
 # Use `unset` to remove the first element rather than slicing (e.g.,
-# `_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]:1}")`) because under bash 3.2 the
-# resulting slice is treated as a quoted string and doesn't easily get coaxed
-# into a new array.
-_COMMAND_PARAMETERS=("${_COMMAND_ARGV[@]}")
-unset "_COMMAND_PARAMETERS[0]"
+# `_SUBCOMMAND_PARAMETERS=("${_SUBCOMMAND_ARGV[@]:1}")`) because under bash 3.2
+# the resulting slice is treated as a quoted string and doesn't easily get
+# coaxed into a new array.
+_SUBCOMMAND_PARAMETERS=("${_SUBCOMMAND_ARGV[@]}")
+unset "_SUBCOMMAND_PARAMETERS[0]"
 
 _debug printf "\${_CMD}: %s\\n" "${_CMD}"
 _debug printf "\${_RAW_OPTIONS} (one per line):\\n%s\\n" "${_RAW_OPTIONS}"
-_debug printf "\${_COMMAND_ARGV[*]}: %s\\n" "${_COMMAND_ARGV[*]}"
+_debug printf "\${_SUBCOMMAND_ARGV[*]}: %s\\n" "${_SUBCOMMAND_ARGV[*]}"
 _debug printf \
-  "\${_COMMAND_PARAMETERS[*]:-}: %s\\n" \
-  "${_COMMAND_PARAMETERS[*]:-}"
+  "\${_SUBCOMMAND_PARAMETERS[*]:-}: %s\\n" \
+  "${_SUBCOMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
 # Environment
@@ -339,20 +341,20 @@ _debug printf \
 _ME="$(basename "${0}")"
 
 ###############################################################################
-# Load Commands
+# Load Subcommands
 ###############################################################################
 
-# Initialize $_DEFINED_COMMANDS array.
-_DEFINED_COMMANDS=()
+# Initialize $_DEFINED_SUBCOMMANDS array.
+_DEFINED_SUBCOMMANDS=()
 
-# _load_commands()
+# _load_subcommands()
 #
 # Usage:
-#   _load_commands
+#   _load_subcommands
 #
 # Description:
-#   Load all of the commands sourced in the environment.
-_load_commands() {
+#   Load all of the subcommands sourced in the environment.
+_load_subcommands() {
   # declare is a bash built-in shell function that, when called with the '-F'
   # option, displays all of the functions with the format
   # `declare -f function_name`. These are then assigned as elements in the
@@ -377,7 +379,7 @@ _load_commands() {
            [[ "${_function_name}" == "shell_session_update" ]]
     }
     then
-      _DEFINED_COMMANDS+=("${_function_name}")
+      _DEFINED_SUBCOMMANDS+=("${_function_name}")
     fi
   done
 }
@@ -394,27 +396,27 @@ _load_commands() {
 # Description:
 #   The primary function for starting the program.
 #
-#   NOTE: must be called at end of program after all commands are defined.
+#   NOTE: must be called at end of program after all subcommands are defined.
 _main() {
   _debug printf "main(): entering...\\n"
   _debug printf "main() \${_CMD} (upon entering): %s\\n" "${_CMD}"
 
-  # If $_CMD is blank, then set to `$DEFAULT_COMMAND`
+  # If $_CMD is blank, then set to `$DEFAULT_SUBCOMMAND`
   if [[ -z "${_CMD}" ]]
   then
-    _CMD="${DEFAULT_COMMAND}"
+    _CMD="${DEFAULT_SUBCOMMAND}"
   fi
 
-  # Load all of the commands.
-  _load_commands
+  # Load all of the subcommands.
+  _load_subcommands
 
-  # If the command is defined, run it, otherwise return an error.
-  if _contains "${_CMD}" "${_DEFINED_COMMANDS[@]:-}"
+  # If the subcommand is defined, run it, otherwise return an error.
+  if _contains "${_CMD}" "${_DEFINED_SUBCOMMANDS[@]:-}"
   then
     # Pass all comment arguments to the program except for the first ($0).
-    ${_CMD} "${_COMMAND_PARAMETERS[@]:-}"
+    ${_CMD} "${_SUBCOMMAND_PARAMETERS[@]:-}"
   else
-    _exit_1 printf "Unknown command: %s\\n" "${_CMD}"
+    _exit_1 printf "Unknown subcommand: %s\\n" "${_CMD}"
   fi
 }
 
@@ -428,7 +430,8 @@ _main() {
 #   _function_exists <name>
 #
 # Exit / Error Status:
-#   0 (success, true) If function <name> is defined in the current environment.
+#   0 (success, true) If function with <name> is defined in the current
+#                     environment.
 #   1 (error,  false) If not.
 #
 # Other implementations, some with better performance:
@@ -443,7 +446,8 @@ _function_exists() {
 #   _command_exists <name>
 #
 # Exit / Error Status:
-#   0 (success, true) If a command <name> is defined in the current environment.
+#   0 (success, true) If a command with <name> is defined in the current
+#                     environment.
 #   1 (error,  false) If not.
 #
 # Information on why `hash` is used here:
@@ -577,7 +581,7 @@ _piped_input() {
 # desc --get "list"
 # ```
 #
-# Set or print a description for a specified command or function <name>. The
+# Set or print a description for a specified subcommand or function <name>. The
 # <description> text can be passed as the second argument or as standard input.
 #
 # To make the <description> text available to other functions, `desc()` assigns
@@ -602,11 +606,13 @@ _piped_input() {
 # escaping backslashes, which is more common.
 desc() {
   _debug printf "desc() \${*}: %s\\n" "$@"
-  [[ -z "${1:-}" ]] && _exit_1 printf "desc(): No command name specified.\\n"
+  [[ -z "${1:-}" ]] &&
+    _exit_1 printf "desc(): No subcommand name specified.\\n"
 
   if [[ "${1}" == "--get" ]]
   then # get ------------------------------------------------------------------
-    [[ -z "${2:-}" ]] && _exit_1 printf "desc(): No command name specified.\\n"
+    [[ -z "${2:-}" ]] &&
+      _exit_1 printf "desc(): No subcommand name specified.\\n"
 
     local _name="${2:-}"
     local _desc_var="___desc_${_name}"
@@ -636,7 +642,7 @@ HEREDOC
 }
 
 ###############################################################################
-# Default Commands
+# Default Subcommands
 ###############################################################################
 
 # Version #####################################################################
@@ -658,10 +664,10 @@ version() {
 
 desc "help" <<HEREDOC
 Usage:
-  ${_ME} help [<command>]
+  ${_ME} help [<subcommand>]
 
 Description:
-  Display help information for ${_ME} or a specified command.
+  Display help information for ${_ME} or a specified subcommand.
 HEREDOC
 help() {
   if [[ "${1:-}" ]]
@@ -669,19 +675,19 @@ help() {
     desc --get "${1}"
   else
     cat <<HEREDOC
-                                                .___
-  ____  ____   _____   _____ _____    ____    __| _/______
-_/ ___\\/  _ \\ /     \\ /     \\\\__  \\  /    \\  / __ |/  ___/
-\\  \\__(  <_> )  Y Y  \\  Y Y  \\/ __ \\|   |  \\/ /_/ |\\___ \\
- \\___  >____/|__|_|  /__|_|  (____  /___|  /\\____ /____  >
-     \\/            \\/      \\/     \\/     \\/      \\/    \\/
+           _                                                   _
+ ___ _   _| |__   ___ ___  _ __ ___  _ __ ___   __ _ _ __   __| |___
+/ __| | | | '_ \ / __/ _ \| '_ \` _ \\| '_ \` _ \ / _\` | '_ \\ / _\` / __|
+\__ \ |_| | |_) | (_| (_) | | | | | | | | | | | (_| | | | | (_| \__ \\
+|___/\__,_|_.__/ \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|___/
 
-Boilerplate for creating a bash program with commands.
+
+Boilerplate for creating a bash program with subcommands.
 
 Version: ${_VERSION}
 
 Usage:
-  ${_ME} <command> [--command-options] [<arguments>]
+  ${_ME} <subcommand> [--subcommand-options] [<arguments>]
   ${_ME} -h | --help
   ${_ME} --version
 
@@ -690,43 +696,43 @@ Options:
   --version  Display version information.
 
 Help:
-  ${_ME} help [<command>]
+  ${_ME} help [<subcommand>]
 
-$(commands)
+$(subcommands)
 HEREDOC
   fi
 }
 
-# Command List ################################################################
+# Subcommand List #############################################################
 
-desc "commands" <<HEREDOC
+desc "subcommands" <<HEREDOC
 Usage:
-  ${_ME} commands [--raw]
+  ${_ME} subcommands [--raw]
 
 Options:
-  --raw  Display the command list without formatting.
+  --raw  Display the subcommand list without formatting.
 
 Description:
-  Display the list of available commands.
+  Display the list of available subcommands.
 HEREDOC
-commands() {
+subcommands() {
   if [[ "${1:-}" == "--raw" ]]
   then
-    printf "%s\\n" "${_DEFINED_COMMANDS[@]}"
+    printf "%s\\n" "${_DEFINED_SUBCOMMANDS[@]}"
   else
-    printf "Available commands:\\n"
-    printf "  %s\\n" "${_DEFINED_COMMANDS[@]}"
+    printf "Available subcommands:\\n"
+    printf "  %s\\n" "${_DEFINED_SUBCOMMANDS[@]}"
   fi
 }
 
 ###############################################################################
-# Commands
-# ========.....................................................................
+# Subcommands
+# ===========..................................................................
 #
-# Example command group structure:
+# Example subcommand group structure:
 #
-# desc example ""   - Optional. A short description for the command.
-# example() { : }   - The command called by the user.
+# desc example ""   - Optional. A short description for the subcommand.
+# example() { : }   - The subcommand called by the user.
 #
 #
 # desc example <<HEREDOC

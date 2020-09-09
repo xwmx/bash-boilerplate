@@ -34,12 +34,12 @@ help features, easy debug printing. Useful for regular scripts.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
-- `_exit_1` and `_return_1` commands with error message printing and exiting,
+- `_exit_1` and `_return_1` functions with error message printing and exiting,
 - Option parsing.
 
-### [bash-commands](https://github.com/xwmx/bash-boilerplate/blob/master/bash-commands)
+### [bash-subcommands](https://github.com/xwmx/bash-boilerplate/blob/master/bash-subcommands)
 
-An example of a bash program with commands. This contains lots of features
+An example of a bash program with subcommands. This contains lots of features
 and should be usable for creating bash programs that do multiple related
 tasks.
 
@@ -48,12 +48,12 @@ tasks.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
-- `_exit_1` and `_return_1` commands with error message printing and exiting,
+- `_exit_1` and `_return_1` functions with error message printing and exiting,
 - Option parsing,
-- Automatic arbitrary command loading,
-- An nice, clean pattern for specifying per-command help,
-- Built-in commands for help, version, and command listing,
-- Conventions for distinguishing between functions and program commands,
+- Automatic arbitrary subcommand loading,
+- An nice, clean pattern for specifying per-subcommand help,
+- Built-in subcommands for help, version, and subcommand listing,
+- Conventions for distinguishing between functions and program subcommands,
 - Useful utility functions.
 
 ### [functions.bash](https://github.com/xwmx/bash-boilerplate/blob/master/functions.bash)
