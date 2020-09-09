@@ -673,7 +673,7 @@ Options:
 Help:
   ${_ME} help [<subcommand>]
 
-$(subcommands)
+$(subcommands --)
 HEREDOC
   fi
 }
