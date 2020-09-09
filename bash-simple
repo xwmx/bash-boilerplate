@@ -103,26 +103,25 @@ set -o nounset
 
 # Exit immediately if a pipeline returns non-zero.
 #
-# NOTE: this has issues. When using read -rd '' with a heredoc, the exit
-# status is non-zero, even though there isn't an error, and this setting
-# then causes the script to exit. read -rd '' is synonymous to read -d $'\0',
-# which means read until it finds a NUL byte, but it reaches the EOF (end of
-# heredoc) without finding one and exits with a 1 status. Therefore, when
-# reading from heredocs with set -e, there are three potential solutions:
+# NOTE: This can cause unexpected behavior. When using `read -rd ''` with a
+# heredoc, the exit status is non-zero, even though there isn't an error, and
+# this setting then causes the script to exit. `read -rd ''` is synonymous with
+# `read -d $'\0'`, which means `read` until it finds a `NUL` byte, but it
+# reaches the end of the heredoc without finding one and exits with status `1`.
 #
-# Solution 1. set +e / set -e again:
+# Two ways to `read` with heredocs and `set -e`:
 #
-# set +e
-# read -rd '' variable <<EOF
-# EOF
-# set -e
+# 1. set +e / set -e again:
 #
-# Solution 2. <<EOF || true:
+#     set +e
+#     read -rd '' variable <<HEREDOC
+#     HEREDOC
+#     set -e
 #
-# read -rd '' variable <<EOF || true
-# EOF
+# 2. Use `<<HEREDOC || true:`
 #
-# Solution 3. Don't use set -e or set -o errexit at all.
+#     read -rd '' variable <<HEREDOC || true
+#     HEREDOC
 #
 # More information:
 #
