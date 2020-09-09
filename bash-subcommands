@@ -268,7 +268,7 @@ _warn() {
 
 # Parse Options ###############################################################
 
-_CMD=""
+_SUBCOMMAND=""
 _SUBCOMMAND_ARGUMENTS=()
 _USE_DEBUG=0
 
@@ -280,10 +280,10 @@ do
 
   case "${__opt}" in
     -h|--help)
-      _CMD="help"
+      _SUBCOMMAND="help"
       ;;
     --version)
-      _CMD="version"
+      _SUBCOMMAND="version"
       ;;
     --debug)
       _USE_DEBUG=1
@@ -291,17 +291,17 @@ do
     *)
       # The first non-option argument is assumed to be the subcommand name.
       # All subsequent arguments are added to $_SUBCOMMAND_ARGUMENTS.
-      if [[ -n "${_CMD}" ]]
+      if [[ -n "${_SUBCOMMAND}" ]]
       then
         _SUBCOMMAND_ARGUMENTS+=("${__opt}")
       else
-        _CMD="${__opt}"
+        _SUBCOMMAND="${__opt}"
       fi
       ;;
   esac
 done
 
-_debug printf "\${_CMD}: %s\\n" "${_CMD}"
+_debug printf "\${_SUBCOMMAND}: %s\\n" "${_SUBCOMMAND}"
 _debug printf \
   "\${_SUBCOMMAND_ARGUMENTS[*]:-}: %s\\n" \
   "${_SUBCOMMAND_ARGUMENTS[*]:-}"
@@ -374,24 +374,24 @@ _load_subcommands() {
 #   NOTE: must be called at end of program after all subcommands are defined.
 _main() {
   _debug printf "main(): entering...\\n"
-  _debug printf "main() \${_CMD} (upon entering): %s\\n" "${_CMD}"
+  _debug printf "main() \${_SUBCOMMAND} (upon entering): %s\\n" "${_SUBCOMMAND}"
 
-  # If $_CMD is blank, then set to `$DEFAULT_SUBCOMMAND`
-  if [[ -z "${_CMD}" ]]
+  # If $_SUBCOMMAND is blank, then set to `$DEFAULT_SUBCOMMAND`
+  if [[ -z "${_SUBCOMMAND}" ]]
   then
-    _CMD="${DEFAULT_SUBCOMMAND}"
+    _SUBCOMMAND="${DEFAULT_SUBCOMMAND}"
   fi
 
   # Load all of the subcommands.
   _load_subcommands
 
   # If the subcommand is defined, run it, otherwise return an error.
-  if _contains "${_CMD}" "${_DEFINED_SUBCOMMANDS[@]:-}"
+  if _contains "${_SUBCOMMAND}" "${_DEFINED_SUBCOMMANDS[@]:-}"
   then
     # Pass all comment arguments to the program except for the first ($0).
-    ${_CMD} "${_SUBCOMMAND_ARGUMENTS[@]:-}"
+    ${_SUBCOMMAND} "${_SUBCOMMAND_ARGUMENTS[@]:-}"
   else
-    _exit_1 printf "Unknown subcommand: %s\\n" "${_CMD}"
+    _exit_1 printf "Unknown subcommand: %s\\n" "${_SUBCOMMAND}"
   fi
 }
 
