@@ -266,21 +266,10 @@ _warn() {
 #   https://stackoverflow.com/a/402410
 ###############################################################################
 
-# Get raw options for any subcommands that expect them.
-_RAW_OPTIONS="${*:-}"
-
 # Parse Options ###############################################################
 
-# Initialize $_SUBCOMMAND_ARGV array
-#
-# This array contains all of the arguments that get passed along to each
-# subcommand. This is essentially the same as the program arguments, minus
-# those that have been filtered out in the program option parsing loop. This
-# array is initialized with $0, which is the program's name.
-_SUBCOMMAND_ARGV=("${0}")
-# Initialize $_CMD and `$_USE_DEBUG`, which can continue to be blank depending
-# on what the program needs.
 _CMD=""
+_SUBCOMMAND_ARGUMENTS=()
 _USE_DEBUG=0
 
 while ((${#}))
@@ -301,10 +290,10 @@ do
       ;;
     *)
       # The first non-option argument is assumed to be the subcommand name.
-      # All subsequent arguments are added to $_SUBCOMMAND_ARGV.
+      # All subsequent arguments are added to $_SUBCOMMAND_ARGUMENTS.
       if [[ -n "${_CMD}" ]]
       then
-        _SUBCOMMAND_ARGV+=("${__opt}")
+        _SUBCOMMAND_ARGUMENTS+=("${__opt}")
       else
         _CMD="${__opt}"
       fi
@@ -312,24 +301,10 @@ do
   esac
 done
 
-# Set $_SUBCOMMAND_PARAMETERS to $_SUBCOMMAND_ARGV, minus the initial element,
-# $0. This provides an array that is equivalent to $* and $@ within each
-# subcommand function, though the array is zero-indexed, which could lead to
-# confusion.
-#
-# Use `unset` to remove the first element rather than slicing (e.g.,
-# `_SUBCOMMAND_PARAMETERS=("${_SUBCOMMAND_ARGV[@]:1}")`) because under bash 3.2
-# the resulting slice is treated as a quoted string and doesn't easily get
-# coaxed into a new array.
-_SUBCOMMAND_PARAMETERS=("${_SUBCOMMAND_ARGV[@]}")
-unset "_SUBCOMMAND_PARAMETERS[0]"
-
 _debug printf "\${_CMD}: %s\\n" "${_CMD}"
-_debug printf "\${_RAW_OPTIONS} (one per line):\\n%s\\n" "${_RAW_OPTIONS}"
-_debug printf "\${_SUBCOMMAND_ARGV[*]}: %s\\n" "${_SUBCOMMAND_ARGV[*]}"
 _debug printf \
-  "\${_SUBCOMMAND_PARAMETERS[*]:-}: %s\\n" \
-  "${_SUBCOMMAND_PARAMETERS[*]:-}"
+  "\${_SUBCOMMAND_ARGUMENTS[*]:-}: %s\\n" \
+  "${_SUBCOMMAND_ARGUMENTS[*]:-}"
 
 ###############################################################################
 # Environment
@@ -414,7 +389,7 @@ _main() {
   if _contains "${_CMD}" "${_DEFINED_SUBCOMMANDS[@]:-}"
   then
     # Pass all comment arguments to the program except for the first ($0).
-    ${_CMD} "${_SUBCOMMAND_PARAMETERS[@]:-}"
+    ${_CMD} "${_SUBCOMMAND_ARGUMENTS[@]:-}"
   else
     _exit_1 printf "Unknown subcommand: %s\\n" "${_CMD}"
   fi
