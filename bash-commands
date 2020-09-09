@@ -177,7 +177,7 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 # should typically be either `echo`, `printf`, or `cat`.
 __DEBUG_COUNTER=0
 _debug() {
-  if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]
+  if ((${_USE_DEBUG:-0}))
   then
     __DEBUG_COUNTER=$((__DEBUG_COUNTER+1))
     {
@@ -291,10 +291,12 @@ _COMMAND_ARGV=("${0}")
 _CMD=""
 _USE_DEBUG=0
 
-while [[ ${#} -gt 0 ]]
+while ((${#}))
 do
   __opt="${1}"
+
   shift
+
   case "${__opt}" in
     -h|--help)
       _CMD="help"
