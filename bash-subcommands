@@ -316,20 +316,31 @@ _debug printf \
 _ME="$(basename "${0}")"
 
 ###############################################################################
-# Load Subcommands
+# Main
 ###############################################################################
 
-# Initialize $_DEFINED_SUBCOMMANDS array.
+# Declare the $_DEFINED_SUBCOMMANDS array.
 _DEFINED_SUBCOMMANDS=()
 
-# _load_subcommands()
+# _main()
 #
 # Usage:
-#   _load_subcommands
+#   _main
 #
 # Description:
-#   Load all of the subcommands sourced in the environment.
-_load_subcommands() {
+#   The primary function for starting the program.
+#
+#   NOTE: must be called at end of program after all subcommands are defined.
+_main() {
+  _debug printf "main(): entering...\\n"
+  _debug printf "main() \${_SUBCOMMAND} (upon entering): %s\\n" "${_SUBCOMMAND}"
+
+  # If $_SUBCOMMAND is blank, then set to `$DEFAULT_SUBCOMMAND`
+  if [[ -z "${_SUBCOMMAND}" ]]
+  then
+    _SUBCOMMAND="${DEFAULT_SUBCOMMAND}"
+  fi
+
   # declare is a bash built-in shell function that, when called with the '-F'
   # option, displays all of the functions with the format
   # `declare -f function_name`. These are then assigned as elements in the
@@ -357,33 +368,6 @@ _load_subcommands() {
       _DEFINED_SUBCOMMANDS+=("${_function_name}")
     fi
   done
-}
-
-###############################################################################
-# Main
-###############################################################################
-
-# _main()
-#
-# Usage:
-#   _main
-#
-# Description:
-#   The primary function for starting the program.
-#
-#   NOTE: must be called at end of program after all subcommands are defined.
-_main() {
-  _debug printf "main(): entering...\\n"
-  _debug printf "main() \${_SUBCOMMAND} (upon entering): %s\\n" "${_SUBCOMMAND}"
-
-  # If $_SUBCOMMAND is blank, then set to `$DEFAULT_SUBCOMMAND`
-  if [[ -z "${_SUBCOMMAND}" ]]
-  then
-    _SUBCOMMAND="${DEFAULT_SUBCOMMAND}"
-  fi
-
-  # Load all of the subcommands.
-  _load_subcommands
 
   # If the subcommand is defined, run it, otherwise return an error.
   if _contains "${_SUBCOMMAND}" "${_DEFINED_SUBCOMMANDS[@]:-}"
