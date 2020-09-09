@@ -341,17 +341,7 @@ _main() {
     _SUBCOMMAND="${DEFAULT_SUBCOMMAND}"
   fi
 
-  # declare is a bash built-in shell function that, when called with the '-F'
-  # option, displays all of the functions with the format
-  # `declare -f function_name`. These are then assigned as elements in the
-  # $function_list array.
-  local _function_list=
-  while IFS='' read -r __line
-  do
-    _function_list+=("${__line}")
-  done < <(declare -F)
-
-  for __name in "${_function_list[@]}"
+  for __name in $(declare -F)
   do
     # Each element has the format `declare -f function_name`, so set the name
     # to only the 'function_name' part of the string.
