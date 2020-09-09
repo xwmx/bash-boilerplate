@@ -594,22 +594,7 @@ HEREDOC
 # Default Subcommands
 ###############################################################################
 
-# Version #####################################################################
-
-desc "version" <<HEREDOC
-Usage:
-  ${_ME} ( version | --version )
-
-Description:
-  Display the current program version.
-
-  To save you the trouble, the current version is ${_VERSION}
-HEREDOC
-version() {
-  printf "%s\\n" "${_VERSION}"
-}
-
-# Help ########################################################################
+# help ########################################################################
 
 desc "help" <<HEREDOC
 Usage:
@@ -652,7 +637,7 @@ HEREDOC
   fi
 }
 
-# Subcommand List #############################################################
+# subcommands #################################################################
 
 desc "subcommands" <<HEREDOC
 Usage:
@@ -672,6 +657,21 @@ subcommands() {
     printf "Available subcommands:\\n"
     printf "  %s\\n" "${_DEFINED_SUBCOMMANDS[@]}"
   fi
+}
+
+# version #####################################################################
+
+desc "version" <<HEREDOC
+Usage:
+  ${_ME} ( version | --version )
+
+Description:
+  Display the current program version.
+
+  To save you the trouble, the current version is ${_VERSION}
+HEREDOC
+version() {
+  printf "%s\\n" "${_VERSION}"
 }
 
 ###############################################################################
