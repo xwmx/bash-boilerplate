@@ -10,7 +10,7 @@
 # checks and help features.
 #
 # Usage:
-#   bash-simple argument
+#   bash-simple <options>...
 #
 # Depends on:
 #  list

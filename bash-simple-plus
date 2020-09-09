@@ -10,7 +10,7 @@
 # checks, help features, easy debug printing.
 #
 # Usage:
-#   bash-simple-plus argument
+#   bash-simple-plus <options>...
 #
 # Depends on:
 #  list
