@@ -49,7 +49,7 @@ tasks.
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
 - `_exit_1` and `_return_1` functions with error message printing and exiting,
-- Option parsing,
+- Option normalization and parsing,
 - Automatic arbitrary subcommand loading,
 - An nice, clean pattern for specifying per-subcommand help,
 - Built-in subcommands for help, version, and subcommand listing,

@@ -475,11 +475,11 @@ HEREDOC
 }
 
 ###############################################################################
-# Options
+# Program Option Parsing
 #
 # NOTE: The `getops` builtin command only parses short options and BSD `getopt`
-# does not support long arguments (GNU `getopt` does), so the most portable
-# and clear way to parse options is often to just use a `while` loop.
+# does not support long arguments (GNU `getopt` does), so use custom option
+# normalization and parsing.
 #
 # For a pure bash `getopt` function, try pure-getopt:
 #   https://github.com/agriffis/pure-getopt
@@ -492,6 +492,54 @@ HEREDOC
 #   https://stackoverflow.com/a/12026302
 #   https://stackoverflow.com/a/402410
 ###############################################################################
+
+# Normalize Options ###########################################################
+
+# Source:
+#   https://github.com/e36freak/templates/blob/master/options
+
+# Iterate over options, breaking -ab into -a -b and --foo=bar into --foo bar
+# also turns -- into --endopts to avoid issues with things like '-o-', the '-'
+# should not indicate the end of options, but be an invalid option (or the
+# argument to the option, such as wget -qO-)
+unset options
+# while the number of arguments is greater than 0
+while ((${#}))
+do
+  case "${1}" in
+    # if option is of type -ab
+    -[!-]?*)
+      # loop over each character starting with the second
+      for ((i=1; i<${#1}; i++))
+      do
+        # extract 1 character from position 'i'
+        c="${1:i:1}"
+        # add current char to options
+        options+=("-${c}")
+      done
+      ;;
+    # if option is of type --foo=bar, split on first '='
+    --?*=*)
+      options+=("${1%%=*}" "${1#*=}")
+      ;;
+    # end of options, stop breaking them up
+    --)
+      options+=(--endopts)
+      shift
+      options+=("${@}")
+      break
+      ;;
+    # otherwise, nothing special
+    *)
+      options+=("${1}")
+      ;;
+  esac
+
+  shift
+done
+# set new positional parameters to altered options. Set default to blank.
+set -- "${options[@]:-}"
+unset options
 
 # Parse Options ###############################################################
 
