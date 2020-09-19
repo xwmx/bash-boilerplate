@@ -389,21 +389,21 @@ _piped_input() {
 }
 
 ###############################################################################
-# desc
+# describe
 ###############################################################################
 
-# desc()
+# describe()
 #
 # Usage:
-#   desc <name> <description>
-#   desc --get <name>
+#   describe <name> <description>
+#   describe --get <name>
 #
 # Options:
 #   --get  Print the description for <name> if one has been set.
 #
 # Examples:
 # ```
-#   desc "list" <<HEREDOC
+#   describe "list" <<HEREDOC
 # Usage:
 #   ${_ME} list
 #
@@ -411,14 +411,14 @@ _piped_input() {
 #   List items.
 # HEREDOC
 #
-# desc --get "list"
+# describe --get "list"
 # ```
 #
 # Set or print a description for a specified subcommand or function <name>. The
 # <description> text can be passed as the second argument or as standard input.
 #
-# To make the <description> text available to other functions, `desc()` assigns
-# the text to a variable with the format `$___desc_<name>`.
+# To make the <description> text available to other functions, `describe()`
+# assigns the text to a variable with the format `$___describe_<name>`.
 #
 # When the `--get` option is used, the description for <name> is printed, if
 # one has been set.
@@ -437,39 +437,35 @@ _piped_input() {
 # However, this form appears to require trailing space after backslases to
 # preserve newlines, which is unexpected. Using `read` simply requires
 # escaping backslashes, which is more common.
-desc() {
-  _debug printf "desc() \${*}: %s\\n" "$@"
+describe() {
+  _debug printf "describe() \${*}: %s\\n" "$@"
   [[ -z "${1:-}" ]] &&
-    _exit_1 printf "desc(): No subcommand name specified.\\n"
+    _exit_1 printf "describe(): <name> required.\\n"
 
   if [[ "${1}" == "--get" ]]
   then # get ------------------------------------------------------------------
     [[ -z "${2:-}" ]] &&
-      _exit_1 printf "desc(): No subcommand name specified.\\n"
+      _exit_1 printf "describe(): <description> required.\\n"
 
     local _name="${2:-}"
-    local _desc_var="___desc_${_name}"
+    local _describe_var="___describe_${_name}"
 
-    if [[ -n "${!_desc_var:-}" ]]
+    if [[ -n "${!_describe_var:-}" ]]
     then
-      printf "%s\\n" "${!_desc_var}"
+      printf "%s\\n" "${!_describe_var}"
     else
       printf "No additional information for \`%s\`\\n" "${_name}"
     fi
   else # set ------------------------------------------------------------------
     if [[ -n "${2:-}" ]]
     then # argument is present
-      read -r -d '' "___desc_${1}" <<HEREDOC
+      read -r -d '' "___describe_${1}" <<HEREDOC
 ${2}
 HEREDOC
-
-      _debug printf "desc() set with argument: \${___desc_%s}\\n" "${1}"
     else # no argument is present, so assume piped input
       # `read` exits with non-zero status when a delimeter is not found, so
       # avoid errors by ending statement with `|| true`.
-      read -r -d '' "___desc_${1}" || true
-
-      _debug printf "desc() set with pipe: \${___desc_%s}\\n" "${1}"
+      read -r -d '' "___describe_${1}" || true
     fi
   fi
 }
@@ -609,7 +605,7 @@ _main() {
     if ! { [[ -z "${_function_name:-}"                      ]] ||
            [[ "${_function_name}" =~ ^_(.*)                 ]] ||
            [[ "${_function_name}" == "bats_readlinkf"       ]] ||
-           [[ "${_function_name}" == "desc"                 ]] ||
+           [[ "${_function_name}" == "describe"                 ]] ||
            [[ "${_function_name}" == "shell_session_update" ]]
     }
     then
@@ -633,7 +629,7 @@ _main() {
 
 # help ########################################################################
 
-desc "help" <<HEREDOC
+describe "help" <<HEREDOC
 Usage:
   ${_ME} help [<subcommand>]
 
@@ -643,7 +639,7 @@ HEREDOC
 help() {
   if [[ "${1:-}" ]]
   then
-    desc --get "${1}"
+    describe --get "${1}"
   else
     cat <<HEREDOC
            _                                                   _
@@ -676,7 +672,7 @@ HEREDOC
 
 # subcommands #################################################################
 
-desc "subcommands" <<HEREDOC
+describe "subcommands" <<HEREDOC
 Usage:
   ${_ME} subcommands [--raw]
 
@@ -698,7 +694,7 @@ subcommands() {
 
 # version #####################################################################
 
-desc "version" <<HEREDOC
+describe "version" <<HEREDOC
 Usage:
   ${_ME} ( version | --version )
 
@@ -717,11 +713,11 @@ version() {
 #
 # Example subcommand group structure:
 #
-# desc example ""   - Optional. A short description for the subcommand.
+# describe example ""   - Optional. A short description for the subcommand.
 # example() { : }   - The subcommand called by the user.
 #
 #
-# desc example <<HEREDOC
+# describe example <<HEREDOC
 #   Usage:
 #     $_ME example
 #
@@ -742,7 +738,7 @@ version() {
 
 # --------------------------------------------------------------------- example
 
-desc "example" <<HEREDOC
+describe "example" <<HEREDOC
 Usage:
   ${_ME} example [<name>] [--farewell]
 
