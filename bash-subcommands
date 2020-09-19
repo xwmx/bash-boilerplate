@@ -439,8 +439,7 @@ _piped_input() {
 # escaping backslashes, which is more common.
 describe() {
   _debug printf "describe() \${*}: %s\\n" "$@"
-  [[ -z "${1:-}" ]] &&
-    _exit_1 printf "describe(): <name> required.\\n"
+  [[ -z "${1:-}" ]] && _exit_1 printf "describe(): <name> required.\\n"
 
   if [[ "${1}" == "--get" ]]
   then # get ------------------------------------------------------------------
@@ -605,7 +604,7 @@ _main() {
     if ! { [[ -z "${_function_name:-}"                      ]] ||
            [[ "${_function_name}" =~ ^_(.*)                 ]] ||
            [[ "${_function_name}" == "bats_readlinkf"       ]] ||
-           [[ "${_function_name}" == "describe"                 ]] ||
+           [[ "${_function_name}" == "describe"             ]] ||
            [[ "${_function_name}" == "shell_session_update" ]]
     }
     then
