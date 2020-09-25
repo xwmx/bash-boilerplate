@@ -275,5 +275,5 @@ HEREDOC
 
 _() {
   printf "Hello World.\\n"
-} && _ "$@"
+}; _ "$@"
 unset -f _
