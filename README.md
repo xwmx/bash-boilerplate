@@ -34,7 +34,7 @@ help features, easy debug printing. Useful for regular scripts.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
-- `_exit_1` and `_return_1` functions with error message printing and exiting,
+- `_exit_1` and `_warn` functions for error messages,
 - Option parsing.
 
 ### [bash-subcommands](https://github.com/xwmx/bash-boilerplate/blob/master/bash-subcommands)
@@ -48,7 +48,7 @@ tasks.
 - Strict Mode,
 - Help template, printable with `-h` or `--help`,
 - `debug` printing with `--debug` flag,
-- `_exit_1` and `_return_1` functions with error message printing and exiting,
+- `_exit_1` and `_warn` functions for error messages,
 - Option normalization and parsing,
 - Automatic arbitrary subcommand loading,
 - An nice, clean pattern for specifying per-subcommand help,
