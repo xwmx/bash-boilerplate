@@ -164,9 +164,8 @@ _ME="$(basename "${0}")"
 #   _debug <command> <options>...
 #
 # Description:
-#   A simple function for executing a specified command if the `$_USE_DEBUG`
-#   variable has been set. The command is expected to print a message and
-#   should typically be either `echo`, `printf`, or `cat`.
+#   Execute a command and print to standard error. The command is expected to
+#   print a message and should typically be either `echo`, `printf`, or `cat`.
 #
 # Example:
 #   _debug printf "Debug info. Variable: %s\\n" "$0"
@@ -185,7 +184,7 @@ _debug() {
 }
 
 ###############################################################################
-# Error Messaging
+# Error Messages
 ###############################################################################
 
 # _exit_1()
