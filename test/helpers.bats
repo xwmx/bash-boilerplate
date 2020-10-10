@@ -95,6 +95,16 @@ three
   [[ "${output}" == "one•two•three" ]]
 }
 
+@test "\`_join\` with one element returns that element." {
+  run _join ',' one
+  [[ "${output}" == "one" ]]
+}
+
+@test "\`_join\` succeeds with two elements." {
+  run _join ',' one two
+  [[ "${output}" == "one,two" ]]
+}
+
 ###############################################################################
 # _readlink()
 ###############################################################################

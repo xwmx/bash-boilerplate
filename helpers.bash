@@ -180,9 +180,9 @@ _interactive_input() {
 # More information:
 #   https://stackoverflow.com/a/17841619
 _join() {
-  local _delimiter="${1}"
+  local _delimiter="${1:-}"
   shift
-  printf "%s" "${1}"
+  printf "%s" "${1:-}"
   shift
   printf "%s" "${@/#/${_delimiter}}" | tr -d '[:space:]'
 }
