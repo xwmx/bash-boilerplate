@@ -110,8 +110,8 @@ _download_from() {
         --location                      \
         --connect-timeout "${_timeout}" \
         "${_url}"                       \
-        --output "${_target_path}"      &&
-          _downloaded=1
+        --output "${_target_path}"      \
+        && _downloaded=1
     elif hash "wget" 2>/dev/null
     then
       wget                              \
@@ -120,8 +120,8 @@ _download_from() {
         --dns-timeout="${_timeout}"     \
         -O "${_target_path}"            \
         "${_url}"                       \
-        2>/dev/null                     &&
-          _downloaded=1
+        2>/dev/null                     \
+        && _downloaded=1
     fi
   else
     if hash "curl" 2>/dev/null
@@ -130,8 +130,8 @@ _download_from() {
         --silent                        \
         --location                      \
         --connect-timeout "${_timeout}" \
-        "${_url}"                       &&
-          _downloaded=1
+        "${_url}"                       \
+        && _downloaded=1
     elif hash "wget" 2>/dev/null
     then
       wget                              \
@@ -140,8 +140,8 @@ _download_from() {
         --dns-timeout="${_timeout}"     \
         -O -                            \
         "${_url}"                       \
-        2>/dev/null                     &&
-          _downloaded=1
+        2>/dev/null                     \
+        && _downloaded=1
     fi
   fi
 
