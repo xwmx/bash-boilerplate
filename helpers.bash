@@ -177,14 +177,27 @@ _interactive_input() {
 # Example:
 #   _join "${_delimeter}" "${_list[@]}"
 #
-# More information:
+# More Information:
 #   https://stackoverflow.com/a/17841619
 _join() {
   local _delimiter="${1:-}"
+
   shift
-  printf "%s" "${1:-}"
+
+  local _joined_string="${1:-}"
+
   shift
-  printf "%s" "${@/#/${_delimiter}}" | tr -d '[:space:]'
+
+  local __element
+
+  for __element in "${@:-}"
+  do
+    [[ -n "${__element:-}" ]] || continue
+
+    _joined_string+="${_delimiter:-}${__element:-}"
+  done
+
+  printf "%s\\n" "${_joined_string}"
 }
 
 ###############################################################################
