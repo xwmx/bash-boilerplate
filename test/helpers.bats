@@ -105,6 +105,11 @@ three
   [[ "${output}" == "one,two" ]]
 }
 
+@test "'_join' retains spacing in elements." {
+  run _join ',' "example one" "example two" "example three"
+  [[ "${output}" == "example one,example two,example three" ]]
+}
+
 ###############################################################################
 # _readlink()
 ###############################################################################
