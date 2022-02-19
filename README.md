@@ -320,7 +320,7 @@ easier to maintain. As a result, some general design preferences:
 ](https://lists.gnu.org/archive/html/bug-bash/2013-02/msg00007.html)
 - [Bash Pitfalls (mywiki.wooledge.org)
 ](http://mywiki.wooledge.org/BashPitfalls)
-- [Rich’s sh (POSIX shell) tricks (etalabs.net)](http://www.etalabs.net/sh_tricks.htm)
+- [Rich’s sh (POSIX shell) tricks (etalabs.net)](http://www.etalabs.net/sh_tricks.html)
 - [Writing Robust Bash Shell Scripts (davidpashley.com)](http://www.davidpashley.com/articles/writing-robust-shell-scripts/)
 - [Bash Strict Mode (github.com)](https://github.com/tests-always-included/wick/blob/master/doc/bash-strict-mode.md)
 - [pure bash bible - A collection of pure bash alternatives to external processes (github.com)](https://github.com/dylanaraps/pure-bash-bible)
